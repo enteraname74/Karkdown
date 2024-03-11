@@ -1,0 +1,24 @@
+[versions]
+compose = "1.6.2"
+compose-plugin = "1.6.0"
+junit = "4.13.2"
+kotlin = "1.9.22"
+koin = "3.5.3"
+koin-compose = "1.1.2"
+file-picker = "3.1.0"
+
+[libraries]
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+file-picker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "file-picker" }
+
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
+
+[plugins]
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
