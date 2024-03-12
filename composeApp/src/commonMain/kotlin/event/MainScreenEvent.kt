@@ -41,9 +41,19 @@ sealed interface MainScreenEvent {
     data class DeleteLine(val pos: Int): MainScreenEvent
 
     /**
-     * Indicate to whether to select or no a file.
+     * Indicate whether to select or not a file.
      */
     data class ShouldSelectFile(val shouldSelectFile: Boolean): MainScreenEvent
+
+    /**
+     * Indicate whether to select or not a folder.
+     */
+    data class ShouldSelectFolder(val shouldSelectFolder: Boolean): MainScreenEvent
+
+    /**
+     * Indicate whether to indicate or not the name of the current file.
+     */
+    data class ShouldEnterFileName(val shouldSetFileName: Boolean): MainScreenEvent
 
     /**
      * Indicate to quick save the current file.
@@ -51,6 +61,24 @@ sealed interface MainScreenEvent {
      */
     data object QuickSaveCurrentFile: MainScreenEvent
 
-    data object SaveAsCurrentFile: MainScreenEvent
+    /**
+     * Save a file in a specific path with a specific filename.
+     */
+    data class SaveAsCurrentFile(val path: String, val filename: String): MainScreenEvent
+
+    /**
+     * Define the current filename.
+     */
+    data class SetCurrentFileName(val name: String): MainScreenEvent
+
+    /**
+     * Indicate if the indication that the saving of a file has failed should be shown
+     */
+    data class ShouldShowFileSavingError(val show: Boolean): MainScreenEvent
+
+    /**
+     * Indicate if the indication that the saving of a file succeed should be shown.
+     */
+    data class ShouldShowCorrectFileSaving(val show: Boolean): MainScreenEvent
 }
 

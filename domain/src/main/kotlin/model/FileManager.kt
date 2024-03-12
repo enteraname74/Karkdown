@@ -9,16 +9,24 @@ import kotlin.io.path.name
 import kotlin.math.max
 
 class FileManager {
-    private var filepath: Path? = null
 
+    /**
+     * The full filepath (path + filename) of a file.
+     */
+    var filepath: Path? = null
+
+    private var lastSavedRowData: ArrayList<String> = ArrayList()
     private var rowData: ArrayList<String> = ArrayList()
     private var lineAnalyzer = LineAnalyzer()
     var content: ArrayList<MarkdownElement> = ArrayList()
     var userPosition: Int = 0
+    val isDataUpdated: Boolean
+        get() = rowData == lastSavedRowData
 
     init {
         // We initialize the initial file content with a text input:
         rowData.add("")
+        lastSavedRowData = rowData
         updateMarkdownContent()
     }
 
@@ -38,7 +46,32 @@ class FileManager {
         try {
             filepath = Path(path)
             getContent(path)
-        } catch (_: Exception) {}
+        } catch (_: Exception) {
+        }
+    }
+
+    /**
+     * Attempt to do a quick save with the known file path.
+     *
+     * @return true if the file was saved, false if not.
+     */
+    fun saveFile(): Boolean {
+        return try {
+            filepath?.let { filepath ->
+                val file = File(filepath.toString())
+
+                file.printWriter().use { writer ->
+                    rowData.forEach { line ->
+                        writer.println(line)
+                    }
+                }
+                return true
+            }
+            false
+        } catch (e: Exception) {
+            println("ERROR WHEN QUICK SAVING: $e")
+            false
+        }
     }
 
     /**
@@ -56,7 +89,7 @@ class FileManager {
         } catch (_: Exception) {
             ArrayList()
         }
-        println(rowData)
+        lastSavedRowData = rowData
         updateMarkdownContent()
     }
 
@@ -134,8 +167,7 @@ class FileManager {
     fun updateLineAt(line: String, pos: Int) {
         if (pos < 0 || pos >= rowData.size) {
             return
-        }
-        else rowData[pos] = line
+        } else rowData[pos] = line
 
         updateMarkdownContent()
     }

@@ -6,17 +6,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.CardDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.*
-import androidx.compose.ui.platform.LocalWindowInfo
+import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
+import composable.FileNameDialog
 import composable.FileView
 import composable.MainHeaderBar
 import event.MainScreenEvent
+import kotlinx.coroutines.launch
 import state.MainScreenState
+import strings.appStrings
 import viewmodel.MainScreenViewModel
 
 @Composable
@@ -24,12 +27,48 @@ fun MainScreen(
     mainScreenViewModel: MainScreenViewModel
 ) {
     val state by mainScreenViewModel.state.collectAsState()
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(state.shouldShowErrorFileSavedResult) {
+        if (state.shouldShowErrorFileSavedResult) {
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = appStrings.fileCouldNotBeSaved
+                )
+            }
+        }
+    }
+
+    LaunchedEffect(state.shouldShowCorrectFileSavedResult) {
+        if (state.shouldShowCorrectFileSavedResult){
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = appStrings.fileSaved
+                )
+            }
+        }
+    }
 
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         modifier = Modifier
             .onKeyEvent { event ->
                 if (event.type != KeyEventType.KeyUp) return@onKeyEvent false
-                if (event.isCtrlPressed && event.key == Key.S) println("Ctrl S pressed")
+                if (event.isCtrlPressed && event.key == Key.S) {
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.QuickSaveCurrentFile
+                    )
+                }
+                if (event.isCtrlPressed && event.isShiftPressed && event.key == Key.S) {
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.ShouldEnterFileName(
+                            shouldSetFileName = true
+                        )
+                    )
+                }
                 false
             },
         topBar = {
@@ -52,7 +91,7 @@ fun MainScreen(
     FilePicker(
         show = state.isSelectingFile,
         fileExtensions = listOf("md"),
-        title = "Open file"
+        title = appStrings.openFile
     ) { file ->
         if (file != null) {
             mainScreenViewModel.onEvent(
@@ -65,6 +104,55 @@ fun MainScreen(
             MainScreenEvent.ShouldSelectFile(
                 shouldSelectFile = false
             )
+        )
+    }
+
+    DirectoryPicker(
+        show = state.isSelectingFolder,
+        title = appStrings.saveFileNameIn(filename = state.filename)
+    ) { parent ->
+        if (parent != null) {
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.SaveAsCurrentFile(
+                    path = parent,
+                    filename = state.filename
+                )
+            )
+        }
+        mainScreenViewModel.onEvent(
+            MainScreenEvent.ShouldSelectFolder(
+                shouldSelectFolder = false
+            )
+        )
+    }
+
+    if (state.isSettingFileName) {
+        FileNameDialog(
+            currentFileName = state.filename,
+            onDismiss = {
+                mainScreenViewModel.onEvent(
+                    MainScreenEvent.ShouldEnterFileName(
+                        shouldSetFileName = false
+                    )
+                )
+            },
+            onConfirm = { filename ->
+                mainScreenViewModel.onEvent(
+                    MainScreenEvent.ShouldEnterFileName(
+                        shouldSetFileName = false
+                    )
+                )
+                mainScreenViewModel.onEvent(
+                    MainScreenEvent.SetCurrentFileName(
+                        name = filename
+                    )
+                )
+                mainScreenViewModel.onEvent(
+                    MainScreenEvent.ShouldSelectFolder(
+                        shouldSelectFolder = true
+                    )
+                )
+            }
         )
     }
 }
