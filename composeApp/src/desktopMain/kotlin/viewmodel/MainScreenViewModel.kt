@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.update
 import model.FileManager
 import state.MainScreenState
 import kotlin.math.abs
+import kotlin.math.max
 import kotlin.math.min
 
 class MainScreenViewModel(
@@ -30,7 +31,7 @@ class MainScreenViewModel(
             is MainScreenEvent.CreateNewLine -> createNewLine(nextPos = event.nextPos)
             is MainScreenEvent.SetFocusedLine -> setFocusedLine(pos = event.pos)
             MainScreenEvent.GoDown -> setFocusedLine(pos = abs(min(fileManager.userPosition + 1, fileManager.size - 1)))
-            MainScreenEvent.GoUp -> setFocusedLine(pos = abs(fileManager.userPosition - 1))
+            MainScreenEvent.GoUp -> setFocusedLine(pos = max(fileManager.userPosition - 1, 0))
         }
     }
 

@@ -10,7 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.*
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 
 /**
  * Text input for modifying file content
@@ -22,6 +24,8 @@ fun TextInput(
     onDone: () -> Unit,
     onKeyUp: () -> Unit,
     onKeyDown: () -> Unit,
+    shouldInitCursorPosition: Boolean,
+    removeInitCursorPosition: () -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
 

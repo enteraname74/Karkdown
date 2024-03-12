@@ -40,7 +40,9 @@ fun TextBuilder(
                     onEditableLineDone(userLine+1)
                 },
                 onKeyUp = onKeyUp,
-                onKeyDown = onKeyDown
+                onKeyDown = onKeyDown,
+                shouldInitCursorPosition = true,
+                removeInitCursorPosition = {}
             )
 
             is Header -> HeaderText(
