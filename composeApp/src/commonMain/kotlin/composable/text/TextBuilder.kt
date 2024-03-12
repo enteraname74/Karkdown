@@ -22,6 +22,7 @@ fun TextBuilder(
     onEditableLineDone: (Int) -> Unit,
     onKeyDown: () -> Unit,
     onKeyUp: () -> Unit,
+    onDeleteLine: (Int) -> Unit,
     userLine: Int,
     currentText: String,
 ) {
@@ -41,8 +42,9 @@ fun TextBuilder(
                 },
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
-                shouldInitCursorPosition = true,
-                removeInitCursorPosition = {}
+                onDeleteLine = {
+                    onDeleteLine(userLine)
+                }
             )
 
             is Header -> HeaderText(

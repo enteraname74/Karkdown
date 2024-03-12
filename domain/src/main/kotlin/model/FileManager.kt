@@ -18,10 +18,8 @@ class FileManager {
 
     init {
         // We initialize the initial file content with a text input:
-        println("FileContentManager - INIT")
-        updateMarkdownContent()
         rowData.add("")
-        setEditableLine(0)
+        updateMarkdownContent()
     }
 
     val filename: String
@@ -32,7 +30,6 @@ class FileManager {
      */
     val size: Int
         get() = content.size
-
 
     /**
      * Open a file.
@@ -53,7 +50,7 @@ class FileManager {
         userPosition = max(content.indexOfFirst { it is EditableText }, 0)
     }
 
-    fun getContent(path: String) {
+    private fun getContent(path: String) {
         rowData = try {
             File(path).readLines() as ArrayList<String>
         } catch (_: Exception) {
@@ -68,7 +65,6 @@ class FileManager {
     private fun updateMarkdownContent() {
         content = lineAnalyzer.buildMarkdownFile(rowData)
         setEditableLine(userPosition)
-        println("FileManager - Content to use: $content")
     }
 
     /**
@@ -86,7 +82,6 @@ class FileManager {
      * If we want to set an editable line at the end of the file but there is already one, does nothing.
      */
     private fun setEditableLine(pos: Int) {
-        println("FileContentManager - Will set editable line at pos: $pos")
         val shouldAddLineAtEnd = pos < 0 || pos >= size
 
         if (shouldAddLineAtEnd && content.isEmpty()) content.add(EditableText(currentText = ""))
@@ -111,6 +106,24 @@ class FileManager {
     }
 
     /**
+     * Delete a line at a given position.
+     * If the line is the start of the file, does nothing.
+     * if the user is on the given line, it will move him to the previous one.
+     *
+     * @param pos the position of the line to remove.
+     */
+    fun deleteLine(pos: Int) {
+        if (pos == 0) return
+        rowData.removeAt(pos)
+
+        // We move the user
+        if (userPosition == pos) {
+            userPosition -= 1
+            updateMarkdownContent()
+        }
+    }
+
+    /**
      * Replace the previous line at a given pos by a new line.
      * @param line the line to set.
      * @param pos the position where the line should replace the previous one.
@@ -118,7 +131,6 @@ class FileManager {
      * Does nothing if the position is not correct
      */
     fun updateLineAt(line: String, pos: Int) {
-        println("FileContentManager - A line will be updated at the pos: $pos, ${rowData.size}")
         if (pos < 0 || pos >= rowData.size) {
             return
         }

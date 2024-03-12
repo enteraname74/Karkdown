@@ -34,5 +34,10 @@ sealed interface MainScreenEvent {
      * Move the user position down by one line.
      */
     data object GoDown: MainScreenEvent
+
+    /**
+     * Remove a line from the file at a given pos.
+     */
+    data class DeleteLine(val pos: Int): MainScreenEvent
 }
 

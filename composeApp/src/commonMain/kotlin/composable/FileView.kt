@@ -27,6 +27,7 @@ fun FileView(
     currentText: String,
     onKeyDown: () -> Unit,
     onKeyUp: () -> Unit,
+    onDeleteLine: (Int) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier
@@ -46,7 +47,8 @@ fun FileView(
                 userLine = userLine,
                 currentText = currentText,
                 onKeyUp = onKeyUp,
-                onKeyDown = onKeyDown
+                onKeyDown = onKeyDown,
+                onDeleteLine = onDeleteLine
             )
         }
 

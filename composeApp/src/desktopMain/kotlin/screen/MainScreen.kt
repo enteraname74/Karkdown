@@ -41,7 +41,6 @@ fun MainScreen(
                 )
             },
             onLineClicked = { linePos ->
-                println("Line clicked at pos: $linePos")
                 mainScreenViewModel.onEvent(
                     MainScreenEvent.SetFocusedLine(
                         pos = linePos
@@ -50,15 +49,18 @@ fun MainScreen(
             },
             userLine = state.userPosition,
             onKeyUp = {
-                println("UP")
                 mainScreenViewModel.onEvent(
                     MainScreenEvent.GoUp
                 )
             },
             onKeyDown = {
-                println("DOWN")
                 mainScreenViewModel.onEvent(
                     MainScreenEvent.GoDown
+                )
+            },
+            onDeleteLine = {
+                mainScreenViewModel.onEvent(
+                    MainScreenEvent.DeleteLine(it)
                 )
             }
         )

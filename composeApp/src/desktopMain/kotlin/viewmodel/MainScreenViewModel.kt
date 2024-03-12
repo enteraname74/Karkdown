@@ -30,17 +30,32 @@ class MainScreenViewModel(
             is MainScreenEvent.SetCurrentText -> updateEditedText(event.text)
             is MainScreenEvent.CreateNewLine -> createNewLine(nextPos = event.nextPos)
             is MainScreenEvent.SetFocusedLine -> setFocusedLine(pos = event.pos)
+            is MainScreenEvent.DeleteLine -> deleteLine(pos = event.pos)
             MainScreenEvent.GoDown -> setFocusedLine(pos = abs(min(fileManager.userPosition + 1, fileManager.size - 1)))
             MainScreenEvent.GoUp -> setFocusedLine(pos = max(fileManager.userPosition - 1, 0))
         }
     }
 
     /**
+     * Delete a line from the file.
+     * If the given position is the beginning of the file, does nothing.
+     */
+    private fun deleteLine(pos: Int) {
+        fileManager.deleteLine(pos = pos)
+
+        _state.update {
+            it.copy(
+                fileContent = fileManager.content,
+                userPosition = fileManager.userPosition
+            )
+        }
+        currentText = fileManager.getLineAt(fileManager.userPosition)
+    }
+
+    /**
      * Define which line should be focused.
      */
     private fun setFocusedLine(pos: Int) {
-        println("VM - We will focus the line at pos: $pos")
-
         fileManager.setFocusedLine(pos)
 
         _state.update {
