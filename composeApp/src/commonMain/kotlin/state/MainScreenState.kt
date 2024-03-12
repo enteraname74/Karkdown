@@ -11,7 +11,7 @@ import kotlin.io.path.name
 data class MainScreenState(
     val fileContent: List<MarkdownElement> = emptyList(),
     val filepath : Path? = null,
-    var filename: String = filepath?.name ?: appStrings.newFile,
+    var filename: String = filepath?.name ?: appStrings.newFilename,
     val userPosition: Int = 0,
     val isSelectingFile: Boolean = false,
     val isSelectingFolder: Boolean = false,

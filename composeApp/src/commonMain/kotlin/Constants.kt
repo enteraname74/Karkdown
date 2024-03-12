@@ -68,6 +68,10 @@ object Constants {
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
         )
+        val small = TextStyle(
+            fontSize = 13.sp,
+            fontWeight = FontWeight.W300,
+        )
     }
 
     /**

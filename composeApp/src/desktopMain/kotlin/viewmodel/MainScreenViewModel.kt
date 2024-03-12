@@ -185,6 +185,7 @@ class MainScreenViewModel {
     private fun updateEditedText(text: String) {
         fileManager.updateLineAt(text, fileManager.userPosition)
         currentText = text
+        println("Is same ? ${fileManager.isDataUpdated}, ${fileManager.rowData == fileManager.lastSavedRowData}")
         _state.update {
             it.copy(
                 isDataUpdated = fileManager.isDataUpdated
@@ -206,7 +207,7 @@ class MainScreenViewModel {
                 fileContent = fileManager.content,
                 userPosition = fileManager.userPosition,
                 filepath = fileManager.filepath,
-                filename = fileManager.filepath?.name ?: appStrings.fileName,
+                filename = fileManager.filepath?.name ?: appStrings.newFilename,
                 isDataUpdated = fileManager.isDataUpdated
             )
         }

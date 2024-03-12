@@ -11,7 +11,7 @@ data object EnStrings: AppStrings {
     override val validate: String = "Validate"
     override val cancel: String = "Cancel"
 
-    override val newFile: String = "New file"
+    override val newFilename: String = "New file"
     override val fileSaved: String = "File saved"
     override val fileCouldNotBeSaved: String = "File couldn't be saved"
 

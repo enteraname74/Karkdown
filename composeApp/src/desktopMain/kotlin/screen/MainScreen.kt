@@ -14,6 +14,7 @@ import androidx.compose.ui.input.key.*
 import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import composable.FileNameDialog
+import composable.FileTabHeader
 import composable.FileView
 import composable.MainHeaderBar
 import event.MainScreenEvent
@@ -81,11 +82,23 @@ fun MainScreen(
             }
         }
     ) { paddingValues ->
-        FileEditor(
-            mainScreenViewModel = mainScreenViewModel,
-            state = state,
-            paddingValues = paddingValues
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(Constants.Spacing.small)
+        ) {
+            FileTabHeader(
+                filename = state.filename,
+                isDataUpdated = state.isDataUpdated,
+                onClick = {
+
+                }
+            )
+            FileEditor(
+                mainScreenViewModel = mainScreenViewModel,
+                state = state,
+                paddingValues = paddingValues
+            )
+        }
     }
 
     FilePicker(

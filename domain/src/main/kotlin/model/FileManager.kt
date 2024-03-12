@@ -15,8 +15,9 @@ class FileManager {
      */
     var filepath: Path? = null
 
-    private var lastSavedRowData: ArrayList<String> = ArrayList()
-    private var rowData: ArrayList<String> = ArrayList()
+    var lastSavedRowData: ArrayList<String> = ArrayList()
+    var rowData: ArrayList<String> = ArrayList()
+
     private var lineAnalyzer = LineAnalyzer()
     var content: ArrayList<MarkdownElement> = ArrayList()
     var userPosition: Int = 0
@@ -26,7 +27,7 @@ class FileManager {
     init {
         // We initialize the initial file content with a text input:
         rowData.add("")
-        lastSavedRowData = rowData
+        lastSavedRowData = ArrayList(rowData)
         updateMarkdownContent()
     }
 
@@ -89,7 +90,7 @@ class FileManager {
         } catch (_: Exception) {
             ArrayList()
         }
-        lastSavedRowData = rowData
+        lastSavedRowData = ArrayList(rowData)
         updateMarkdownContent()
     }
 

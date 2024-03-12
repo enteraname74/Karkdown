@@ -11,7 +11,7 @@ data object FrStrings: AppStrings {
     override val validate: String = "Valider"
     override val cancel: String = "Annuler"
 
-    override val newFile: String = "Nouveau fichier"
+    override val newFilename: String = "Nouveau fichier"
     override val fileSaved: String = "Fichier sauvegardé"
     override val fileCouldNotBeSaved: String = "Le fichier n'a pas pu être sauvegardé"
 

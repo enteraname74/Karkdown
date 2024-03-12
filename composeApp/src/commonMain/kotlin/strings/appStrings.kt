@@ -17,7 +17,7 @@ interface AppStrings {
     val validate: String
     val cancel: String
 
-    val newFile: String
+    val newFilename: String
     val fileSaved: String
     val fileCouldNotBeSaved: String
 
