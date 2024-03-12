@@ -1,5 +1,6 @@
 package composable
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,6 +13,7 @@ import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import utils.buildCorrespondingTextStyle
 
 /**
  * Text input for modifying file content
@@ -38,6 +40,12 @@ fun TextInput(
         focusRequester.requestFocus()
     }
 
+    SideEffect {
+        textValue = textValue.copy(
+            text = text
+        )
+    }
+
     LaunchedEffect(key1 = "cursor pos") {
         if (text.isNotEmpty()) {
             textValue = TextFieldValue(
@@ -48,7 +56,7 @@ fun TextInput(
     }
 
     BasicTextField(
-        textStyle = Constants.FontStyle.body,
+        textStyle = buildCorrespondingTextStyle(line = text),
         value = textValue,
         onValueChange = {
             textValue = it

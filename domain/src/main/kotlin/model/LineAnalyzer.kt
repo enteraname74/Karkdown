@@ -11,7 +11,7 @@ class LineAnalyzer {
     /**
      * Check if a line is a header.
      */
-    private fun isHeader(line: String): Boolean {
+    fun isHeader(line: String): Boolean {
         val regex = Regex("#+ .+")
         return regex.matches(line)
     }

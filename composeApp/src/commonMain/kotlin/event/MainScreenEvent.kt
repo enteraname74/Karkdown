@@ -7,7 +7,7 @@ sealed interface MainScreenEvent {
     /**
      * Indicate to open a file.
      */
-    data class OpenFile(val file: String): MainScreenEvent
+    data class OpenFile(val filepath: String): MainScreenEvent
 
     /**
      * Set the current text the user is currently typing.
@@ -39,5 +39,18 @@ sealed interface MainScreenEvent {
      * Remove a line from the file at a given pos.
      */
     data class DeleteLine(val pos: Int): MainScreenEvent
+
+    /**
+     * Indicate to whether to select or no a file.
+     */
+    data class ShouldSelectFile(val shouldSelectFile: Boolean): MainScreenEvent
+
+    /**
+     * Indicate to quick save the current file.
+     * If the quick save isn't possible (when the file has never been saved before), it will do the SaveAs event.
+     */
+    data object QuickSaveCurrentFile: MainScreenEvent
+
+    data object SaveAsCurrentFile: MainScreenEvent
 }
 

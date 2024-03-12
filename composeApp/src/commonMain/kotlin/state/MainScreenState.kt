@@ -8,5 +8,6 @@ import model.markdown.MarkdownElement
 data class MainScreenState(
     val fileContent: List<MarkdownElement> = emptyList(),
     val fileName: String = "",
-    val userPosition: Int = 0
+    val userPosition: Int = 0,
+    val isSelectingFile: Boolean = false
 )

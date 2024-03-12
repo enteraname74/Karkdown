@@ -3,8 +3,6 @@ import viewmodel.MainScreenViewModel
 
 val appModule = module {
     single {
-        MainScreenViewModel(
-            fileManager = get()
-        )
+        MainScreenViewModel()
     }
 }

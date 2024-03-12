@@ -9,7 +9,7 @@ import kotlin.io.path.name
 import kotlin.math.max
 
 class FileManager {
-    private var filepath: Path = Path("")
+    private var filepath: Path? = null
 
     private var rowData: ArrayList<String> = ArrayList()
     private var lineAnalyzer = LineAnalyzer()
@@ -23,7 +23,7 @@ class FileManager {
     }
 
     val filename: String
-        get() = filepath.name
+        get() = filepath?.name ?: "New file"
 
     /**
      * Size of the file content.
@@ -56,6 +56,7 @@ class FileManager {
         } catch (_: Exception) {
             ArrayList()
         }
+        println(rowData)
         updateMarkdownContent()
     }
 
