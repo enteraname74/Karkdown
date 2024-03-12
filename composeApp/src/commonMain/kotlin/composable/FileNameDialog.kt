@@ -3,15 +3,15 @@ package composable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import strings.appStrings
+import theme.KarkdownColorTheme
 
 @Composable
 fun FileNameDialog(
@@ -24,6 +24,7 @@ fun FileNameDialog(
     }
 
     AlertDialog(
+        containerColor = KarkdownColorTheme.colorScheme.primary,
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(
@@ -32,7 +33,8 @@ fun FileNameDialog(
                 }
             ) {
                 Text(
-                    text = appStrings.validate
+                    text = appStrings.validate,
+                    color = KarkdownColorTheme.colorScheme.onPrimary
                 )
             }
         },
@@ -41,7 +43,8 @@ fun FileNameDialog(
                 onClick = onDismiss
             ) {
                 Text(
-                    text = appStrings.cancel
+                    text = appStrings.cancel,
+                    color = KarkdownColorTheme.colorScheme.onPrimary
                 )
             }
         },
@@ -56,6 +59,21 @@ fun FileNameDialog(
         text = {
             Column {
                 OutlinedTextField(
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedTextColor = KarkdownColorTheme.colorScheme.onPrimary,
+                        cursorColor = KarkdownColorTheme.colorScheme.onPrimary,
+                        selectionColors = TextSelectionColors(
+                            handleColor = KarkdownColorTheme.colorScheme.onPrimary,
+                            backgroundColor = KarkdownColorTheme.colorScheme.secondary
+                        ),
+                        unfocusedTextColor = KarkdownColorTheme.colorScheme.onPrimary,
+                        focusedContainerColor = Color.Transparent,
+                        focusedLabelColor = KarkdownColorTheme.colorScheme.onPrimary,
+                        unfocusedLabelColor = KarkdownColorTheme.colorScheme.onPrimary,
+                        unfocusedBorderColor = KarkdownColorTheme.colorScheme.onPrimary,
+                        focusedBorderColor = KarkdownColorTheme.colorScheme.onPrimary
+                    ),
                     value = fileName,
                     onValueChange = {
                         fileName = it

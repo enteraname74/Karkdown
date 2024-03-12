@@ -21,6 +21,8 @@ import event.MainScreenEvent
 import kotlinx.coroutines.launch
 import state.MainScreenState
 import strings.appStrings
+import theme.KarkdownColorPalette
+import theme.KarkdownColorTheme
 import viewmodel.MainScreenViewModel
 
 @Composable
@@ -52,6 +54,7 @@ fun MainScreen(
     }
 
     Scaffold(
+        backgroundColor = KarkdownColorTheme.colorScheme.secondary,
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         },
@@ -182,7 +185,7 @@ fun FileEditor(
             .fillMaxSize()
             .padding(paddingValues)
             .background(
-                color = CardDefaults.cardColors().containerColor,
+                color = KarkdownColorTheme.colorScheme.primary,
                 shape = RoundedCornerShape(
                     topStart = Constants.Spacing.medium,
                     topEnd = Constants.Spacing.medium

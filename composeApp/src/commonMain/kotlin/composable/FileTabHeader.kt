@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import theme.KarkdownColorTheme
 
 @Composable
 fun FileTabHeader(
@@ -26,7 +27,7 @@ fun FileTabHeader(
         modifier = Modifier
             .width(150.dp)
             .background(
-                color = CardDefaults.cardColors().containerColor,
+                color = KarkdownColorTheme.colorScheme.primary,
                 shape = RoundedCornerShape(Constants.Spacing.small)
             )
             .clickable {
@@ -40,7 +41,8 @@ fun FileTabHeader(
             Icon(
                 imageVector = Icons.Rounded.FiberManualRecord,
                 contentDescription = null,
-                modifier = Modifier.size(Constants.ImageSize.small)
+                modifier = Modifier.size(Constants.ImageSize.small),
+                tint = KarkdownColorTheme.colorScheme.onPrimary
             )
         }
         Text(

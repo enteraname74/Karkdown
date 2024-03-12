@@ -1,18 +1,18 @@
-package composable
+package composable.filecontent
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import theme.KarkdownColorTheme
 import utils.buildCorrespondingTextStyle
 
 /**
@@ -56,6 +56,7 @@ fun TextInput(
     }
 
     BasicTextField(
+        cursorBrush = SolidColor(KarkdownColorTheme.colorScheme.onPrimary),
         textStyle = buildCorrespondingTextStyle(line = text),
         value = textValue,
         onValueChange = {

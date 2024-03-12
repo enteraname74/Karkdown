@@ -1,8 +1,9 @@
-package composable.text
+package composable.filecontent
 
 import Constants
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import theme.KarkdownColorTheme
 
 @Composable
 fun StandardText(
@@ -10,6 +11,6 @@ fun StandardText(
 ) {
     Text(
         text = text,
-        style = Constants.FontStyle.body
+        style = Constants.FontStyle.body,
     )
 }

@@ -11,9 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FolderOpen
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import theme.KarkdownColorTheme
 
 @Composable
 fun MainHeaderBar(
@@ -21,11 +22,14 @@ fun MainHeaderBar(
 ) {
     Row(
         modifier = Modifier
-            .padding(Constants.Spacing.small)
+            .padding(bottom = Constants.Spacing.small)
             .fillMaxWidth()
             .background(
-                color = CardDefaults.cardColors().containerColor,
-                shape = RoundedCornerShape(Constants.Spacing.medium)
+                color = KarkdownColorTheme.colorScheme.primary,
+                shape = RoundedCornerShape(
+                    bottomEnd = Constants.Spacing.medium,
+                    bottomStart = Constants.Spacing.medium
+                )
             )
             .padding(Constants.Spacing.medium)
     ) {
@@ -35,7 +39,8 @@ fun MainHeaderBar(
             modifier = Modifier
                 .clickable {
                     openFile()
-                }
+                },
+            colorFilter = ColorFilter.tint(color = KarkdownColorTheme.colorScheme.onPrimary)
         )
     }
 }

@@ -3,6 +3,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import theme.KarkdownColorTheme
 
 /**
  * Constants used throughout the application.
@@ -37,40 +38,48 @@ object Constants {
         val h1 = TextStyle(
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
+            color = KarkdownColorTheme.colorScheme.onPrimary
         )
 
         val h2 = TextStyle(
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
+            color = KarkdownColorTheme.colorScheme.onPrimary
         )
 
         val h3 = TextStyle(
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
+            color = KarkdownColorTheme.colorScheme.onPrimary
         )
 
         val h4 = TextStyle(
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
+            color = KarkdownColorTheme.colorScheme.onPrimary
         )
 
         val h5 = TextStyle(
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
+            color = KarkdownColorTheme.colorScheme.onPrimary
         )
 
         val h6 = TextStyle(
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
+            color = KarkdownColorTheme.colorScheme.onPrimary
         )
 
         val body = TextStyle(
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
+            color = KarkdownColorTheme.colorScheme.onPrimary
         )
         val small = TextStyle(
             fontSize = 13.sp,
             fontWeight = FontWeight.W300,
+            color = KarkdownColorTheme.colorScheme.onPrimary
         )
     }
 
