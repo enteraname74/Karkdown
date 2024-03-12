@@ -15,8 +15,8 @@ class FileManager {
      */
     var filepath: Path? = null
 
-    var lastSavedRowData: ArrayList<String> = ArrayList()
-    var rowData: ArrayList<String> = ArrayList()
+    private var lastSavedRowData: ArrayList<String> = ArrayList()
+    private var rowData: ArrayList<String> = ArrayList()
 
     private var lineAnalyzer = LineAnalyzer()
     var content: ArrayList<MarkdownElement> = ArrayList()
@@ -66,6 +66,7 @@ class FileManager {
                         writer.println(line)
                     }
                 }
+                lastSavedRowData = ArrayList(rowData)
                 return true
             }
             false

@@ -114,8 +114,14 @@ class MainScreenViewModel {
             shouldSetFileName(shouldSetFileName = true)
         } else {
             val hasBeenSaved = fileManager.saveFile()
-
             if (hasBeenSaved) showCorrectSaving(show = true) else showSavingError(show = false)
+            _state.update {
+                it.copy(
+                    filename = fileManager.filename,
+                    filepath = fileManager.filepath,
+                    isDataUpdated = fileManager.isDataUpdated
+                )
+            }
         }
     }
 
@@ -185,7 +191,6 @@ class MainScreenViewModel {
     private fun updateEditedText(text: String) {
         fileManager.updateLineAt(text, fileManager.userPosition)
         currentText = text
-        println("Is same ? ${fileManager.isDataUpdated}, ${fileManager.rowData == fileManager.lastSavedRowData}")
         _state.update {
             it.copy(
                 isDataUpdated = fileManager.isDataUpdated

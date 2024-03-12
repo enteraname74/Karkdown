@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -24,13 +25,13 @@ fun FileTabHeader(
     Row(
         modifier = Modifier
             .width(150.dp)
-            .clickable {
-                onClick()
-            }
             .background(
                 color = CardDefaults.cardColors().containerColor,
                 shape = RoundedCornerShape(Constants.Spacing.small)
             )
+            .clickable {
+                onClick()
+            }
             .padding(Constants.Spacing.medium),
         horizontalArrangement = Arrangement.spacedBy(Constants.Spacing.small),
         verticalAlignment = Alignment.CenterVertically
@@ -44,7 +45,9 @@ fun FileTabHeader(
         }
         Text(
             text = filename,
-            style = Constants.FontStyle.small
+            style = Constants.FontStyle.small,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
