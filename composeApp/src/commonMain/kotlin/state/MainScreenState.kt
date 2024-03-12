@@ -1,8 +1,6 @@
 package state
 
-import model.markdown.EditableText
 import model.markdown.MarkdownElement
-import kotlin.math.max
 
 /**
  * UI State of the main screen.

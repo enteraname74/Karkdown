@@ -24,7 +24,9 @@ fun FileView(
     onEditableLineChanged: (String) -> Unit,
     onEditableLineDone: (Int) -> Unit,
     onLineClicked: (Int) -> Unit,
-    currentText: String
+    currentText: String,
+    onKeyDown: () -> Unit,
+    onKeyUp: () -> Unit,
 ) {
     LazyColumn(
         modifier = modifier
@@ -42,7 +44,9 @@ fun FileView(
                     onEditableLineDone(newPos)
                 },
                 userLine = userLine,
-                currentText = currentText
+                currentText = currentText,
+                onKeyUp = onKeyUp,
+                onKeyDown = onKeyDown
             )
         }
 

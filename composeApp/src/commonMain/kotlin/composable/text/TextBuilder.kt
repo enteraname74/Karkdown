@@ -2,6 +2,7 @@ package composable.text
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import composable.TextInput
@@ -19,13 +20,15 @@ fun TextBuilder(
     onClick: () -> Unit,
     onEditableLineChanged: (String) -> Unit,
     onEditableLineDone: (Int) -> Unit,
+    onKeyDown: () -> Unit,
+    onKeyUp: () -> Unit,
     userLine: Int,
-    currentText: String
+    currentText: String,
 ) {
     Row(
         modifier = Modifier.clickable {
             onClick()
-        }
+        }.fillMaxWidth()
     ) {
         when (markdownElement) {
             is EditableText -> TextInput(
@@ -36,6 +39,8 @@ fun TextBuilder(
                 onDone = {
                     onEditableLineDone(userLine+1)
                 },
+                onKeyUp = onKeyUp,
+                onKeyDown = onKeyDown
             )
 
             is Header -> HeaderText(

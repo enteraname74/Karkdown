@@ -68,15 +68,15 @@ class FileManager {
     private fun updateMarkdownContent() {
         content = lineAnalyzer.buildMarkdownFile(rowData)
         setEditableLine(userPosition)
-        println("FileContentManager - content: $content")
+        println("FileManager - Content to use: $content")
     }
 
     /**
      * Set the focused line to work on.
      */
     fun setFocusedLine(pos: Int) {
+        userPosition = pos
         updateMarkdownContent()
-        setEditableLine(pos)
     }
 
     /**

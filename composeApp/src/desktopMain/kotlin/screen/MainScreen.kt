@@ -48,7 +48,19 @@ fun MainScreen(
                     )
                 )
             },
-            userLine = state.userPosition
+            userLine = state.userPosition,
+            onKeyUp = {
+                println("UP")
+                mainScreenViewModel.onEvent(
+                    MainScreenEvent.GoUp
+                )
+            },
+            onKeyDown = {
+                println("DOWN")
+                mainScreenViewModel.onEvent(
+                    MainScreenEvent.GoDown
+                )
+            }
         )
     }
 }

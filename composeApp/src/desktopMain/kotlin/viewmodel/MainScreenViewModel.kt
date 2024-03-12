@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import model.FileManager
 import state.MainScreenState
+import kotlin.math.abs
+import kotlin.math.min
 
 class MainScreenViewModel(
     val fileManager: FileManager,
@@ -27,12 +29,13 @@ class MainScreenViewModel(
             is MainScreenEvent.SetCurrentText -> updateEditedText(event.text)
             is MainScreenEvent.CreateNewLine -> createNewLine(nextPos = event.nextPos)
             is MainScreenEvent.SetFocusedLine -> setFocusedLine(pos = event.pos)
+            MainScreenEvent.GoDown -> setFocusedLine(pos = abs(min(fileManager.userPosition + 1, fileManager.size - 1)))
+            MainScreenEvent.GoUp -> setFocusedLine(pos = abs(fileManager.userPosition - 1))
         }
     }
 
     /**
      * Define which line should be focused.
-     * The user will move on the ADDING mode if the focused line is the last one.
      */
     private fun setFocusedLine(pos: Int) {
         println("VM - We will focus the line at pos: $pos")

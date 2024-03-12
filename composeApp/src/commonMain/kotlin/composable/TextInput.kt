@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.input.ImeAction
 
 /**
@@ -19,6 +20,8 @@ fun TextInput(
     text: String,
     onChange: (String) -> Unit,
     onDone: () -> Unit,
+    onKeyUp: () -> Unit,
+    onKeyDown: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -38,6 +41,18 @@ fun TextInput(
                 onDone()
             }
         ),
-        modifier = Modifier.focusRequester(focusRequester)
+        modifier = Modifier
+            .focusRequester(focusRequester)
+            .onKeyEvent { event ->
+                if (event.type != KeyEventType.KeyUp) return@onKeyEvent false
+                if (event.key == Key.DirectionUp) {
+                    onKeyUp()
+                    return@onKeyEvent true
+                } else if (event.key == Key.DirectionDown) {
+                    onKeyDown()
+                    return@onKeyEvent true
+                }
+                false
+            }
     )
 }

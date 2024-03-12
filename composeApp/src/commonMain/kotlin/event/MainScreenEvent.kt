@@ -24,5 +24,15 @@ sealed interface MainScreenEvent {
      * When focusing a line, the user goes into editing mode
      */
     data class SetFocusedLine(val pos: Int): MainScreenEvent
+
+    /**
+     * Move the user position up by one line.
+     */
+    data object GoUp: MainScreenEvent
+
+    /**
+     * Move the user position down by one line.
+     */
+    data object GoDown: MainScreenEvent
 }
 
