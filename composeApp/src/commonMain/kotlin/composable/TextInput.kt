@@ -18,8 +18,7 @@ import androidx.compose.ui.text.input.ImeAction
 fun TextInput(
     text: String,
     onChange: (String) -> Unit,
-    onDone: (String, Int) -> Unit,
-    fileLine: Int
+    onDone: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -36,7 +35,7 @@ fun TextInput(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(
             onDone = {
-                onDone(text, fileLine)
+                onDone()
             }
         ),
         modifier = Modifier.focusRequester(focusRequester)

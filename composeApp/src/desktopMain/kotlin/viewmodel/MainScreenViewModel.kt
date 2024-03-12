@@ -8,15 +8,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import model.FileManager
-import model.LineAnalyzer
 import state.MainScreenState
 
 class MainScreenViewModel(
     val fileManager: FileManager,
-    val lineAnalyzer: LineAnalyzer
 ) {
     private val _state = MutableStateFlow(
-        MainScreenState()
+        MainScreenState(
+            fileContent = fileManager.content,
+        )
     )
     var currentText by mutableStateOf("")
     val state = _state.asStateFlow()
@@ -24,41 +24,57 @@ class MainScreenViewModel(
     fun onEvent(event: MainScreenEvent) {
         when (event) {
             is MainScreenEvent.OpenFile -> openFile(event.file)
-            is MainScreenEvent.SetCurrentText -> defineCurrentText(event.text)
-            is MainScreenEvent.AddNewLine -> {
-                addLine(
-                    text = event.text,
-                    pos = event.pos
-                )
-            }
+            is MainScreenEvent.SetCurrentText -> updateEditedText(event.text)
+            is MainScreenEvent.CreateNewLine -> createNewLine(nextPos = event.nextPos)
             is MainScreenEvent.SetFocusedLine -> setFocusedLine(pos = event.pos)
         }
     }
 
+    /**
+     * Define which line should be focused.
+     * The user will move on the ADDING mode if the focused line is the last one.
+     */
     private fun setFocusedLine(pos: Int) {
+        println("VM - We will focus the line at pos: $pos")
+
+        fileManager.setFocusedLine(pos)
+
         _state.update {
             it.copy(
-                currentLine = pos
+                fileContent = fileManager.content,
+                userPosition = fileManager.userPosition
             )
         }
         currentText = fileManager.getLineAt(pos)
     }
 
-    private fun addLine(text: String, pos: Int) {
-        fileManager.addLine(text, pos)
+    /**
+     * Define a line in the content at a given pos.=
+     * @param nextPos the position where to put the text.
+     *
+     */
+    private fun createNewLine(nextPos: Int) {
+        fileManager.createNewLine(nextPos)
+
         _state.update {
             it.copy(
-                fileContent = fileManager.fileData
+                fileContent = fileManager.content,
+                userPosition = fileManager.userPosition
             )
         }
         currentText = ""
     }
 
-    private fun defineCurrentText(text: String) {
+    /**
+     * Update the current edited text.
+     */
+    private fun updateEditedText(text: String) {
+        fileManager.updateLineAt(text, fileManager.userPosition)
         currentText = text
     }
 
     private fun openFile(filepath: String) {
         fileManager.openFile(filepath)
     }
+
 }

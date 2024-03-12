@@ -15,13 +15,13 @@ sealed interface MainScreenEvent {
     data class SetCurrentText(val text: String): MainScreenEvent
 
     /**
-     * Add a new line at a given position.
-     * If the position is -1, then the line should be added at the end of the file.
+     * Create a new line.
      */
-    data class AddNewLine(val text: String, val pos: Int): MainScreenEvent
+    data class CreateNewLine(val nextPos: Int): MainScreenEvent
 
     /**
      * Define which line is focused and can be edited.
+     * When focusing a line, the user goes into editing mode
      */
     data class SetFocusedLine(val pos: Int): MainScreenEvent
 }

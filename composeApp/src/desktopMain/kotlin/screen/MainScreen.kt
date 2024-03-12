@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Constraints
 import composable.FileView
 import event.MainScreenEvent
 import viewmodel.MainScreenViewModel
@@ -26,31 +25,30 @@ fun MainScreen(
                 .fillMaxWidth(.6f)
                 .padding(vertical = Constants.Spacing.medium),
             fileContent = state.fileContent,
-            lineAnalyzer = mainScreenViewModel.lineAnalyzer,
             currentText = mainScreenViewModel.currentText,
-            onCurrentTextChange = {
+            onEditableLineChanged = {
                 mainScreenViewModel.onEvent(
                     MainScreenEvent.SetCurrentText(
                         text = it
                     )
                 )
             },
-            onDone = { text, pos ->
+            onEditableLineDone = { nextPos ->
                 mainScreenViewModel.onEvent(
-                    MainScreenEvent.AddNewLine(
-                        text = text,
-                        pos = pos
+                    MainScreenEvent.CreateNewLine(
+                        nextPos = nextPos
                     )
                 )
             },
             onLineClicked = { linePos ->
+                println("Line clicked at pos: $linePos")
                 mainScreenViewModel.onEvent(
                     MainScreenEvent.SetFocusedLine(
                         pos = linePos
                     )
                 )
             },
-            currentLine = state.currentLine
+            userLine = state.userPosition
         )
     }
 }

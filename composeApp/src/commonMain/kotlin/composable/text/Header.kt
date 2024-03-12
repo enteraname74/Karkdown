@@ -1,13 +1,12 @@
 package composable.text
 
 import Constants
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 
 @Composable
-fun Header(
+fun HeaderText(
     text: String,
     headerLevel: Int
 ) {
