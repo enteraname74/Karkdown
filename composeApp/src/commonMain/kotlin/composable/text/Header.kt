@@ -19,7 +19,7 @@ fun HeaderText(
 private fun buildCorrespondingTextStyle(
     headerLevel: Int
 ): TextStyle {
-    return with(Constants.FontSize) {
+    return with(Constants.FontStyle) {
         when(headerLevel) {
             1 -> h1
             2 -> h2

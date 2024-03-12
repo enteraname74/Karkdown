@@ -30,30 +30,43 @@ object Constants {
         val huge: Dp = 160.dp
     }
 
-    object FontSize {
-        val h1: TextStyle = TextStyle(
+    /**
+     * Define the styles for texts.
+     */
+    object FontStyle {
+        val h1 = TextStyle(
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+        )
+
+        val h2 = TextStyle(
             fontSize = 24.sp,
-            fontWeight = FontWeight(1000)
+            fontWeight = FontWeight.Bold,
         )
-        val h2: TextStyle = TextStyle(
-            fontSize = 22.sp,
-            fontWeight = FontWeight(900)
-        )
-        val h3: TextStyle = TextStyle(
+
+        val h3 = TextStyle(
             fontSize = 20.sp,
-            fontWeight = FontWeight(800)
+            fontWeight = FontWeight.Bold,
         )
-        val h4: TextStyle = TextStyle(
+
+        val h4 = TextStyle(
             fontSize = 18.sp,
-            fontWeight = FontWeight(700)
+            fontWeight = FontWeight.Bold,
         )
-        val h5: TextStyle = TextStyle(
+
+        val h5 = TextStyle(
             fontSize = 16.sp,
-            fontWeight = FontWeight(600)
+            fontWeight = FontWeight.Bold,
         )
-        val h6: TextStyle = TextStyle(
+
+        val h6 = TextStyle(
             fontSize = 14.sp,
-            fontWeight = FontWeight(500)
+            fontWeight = FontWeight.Bold,
+        )
+
+        val body = TextStyle(
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
         )
     }
 

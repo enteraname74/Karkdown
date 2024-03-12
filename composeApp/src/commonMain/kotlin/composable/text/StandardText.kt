@@ -1,5 +1,6 @@
 package composable.text
 
+import Constants
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
@@ -8,6 +9,7 @@ fun StandardText(
     text: String
 ) {
     Text(
-        text = text
+        text = text,
+        style = Constants.FontStyle.body
     )
 }

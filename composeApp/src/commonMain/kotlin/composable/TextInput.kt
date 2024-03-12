@@ -48,10 +48,10 @@ fun TextInput(
     }
 
     BasicTextField(
+        textStyle = Constants.FontStyle.body,
         value = textValue,
         onValueChange = {
             textValue = it
-            println("_")
             if (it.text.isEmpty()) backSpaceCountWhenEmptyString++ else backSpaceCountWhenEmptyString = 0
             onChange(it.text)
         },
