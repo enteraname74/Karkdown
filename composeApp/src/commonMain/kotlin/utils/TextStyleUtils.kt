@@ -35,5 +35,4 @@ fun buildCorrespondingHeaderTextStyle(
             else -> h6
         }
     }
-
 }

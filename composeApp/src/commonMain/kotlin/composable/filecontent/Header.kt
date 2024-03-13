@@ -2,7 +2,6 @@ package composable.filecontent
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import theme.KarkdownColorTheme
 import utils.buildCorrespondingHeaderTextStyle
 
 @Composable
