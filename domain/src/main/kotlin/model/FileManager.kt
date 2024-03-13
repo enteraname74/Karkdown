@@ -9,7 +9,6 @@ import kotlin.io.path.name
 import kotlin.math.max
 
 class FileManager {
-
     /**
      * The full filepath (path + filename) of a file.
      */

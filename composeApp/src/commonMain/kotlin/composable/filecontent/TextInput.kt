@@ -60,17 +60,13 @@ fun TextInput(
         textStyle = buildCorrespondingTextStyle(line = text),
         value = textValue,
         onValueChange = {
+            val shouldNavigateToNextLine = it.text.lastOrNull() == '\n'
+            if (shouldNavigateToNextLine) return@BasicTextField onDone()
+
             textValue = it
             if (it.text.isEmpty()) backSpaceCountWhenEmptyString++ else backSpaceCountWhenEmptyString = 0
             onChange(it.text)
         },
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                onDone()
-            }
-        ),
         modifier = Modifier
             .focusRequester(focusRequester)
             .onKeyEvent { event ->
