@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import model.markdown.EditableText
-import model.markdown.Header
-import model.markdown.MarkdownElement
-import model.markdown.SimpleText
+import model.markdown.*
 
 /**
  * Used to build the correct text view element from a line.
@@ -22,7 +19,7 @@ fun TextBuilder(
     onKeyDown: () -> Unit,
     onKeyUp: () -> Unit,
     onDeleteLine: (Int) -> Unit,
-    userLine: Int,
+    userPosition: Int,
     currentText: String,
 ) {
     Row(
@@ -37,12 +34,12 @@ fun TextBuilder(
                     onEditableLineChanged(it)
                 },
                 onDone = {
-                    onEditableLineDone(userLine+1)
+                    onEditableLineDone(userPosition+1)
                 },
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
                 onDeleteLine = {
-                    onDeleteLine(userLine)
+                    onDeleteLine(userPosition)
                 }
             )
 
@@ -54,6 +51,8 @@ fun TextBuilder(
             is SimpleText -> StandardText(
                 text = markdownElement.viewData
             )
+
+            is Blockquote -> Blockquote(text = markdownElement.viewData)
         }
     }
 }

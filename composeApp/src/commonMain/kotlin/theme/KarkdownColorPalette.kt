@@ -8,7 +8,9 @@ import androidx.compose.ui.graphics.Color
 data class KarkdownColorPalette(
     val primary: Color = primaryColorDark,
     val secondary: Color = secondaryColorDark,
+    val secondaryContainer: Color = secondaryContainerColor,
     val onPrimary: Color = textColorDark,
     val onSecondary: Color = textColorDark,
-    val subText: Color = subTextColorDark
+    val subText: Color = subTextColorDark,
+    val accent: Color = accentColor
 )

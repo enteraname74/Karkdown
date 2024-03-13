@@ -1,6 +1,7 @@
 package model.markdown
 
 import model.headerLevel
+import model.toBlockQuote
 import model.toHeader
 
 /**
@@ -22,6 +23,17 @@ class Header(rowData: String) : MarkdownElement(rowData = rowData) {
 
     override fun toString(): String {
         return "Header(rowData = $rowData)"
+    }
+}
+
+/**
+ * Represent a blockquote.
+ */
+class Blockquote(rowData: String): MarkdownElement(rowData = rowData) {
+    override val viewData: String = rowData.toBlockQuote()
+
+    override fun toString(): String {
+        return "Blockquote(rowData = $rowData)"
     }
 }
 

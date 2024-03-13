@@ -41,7 +41,7 @@ fun FileView(
                 onEditableLineDone = { newPos ->
                     onEditableLineDone(newPos)
                 },
-                userLine = userLine,
+                userPosition = userLine,
                 currentText = currentText,
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,

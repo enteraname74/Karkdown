@@ -1,5 +1,6 @@
 package model
 
+import model.markdown.Blockquote
 import model.markdown.Header
 import model.markdown.MarkdownElement
 import model.markdown.SimpleText
@@ -12,7 +13,15 @@ class LineAnalyzer {
      * Check if a line is a header.
      */
     fun isHeader(line: String): Boolean {
-        val regex = Regex("#+ .+")
+        val regex = Regex("^#+ .+")
+        return regex.matches(line)
+    }
+
+    /**
+     * Check if a line is a blockquote.
+     */
+    fun isBlockquote(line: String): Boolean {
+        val regex = Regex("^> .+")
         return regex.matches(line)
     }
 
@@ -24,6 +33,7 @@ class LineAnalyzer {
 
         lines.forEach { line ->
             if (isHeader(line)) markdownFile.add(Header(line))
+            else if (isBlockquote(line)) markdownFile.add(Blockquote(line))
             else markdownFile.add(SimpleText(line))
         }
 
@@ -44,6 +54,14 @@ fun String.headerLevel(): Int {
  * Retrieve the content of a header line to show to a user.
  */
 fun String.toHeader(): String {
+    val regex = Regex("\\w.*")
+    return regex.find(this)?.value ?: ""
+}
+
+/**
+ * Retrieve the content of a blockquote to show to a user.
+ */
+fun String.toBlockQuote(): String {
     val regex = Regex("\\w.*")
     return regex.find(this)?.value ?: ""
 }

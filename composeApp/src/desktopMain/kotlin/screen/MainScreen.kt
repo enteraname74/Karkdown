@@ -54,7 +54,7 @@ fun MainScreen(
     }
 
     Scaffold(
-        backgroundColor = KarkdownColorTheme.colorScheme.secondary,
+        backgroundColor = KarkdownColorTheme.colorScheme.primary,
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         },
@@ -86,8 +86,7 @@ fun MainScreen(
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(Constants.Spacing.small)
+            modifier = Modifier.fillMaxSize()
         ) {
             FileTabHeader(
                 filename = state.filename,
@@ -185,11 +184,7 @@ fun FileEditor(
             .fillMaxSize()
             .padding(paddingValues)
             .background(
-                color = KarkdownColorTheme.colorScheme.primary,
-                shape = RoundedCornerShape(
-                    topStart = Constants.Spacing.medium,
-                    topEnd = Constants.Spacing.medium
-                )
+                color = KarkdownColorTheme.colorScheme.secondary,
             ),
         horizontalArrangement = Arrangement.Center
     ) {

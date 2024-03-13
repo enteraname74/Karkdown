@@ -22,14 +22,9 @@ fun MainHeaderBar(
 ) {
     Row(
         modifier = Modifier
-            .padding(bottom = Constants.Spacing.small)
             .fillMaxWidth()
             .background(
                 color = KarkdownColorTheme.colorScheme.primary,
-                shape = RoundedCornerShape(
-                    bottomEnd = Constants.Spacing.medium,
-                    bottomStart = Constants.Spacing.medium
-                )
             )
             .padding(Constants.Spacing.medium)
     ) {
