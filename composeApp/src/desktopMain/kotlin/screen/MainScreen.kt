@@ -91,6 +91,7 @@ fun MainScreen(
             FileTabHeader(
                 filename = state.filename,
                 isDataUpdated = state.isDataUpdated,
+                isFileSelected = true,
                 onClick = {
 
                 }
