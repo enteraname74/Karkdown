@@ -1,8 +1,7 @@
 package model.markdown
 
 import model.headerLevel
-import model.toBlockQuote
-import model.toHeader
+import model.headerContent
 
 /**
  * Represent a markdown element.
@@ -18,7 +17,7 @@ sealed class MarkdownElement(val rowData: String) {
  * Represent a header with its level
  */
 class Header(rowData: String) : MarkdownElement(rowData = rowData) {
-    override val viewData: String = rowData.toHeader()
+    override val viewData: String = rowData.headerContent()
     val headerLevel = rowData.headerLevel()
 
     override fun toString(): String {
@@ -28,12 +27,13 @@ class Header(rowData: String) : MarkdownElement(rowData = rowData) {
 
 /**
  * Represent a blockquote.
+ * The inner data is the markdown content inside the blockquote.
  */
-class Blockquote(rowData: String): MarkdownElement(rowData = rowData) {
-    override val viewData: String = rowData.toBlockQuote()
+class Blockquote(rowData: String, innerData: MarkdownElement): MarkdownElement(rowData = rowData) {
+    override val viewData: MarkdownElement = innerData
 
     override fun toString(): String {
-        return "Blockquote(rowData = $rowData)"
+        return "Blockquote(\nrowData = $rowData\ninnerData = $viewData)"
     }
 }
 

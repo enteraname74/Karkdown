@@ -21,8 +21,20 @@ class LineAnalyzer {
      * Check if a line is a blockquote.
      */
     fun isBlockquote(line: String): Boolean {
-        val regex = Regex("^> .+")
+        val regex = Regex("^>+ .+")
         return regex.matches(line)
+    }
+
+    /**
+     * Build a MarkdownElement from a given line.
+     */
+    private fun buildMarkdownElementFromLine(line: String): MarkdownElement {
+        return if (isHeader(line)) Header(line)
+        else if (isBlockquote(line)) Blockquote(
+            rowData = line,
+            innerData = buildMarkdownElementFromLine(line.blockquoteContent())
+        )
+        else SimpleText(line)
     }
 
     /**
@@ -32,9 +44,13 @@ class LineAnalyzer {
         val markdownFile: ArrayList<MarkdownElement> = ArrayList()
 
         lines.forEach { line ->
-            if (isHeader(line)) markdownFile.add(Header(line))
-            else if (isBlockquote(line)) markdownFile.add(Blockquote(line))
-            else markdownFile.add(SimpleText(line))
+            markdownFile.add(
+                buildMarkdownElementFromLine(line = line)
+            )
+        }
+
+        markdownFile.forEach {
+            println(it)
         }
 
         return markdownFile
@@ -53,7 +69,7 @@ fun String.headerLevel(): Int {
 /**
  * Retrieve the content of a header line to show to a user.
  */
-fun String.toHeader(): String {
+fun String.headerContent(): String {
     val regex = Regex("\\w.*")
     return regex.find(this)?.value ?: ""
 }
@@ -61,7 +77,6 @@ fun String.toHeader(): String {
 /**
  * Retrieve the content of a blockquote to show to a user.
  */
-fun String.toBlockQuote(): String {
-    val regex = Regex("\\w.*")
-    return regex.find(this)?.value ?: ""
+fun String.blockquoteContent(): String {
+    return this.replaceFirst("^>".toRegex(), "").trimStart()
 }

@@ -12,20 +12,22 @@ import model.markdown.*
  */
 @Composable
 fun TextBuilder(
+    modifier: Modifier = Modifier,
     markdownElement: MarkdownElement,
-    onClick: () -> Unit,
-    onEditableLineChanged: (String) -> Unit,
-    onEditableLineDone: (Int) -> Unit,
-    onKeyDown: () -> Unit,
-    onKeyUp: () -> Unit,
-    onDeleteLine: (Int) -> Unit,
-    userPosition: Int,
-    currentText: String,
+    onClick: () -> Unit = {},
+    onEditableLineChanged: (String) -> Unit = {},
+    onEditableLineDone: (Int) -> Unit = {},
+    onKeyDown: () -> Unit = {},
+    onKeyUp: () -> Unit = {},
+    onDeleteLine: (Int) -> Unit = {},
+    userPosition: Int = 0,
+    currentText: String = "",
 ) {
     Row(
-        modifier = Modifier.clickable {
-            onClick()
-        }.fillMaxWidth()
+        modifier = modifier
+            .clickable {
+                onClick()
+            }.fillMaxWidth()
     ) {
         when (markdownElement) {
             is EditableText -> TextInput(
@@ -52,7 +54,7 @@ fun TextBuilder(
                 text = markdownElement.viewData
             )
 
-            is Blockquote -> Blockquote(text = markdownElement.viewData)
+            is Blockquote -> Blockquote(innerContent = markdownElement.viewData)
         }
     }
 }
