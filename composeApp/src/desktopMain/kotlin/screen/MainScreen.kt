@@ -30,26 +30,30 @@ fun MainScreen(
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(state.shouldShowErrorFileSavedResult) {
-        if (state.shouldShowErrorFileSavedResult) {
-            scope.launch {
-                snackbarHostState.showSnackbar(
-                    message = appStrings.fileCouldNotBeSaved
+    if (state.shouldShowErrorFileSavedResult) {
+        scope.launch {
+            snackbarHostState.showSnackbar(
+                message = appStrings.fileCouldNotBeSaved
+            )
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.ShouldShowFileSavingError(
+                    show = false
                 )
-            }
+            )
         }
     }
-
-    LaunchedEffect(state.shouldShowCorrectFileSavedResult) {
-        if (state.shouldShowCorrectFileSavedResult){
-            scope.launch {
-                snackbarHostState.showSnackbar(
-                    message = appStrings.fileSaved
+    if (state.shouldShowCorrectFileSavedResult){
+        scope.launch {
+            snackbarHostState.showSnackbar(
+                message = appStrings.fileSaved
+            )
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.ShouldShowCorrectFileSaving(
+                    show = false
                 )
-            }
+            )
         }
     }
-
     Scaffold(
         backgroundColor = KarkdownColorTheme.colorScheme.primary,
         snackbarHost = {

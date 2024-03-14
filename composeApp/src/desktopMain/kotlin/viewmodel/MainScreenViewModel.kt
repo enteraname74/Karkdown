@@ -70,6 +70,7 @@ class MainScreenViewModel {
      * Define if we should show if a saving was correct.
      */
     private fun showCorrectSaving(show: Boolean) {
+        println("Should show ? $show")
         _state.update {
             it.copy(
                 shouldShowCorrectFileSavedResult = show
