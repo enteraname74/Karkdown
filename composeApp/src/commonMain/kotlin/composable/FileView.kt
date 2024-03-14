@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import composable.filecontent.TextBuilder
-import model.markdown.MarkdownElement
+import composable.filecontent.MarkdownViewBuilder
+import model.MarkdownElement
 
 /**
  * View for the content of a file.
@@ -18,7 +18,7 @@ fun FileView(
     modifier: Modifier = Modifier,
     fileContent: List<MarkdownElement>,
     userLine: Int,
-    onEditableLineChanged: (String) -> Unit,
+    onEditableLineChanged: (String, Int) -> Unit,
     onEditableLineDone: (Int) -> Unit,
     onLineClicked: (Int) -> Unit,
     currentText: String,
@@ -30,19 +30,20 @@ fun FileView(
         modifier = modifier
     ) {
         items(count = fileContent.size) { pos ->
-            TextBuilder(
+            MarkdownViewBuilder(
                 markdownElement = fileContent[pos],
                 onClick = {
                     onLineClicked(pos)
                 },
-                onEditableLineChanged = {
-                    onEditableLineChanged(it)
+                onEditableLineChanged = { line ->
+                    onEditableLineChanged(line, pos)
                 },
                 onEditableLineDone = { newPos ->
                     onEditableLineDone(newPos)
                 },
                 userPosition = userLine,
-                currentText = currentText,
+                markdownElementPosition = pos,
+                currentText = if (userLine == pos) currentText else fileContent[pos].rowData,
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
                 onDeleteLine = onDeleteLine

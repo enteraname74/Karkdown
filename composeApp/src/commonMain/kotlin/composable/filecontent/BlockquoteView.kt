@@ -6,11 +6,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import model.markdown.MarkdownElement
+import model.MarkdownElement
 import theme.KarkdownColorTheme
 
 @Composable
-fun Blockquote(
+fun BlockquoteView(
     innerContent: MarkdownElement
 ) {
     Row(
@@ -26,7 +26,7 @@ fun Blockquote(
                 .width(Constants.Spacing.medium)
         )
 
-        TextBuilder(
+        MarkdownViewBuilder(
             modifier = Modifier
                 .weight(1f)
                 .padding(

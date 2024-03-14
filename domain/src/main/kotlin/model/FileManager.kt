@@ -1,12 +1,9 @@
 package model
 
-import model.markdown.EditableText
-import model.markdown.MarkdownElement
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.Path
 import kotlin.io.path.name
-import kotlin.math.max
 
 class FileManager {
     /**
@@ -75,15 +72,6 @@ class FileManager {
         }
     }
 
-    /**
-     * Tries to set the user position on the current editable text.
-     *
-     * If no editable text is found, it will set the user position at 0.
-     */
-    private fun setUserPositionToCurrentEditableText() {
-        userPosition = max(content.indexOfFirst { it is EditableText }, 0)
-    }
-
     private fun getContent(path: String) {
         rowData = try {
             File(path).readLines() as ArrayList<String>
@@ -99,7 +87,6 @@ class FileManager {
      */
     private fun updateMarkdownContent() {
         content = lineAnalyzer.buildMarkdownFile(rowData)
-        setEditableLine(userPosition)
     }
 
     /**
@@ -108,27 +95,6 @@ class FileManager {
     fun setFocusedLine(pos: Int) {
         userPosition = pos
         updateMarkdownContent()
-    }
-
-    /**
-     * Set which line is the editable one by the user.
-     * If the pos is not in the bound of the content, it will add an editable line at the end of the file.
-     *
-     * If we want to set an editable line at the end of the file but there is already one, does nothing.
-     */
-    private fun setEditableLine(pos: Int) {
-        val shouldAddLineAtEnd = pos < 0 || pos >= size
-
-        if (shouldAddLineAtEnd && content.isEmpty()) content.add(EditableText(currentText = ""))
-        else if (shouldAddLineAtEnd && content.last() is EditableText) return
-        else if (shouldAddLineAtEnd) content.add(EditableText(currentText = ""))
-        else content.set(
-            index = pos,
-            element = EditableText(
-                currentText = content[pos].rowData
-            )
-        )
-        setUserPositionToCurrentEditableText()
     }
 
     /**
@@ -144,11 +110,17 @@ class FileManager {
      * Delete a line at a given position.
      * If the line is the start of the file, does nothing.
      * if the user is on the given line, it will move him to the previous one.
+     * If there is still elements on the line, it will be brought to the previous line.
      *
      * @param pos the position of the line to remove.
      */
     fun deleteLine(pos: Int) {
-        if (pos == 0) return
+        if (pos == 0 || pos >= rowData.size) return
+
+        // If there is still elements on the line, it will be brought to the previous line:
+        val lineToDelete = rowData[pos]
+        if (lineToDelete.isNotEmpty()) rowData[pos-1] = rowData[pos-1]+lineToDelete
+
         rowData.removeAt(pos)
 
         // We move the user
@@ -170,6 +142,7 @@ class FileManager {
             return
         } else rowData[pos] = line
 
+        userPosition = pos
         updateMarkdownContent()
     }
 

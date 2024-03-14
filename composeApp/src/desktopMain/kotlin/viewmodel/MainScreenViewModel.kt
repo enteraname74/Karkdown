@@ -30,7 +30,7 @@ class MainScreenViewModel {
     fun onEvent(event: MainScreenEvent) {
         when (event) {
             is MainScreenEvent.OpenFile -> openFile(filepath = event.filepath)
-            is MainScreenEvent.SetCurrentText -> updateEditedText(event.text)
+            is MainScreenEvent.SetCurrentText -> updateEditedText(text = event.text, pos = event.pos)
             is MainScreenEvent.CreateNewLine -> createNewLine(nextPos = event.nextPos)
             is MainScreenEvent.SetFocusedLine -> setFocusedLine(pos = event.pos)
             is MainScreenEvent.DeleteLine -> deleteLine(pos = event.pos)
@@ -160,6 +160,7 @@ class MainScreenViewModel {
 
     /**
      * Delete a line from the file.
+     * If there is still elements on the line, it will be brought to the previous line.
      * If the given position is the beginning of the file, does nothing.
      */
     private fun deleteLine(pos: Int) {
@@ -171,6 +172,7 @@ class MainScreenViewModel {
      * Define which line should be focused.
      */
     private fun setFocusedLine(pos: Int) {
+        println("GO DOWN TO POS: $pos")
         fileManager.setFocusedLine(pos)
         updateCurrentFileInformation(currentTextToShow = fileManager.getLineAt(pos))
     }
@@ -188,14 +190,10 @@ class MainScreenViewModel {
     /**
      * Update the current edited text.
      */
-    private fun updateEditedText(text: String) {
-        fileManager.updateLineAt(text, fileManager.userPosition)
+    private fun updateEditedText(text: String, pos: Int) {
+        fileManager.updateLineAt(text, pos)
         currentText = text
-        _state.update {
-            it.copy(
-                isDataUpdated = fileManager.isDataUpdated
-            )
-        }
+        updateCurrentFileInformation()
     }
 
     private fun openFile(filepath: String) {

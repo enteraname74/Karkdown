@@ -195,10 +195,11 @@ fun FileEditor(
                 .padding(vertical = Constants.Spacing.medium),
             fileContent = state.fileContent,
             currentText = mainScreenViewModel.currentText,
-            onEditableLineChanged = {
+            onEditableLineChanged = { line, pos ->
                 mainScreenViewModel.onEvent(
                     MainScreenEvent.SetCurrentText(
-                        text = it
+                        text = line,
+                        pos = pos
                     )
                 )
             },

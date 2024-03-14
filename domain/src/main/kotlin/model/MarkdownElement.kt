@@ -1,7 +1,4 @@
-package model.markdown
-
-import model.headerLevel
-import model.headerContent
+package model
 
 /**
  * Represent a markdown element.
@@ -33,7 +30,7 @@ class Blockquote(rowData: String, innerData: MarkdownElement): MarkdownElement(r
     override val viewData: MarkdownElement = innerData
 
     override fun toString(): String {
-        return "Blockquote(\nrowData = $rowData\ninnerData = $viewData)"
+        return "Blockquote(\n\trowData = $rowData\n\tinnerData = $viewData\n)"
     }
 }
 
@@ -45,16 +42,5 @@ class SimpleText(rowData: String) : MarkdownElement(rowData = rowData) {
 
     override fun toString(): String {
         return "SimpleText(rowData = $rowData)"
-    }
-}
-
-/**
- * Represent the text the user is currently editing.
- */
-class EditableText(currentText: String) : MarkdownElement(rowData = currentText) {
-    override val viewData: String = rowData
-
-    override fun toString(): String {
-        return "EditableText(currentText = $rowData)"
     }
 }

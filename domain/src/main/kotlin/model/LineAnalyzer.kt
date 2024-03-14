@@ -1,10 +1,5 @@
 package model
 
-import model.markdown.Blockquote
-import model.markdown.Header
-import model.markdown.MarkdownElement
-import model.markdown.SimpleText
-
 /**
  * Methods for analyzing a line.
  */
@@ -20,7 +15,7 @@ class LineAnalyzer {
     /**
      * Check if a line is a blockquote.
      */
-    fun isBlockquote(line: String): Boolean {
+    private fun isBlockquote(line: String): Boolean {
         val regex = Regex("^>+ .+")
         return regex.matches(line)
     }
@@ -47,10 +42,6 @@ class LineAnalyzer {
             markdownFile.add(
                 buildMarkdownElementFromLine(line = line)
             )
-        }
-
-        markdownFile.forEach {
-            println(it)
         }
 
         return markdownFile

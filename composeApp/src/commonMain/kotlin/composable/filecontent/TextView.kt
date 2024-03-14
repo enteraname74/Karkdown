@@ -2,6 +2,8 @@ package composable.filecontent
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -11,7 +13,6 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
-import model.headerContent
 import theme.KarkdownColorTheme
 import utils.buildCorrespondingTextStyle
 
@@ -19,8 +20,11 @@ import utils.buildCorrespondingTextStyle
  * Text input for modifying file content
  */
 @Composable
-fun TextInput(
+fun TextView(
     text: String,
+    viewText: String,
+    shouldFocus: Boolean,
+    onClick: () -> Unit,
     onChange: (String) -> Unit,
     onDone: () -> Unit,
     onKeyUp: () -> Unit,
@@ -30,6 +34,8 @@ fun TextInput(
     val focusRequester = remember { FocusRequester() }
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
+    val isClicked by interactionSource.collectIsPressedAsState()
+
     var textValue by remember {
         mutableStateOf(TextFieldValue(text))
     }
@@ -38,22 +44,19 @@ fun TextInput(
         mutableStateOf(if (text.isEmpty()) 2 else 0)
     }
 
-    LaunchedEffect(key1 = Unit) {
-        focusRequester.requestFocus()
+    if (isClicked) {
+        onClick()
+    }
+
+    if (shouldFocus) {
+        SideEffect {
+            focusRequester.requestFocus()
+        }
     }
 
     textValue = textValue.copy(
-        text = if (isFocused) text else text.headerContent()
+        text = if (isFocused) text else viewText
     )
-
-    LaunchedEffect(key1 = "cursor pos") {
-        if (text.isNotEmpty()) {
-            textValue = TextFieldValue(
-                text = text,
-                selection = TextRange(text.length)
-            )
-        }
-    }
 
     BasicTextField(
         interactionSource = interactionSource,
@@ -70,6 +73,7 @@ fun TextInput(
             onChange(it.text)
         },
         modifier = Modifier
+            .fillMaxWidth()
             .focusRequester(focusRequester)
             .onKeyEvent { event ->
                 if (event.type != KeyEventType.KeyUp) return@onKeyEvent false
@@ -77,10 +81,17 @@ fun TextInput(
                     Key.DirectionUp -> onKeyUp()
                     Key.DirectionDown -> onKeyDown()
                     Key.Backspace -> {
-                        if (text.isEmpty()) {
-                            if (backSpaceCountWhenEmptyString == 2) onDeleteLine()
-                            else backSpaceCountWhenEmptyString++
+                        val isAtStartOfLine = textValue.selection.start == 0
+                        if (isAtStartOfLine) {
+                            // if the text is empty, we don't want to remove the line directly
+                            if (text.isEmpty()) {
+                                if (backSpaceCountWhenEmptyString == 2) onDeleteLine()
+                                else backSpaceCountWhenEmptyString++
+                            } else {
+                                onDeleteLine()
+                            }
                         }
+
                     }
                 }
                 false

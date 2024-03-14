@@ -12,7 +12,7 @@ sealed interface MainScreenEvent {
     /**
      * Set the current text the user is currently typing.
      */
-    data class SetCurrentText(val text: String): MainScreenEvent
+    data class SetCurrentText(val text: String, val pos: Int): MainScreenEvent
 
     /**
      * Create a new line.
