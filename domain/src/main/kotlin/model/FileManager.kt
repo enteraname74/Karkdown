@@ -100,9 +100,11 @@ class FileManager {
 
     /**
      * Create a new line and place the user to it.
+     * @param nextPos the position where to put the text.
+     * @param initialText the initial text to add in the new line.
      */
-    fun createNewLine(nextPos: Int) {
-        if (nextPos >= size) rowData.add("") else rowData.add(nextPos, "")
+    fun createNewLine(nextPos: Int, initialText: String) {
+        if (nextPos >= size) rowData.add(initialText) else rowData.add(nextPos, initialText)
         userPosition = nextPos
         updateMarkdownContent()
     }

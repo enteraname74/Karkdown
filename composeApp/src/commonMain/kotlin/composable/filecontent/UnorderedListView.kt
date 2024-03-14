@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import model.markdownelement.MarkdownElement
 import theme.KarkdownColorTheme
 
@@ -15,7 +16,7 @@ fun UnorderedListView(
     innerContent: MarkdownElement,
     onClick: () -> Unit,
     onLineChanged: (String) -> Unit,
-    onDone: (Int) -> Unit,
+    onDone: (nextPos: Int, initialText: String) -> Unit,
     onKeyDown: () -> Unit,
     onKeyUp: () -> Unit,
     onDeleteLine: (Int) -> Unit,
@@ -25,13 +26,14 @@ fun UnorderedListView(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(start = Constants.Spacing.large),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Constants.Spacing.medium)
     ) {
         Spacer(
             modifier = Modifier
-                .size(Constants.Spacing.medium)
+                .size(6.dp)
                 .background(
                     color = KarkdownColorTheme.colorScheme.onSecondary,
                     shape = CircleShape

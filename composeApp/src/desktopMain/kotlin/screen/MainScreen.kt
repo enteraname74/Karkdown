@@ -3,9 +3,7 @@ package screen
 import Constants
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
@@ -21,7 +19,6 @@ import event.MainScreenEvent
 import kotlinx.coroutines.launch
 import state.MainScreenState
 import strings.appStrings
-import theme.KarkdownColorPalette
 import theme.KarkdownColorTheme
 import viewmodel.MainScreenViewModel
 
@@ -195,7 +192,7 @@ fun FileEditor(
                 .padding(vertical = Constants.Spacing.medium),
             fileContent = state.fileContent,
             currentText = mainScreenViewModel.currentText,
-            onEditableLineChanged = { line, pos ->
+            onLineChanged = { line, pos ->
                 mainScreenViewModel.onEvent(
                     MainScreenEvent.SetCurrentText(
                         text = line,
@@ -203,10 +200,11 @@ fun FileEditor(
                     )
                 )
             },
-            onEditableLineDone = { nextPos ->
+            onDone = { nextPos, initialText ->
                 mainScreenViewModel.onEvent(
                     MainScreenEvent.CreateNewLine(
-                        nextPos = nextPos
+                        nextPos = nextPos,
+                        initialText = initialText
                     )
                 )
             },

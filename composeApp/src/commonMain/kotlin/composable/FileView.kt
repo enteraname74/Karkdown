@@ -18,8 +18,8 @@ fun FileView(
     modifier: Modifier = Modifier,
     fileContent: List<MarkdownElement>,
     userLine: Int,
-    onEditableLineChanged: (String, Int) -> Unit,
-    onEditableLineDone: (Int) -> Unit,
+    onLineChanged: (String, Int) -> Unit,
+    onDone: (nextPos: Int, initialText: String) -> Unit,
     onLineClicked: (Int) -> Unit,
     currentText: String,
     onKeyDown: () -> Unit,
@@ -36,10 +36,10 @@ fun FileView(
                     onLineClicked(pos)
                 },
                 onLineChanged = { line ->
-                    onEditableLineChanged(line, pos)
+                    onLineChanged(line, pos)
                 },
-                onDone = { newPos ->
-                    onEditableLineDone(newPos)
+                onDone = { newPos, initialText ->
+                    onDone(newPos, initialText)
                 },
                 userPosition = userLine,
                 markdownElementPosition = pos,

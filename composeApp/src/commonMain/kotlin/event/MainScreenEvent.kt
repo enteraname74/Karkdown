@@ -15,9 +15,9 @@ sealed interface MainScreenEvent {
     data class SetCurrentText(val text: String, val pos: Int): MainScreenEvent
 
     /**
-     * Create a new line.
+     * Create a new line at a given line with a given initial text.
      */
-    data class CreateNewLine(val nextPos: Int): MainScreenEvent
+    data class CreateNewLine(val nextPos: Int, val initialText: String): MainScreenEvent
 
     /**
      * Define which line is focused and can be edited.

@@ -16,7 +16,7 @@ fun MarkdownViewBuilder(
     markdownElement: MarkdownElement,
     onClick: () -> Unit,
     onLineChanged: (String) -> Unit,
-    onDone: (Int) -> Unit,
+    onDone: (nextPos: Int, initialText: String) -> Unit,
     onKeyDown: () -> Unit,
     onKeyUp: () -> Unit,
     onDeleteLine: (Int) -> Unit,
@@ -40,7 +40,7 @@ fun MarkdownViewBuilder(
                     onLineChanged(it)
                 },
                 onDone = {
-                    onDone(userPosition + 1)
+                    onDone(userPosition + 1, "")
                 },
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
@@ -57,7 +57,9 @@ fun MarkdownViewBuilder(
                     val lineToSave = it.toBlockQuote()
                     onLineChanged(lineToSave)
                 },
-                onDone = onDone,
+                onDone = { nextPos, initialLine ->
+                    onDone(nextPos, "> $initialLine")
+                },
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
                 onDeleteLine = {
@@ -73,11 +75,13 @@ fun MarkdownViewBuilder(
                 onClick = onClick,
                 onLineChanged = {
                     val lineToSave = it.toUnorderedList(
-                     listIndicator = markdownElement.listIndicator
+                        listIndicator = markdownElement.listIndicator
                     )
                     onLineChanged(lineToSave)
                 },
-                onDone = onDone,
+                onDone = { nextPost, initialText ->
+                    onDone(nextPost, "${markdownElement.listIndicator} $initialText")
+                },
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
                 onDeleteLine = {

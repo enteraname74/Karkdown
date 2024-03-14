@@ -31,7 +31,7 @@ class MainScreenViewModel {
         when (event) {
             is MainScreenEvent.OpenFile -> openFile(filepath = event.filepath)
             is MainScreenEvent.SetCurrentText -> updateEditedText(text = event.text, pos = event.pos)
-            is MainScreenEvent.CreateNewLine -> createNewLine(nextPos = event.nextPos)
+            is MainScreenEvent.CreateNewLine -> createNewLine(nextPos = event.nextPos, initialText = event.initialText)
             is MainScreenEvent.SetFocusedLine -> setFocusedLine(pos = event.pos)
             is MainScreenEvent.DeleteLine -> deleteLine(pos = event.pos)
 
@@ -179,10 +179,10 @@ class MainScreenViewModel {
     /**
      * Define a line in the content at a given pos.=
      * @param nextPos the position where to put the text.
-     *
+     * @param initialText the initial text to add in the new line.
      */
-    private fun createNewLine(nextPos: Int) {
-        fileManager.createNewLine(nextPos)
+    private fun createNewLine(nextPos: Int, initialText: String) {
+        fileManager.createNewLine(nextPos, initialText)
         updateCurrentFileInformation(currentTextToShow = "")
     }
 

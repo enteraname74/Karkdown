@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import model.markdownelement.MarkdownElement
 import theme.KarkdownColorTheme
 
@@ -14,7 +15,7 @@ fun BlockquoteView(
     innerContent: MarkdownElement,
     onClick: () -> Unit,
     onLineChanged: (String) -> Unit,
-    onDone: (Int) -> Unit,
+    onDone: (nextPos: Int, initialText: String) -> Unit,
     onKeyDown: () -> Unit,
     onKeyUp: () -> Unit,
     onDeleteLine: (Int) -> Unit,
@@ -32,7 +33,7 @@ fun BlockquoteView(
             color = KarkdownColorTheme.colorScheme.accent,
             modifier = Modifier
                 .fillMaxHeight()
-                .width(Constants.Spacing.medium)
+                .width(6.dp)
         )
 
         MarkdownViewBuilder(
