@@ -11,7 +11,16 @@ import theme.KarkdownColorTheme
 
 @Composable
 fun BlockquoteView(
-    innerContent: MarkdownElement
+    innerContent: MarkdownElement,
+    onClick: () -> Unit,
+    onLineChanged: (String) -> Unit,
+    onDone: (Int) -> Unit,
+    onKeyDown: () -> Unit,
+    onKeyUp: () -> Unit,
+    onDeleteLine: (Int) -> Unit,
+    userPosition: Int,
+    markdownElementPosition: Int,
+    currentText: String,
 ) {
     Row(
         modifier = Modifier
@@ -33,7 +42,16 @@ fun BlockquoteView(
                     vertical = Constants.Spacing.medium,
                     horizontal = Constants.Spacing.medium
                 ),
-            markdownElement = innerContent
+            markdownElement = innerContent,
+            onClick = onClick,
+            onLineChanged = onLineChanged,
+            onDone = onDone,
+            onKeyUp = onKeyUp,
+            onKeyDown = onKeyDown,
+            onDeleteLine = onDeleteLine,
+            userPosition = userPosition,
+            markdownElementPosition = markdownElementPosition,
+            currentText = currentText
         )
     }
 }

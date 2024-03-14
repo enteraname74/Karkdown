@@ -16,7 +16,7 @@ class LineAnalyzer {
      * Check if a line is a blockquote.
      */
     private fun isBlockquote(line: String): Boolean {
-        val regex = Regex("^>+ .+")
+        val regex = Regex("^>+.*")
         return regex.matches(line)
     }
 
@@ -44,6 +44,10 @@ class LineAnalyzer {
             )
         }
 
+//        markdownFile.forEach {
+//            println(it)
+//        }
+
         return markdownFile
     }
 }
@@ -58,6 +62,15 @@ fun String.headerLevel(): Int {
 }
 
 /**
+ * Retrieve the quotes of a string (the first ">" chars)
+ */
+fun String.quotes(): String {
+    val regex = Regex("^>+")
+    val matchedElements = regex.find(this)
+    return matchedElements?.value ?: ""
+}
+
+/**
  * Retrieve the content of a header line to show to a user.
  */
 fun String.headerContent(): String {
@@ -69,5 +82,23 @@ fun String.headerContent(): String {
  * Retrieve the content of a blockquote to show to a user.
  */
 fun String.blockquoteContent(): String {
-    return this.replaceFirst("^>".toRegex(), "").trimStart()
+    return this.replaceFirst(">", "").trimStart()
+}
+
+/**
+ * Retrieve the inner text of a blockquote.
+ */
+fun String.blockquoteInnerText(): String {
+    return this.replaceFirst("^>+".toRegex(), "").trimStart()
+}
+
+/**
+ * Build a blockquote line from a given start quotes line.
+ */
+fun String.toBlockQuote(): String {
+    if (this.isEmpty()) return ">"
+
+    val optionalSpace = if (this.first() == '>') "" else " "
+
+    return ">$optionalSpace$this"
 }

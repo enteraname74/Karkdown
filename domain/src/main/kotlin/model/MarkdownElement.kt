@@ -28,7 +28,7 @@ class Header(rowData: String) : MarkdownElement(rowData = rowData) {
  */
 class Blockquote(rowData: String, innerData: MarkdownElement): MarkdownElement(rowData = rowData) {
     override val viewData: MarkdownElement = innerData
-
+    val innerText: String = rowData.blockquoteInnerText()
     override fun toString(): String {
         return "Blockquote(\n\trowData = $rowData\n\tinnerData = $viewData\n)"
     }

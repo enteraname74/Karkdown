@@ -35,10 +35,10 @@ fun FileView(
                 onClick = {
                     onLineClicked(pos)
                 },
-                onEditableLineChanged = { line ->
+                onLineChanged = { line ->
                     onEditableLineChanged(line, pos)
                 },
-                onEditableLineDone = { newPos ->
+                onDone = { newPos ->
                     onEditableLineDone(newPos)
                 },
                 userPosition = userLine,
