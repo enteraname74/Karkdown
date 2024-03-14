@@ -1,5 +1,6 @@
 package model
 
+import model.markdownelement.MarkdownElement
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.Path

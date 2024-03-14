@@ -1,6 +1,6 @@
 package state
 
-import model.MarkdownElement
+import model.markdownelement.MarkdownElement
 import strings.appStrings
 import java.nio.file.Path
 import kotlin.io.path.name

@@ -1,12 +1,11 @@
 package composable.filecontent
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import model.*
+import model.markdownelement.*
 
 /**
  * Used to build the correct markdown view element from a line.
@@ -67,6 +66,26 @@ fun MarkdownViewBuilder(
                 userPosition = userPosition,
                 markdownElementPosition = markdownElementPosition,
                 currentText = currentText.blockquoteInnerText()
+            )
+
+            is UnorderedList -> UnorderedListView(
+                innerContent = markdownElement.viewData,
+                onClick = onClick,
+                onLineChanged = {
+                    val lineToSave = it.toUnorderedList(
+                     listIndicator = markdownElement.listIndicator
+                    )
+                    onLineChanged(lineToSave)
+                },
+                onDone = onDone,
+                onKeyUp = onKeyUp,
+                onKeyDown = onKeyDown,
+                onDeleteLine = {
+                    onLineChanged("")
+                },
+                userPosition = userPosition,
+                markdownElementPosition = markdownElementPosition,
+                currentText = currentText.unorderedListContent()
             )
         }
     }

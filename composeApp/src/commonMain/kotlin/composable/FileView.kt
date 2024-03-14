@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import composable.filecontent.MarkdownViewBuilder
-import model.MarkdownElement
+import model.markdownelement.MarkdownElement
 
 /**
  * View for the content of a file.

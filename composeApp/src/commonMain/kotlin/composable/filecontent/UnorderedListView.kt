@@ -3,14 +3,15 @@ package composable.filecontent
 import Constants
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import model.markdownelement.MarkdownElement
 import theme.KarkdownColorTheme
 
 @Composable
-fun BlockquoteView(
+fun UnorderedListView(
     innerContent: MarkdownElement,
     onClick: () -> Unit,
     onLineChanged: (String) -> Unit,
@@ -24,24 +25,20 @@ fun BlockquoteView(
 ) {
     Row(
         modifier = Modifier
-            .background(color = KarkdownColorTheme.colorScheme.secondaryContainer)
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(Constants.Spacing.medium)
     ) {
-        Divider(
-            color = KarkdownColorTheme.colorScheme.accent,
+        Spacer(
             modifier = Modifier
-                .fillMaxHeight()
-                .width(Constants.Spacing.medium)
+                .size(Constants.Spacing.medium)
+                .background(
+                    color = KarkdownColorTheme.colorScheme.onSecondary,
+                    shape = CircleShape
+                )
         )
 
         MarkdownViewBuilder(
-            modifier = Modifier
-                .weight(1f)
-                .padding(
-                    vertical = Constants.Spacing.medium,
-                    horizontal = Constants.Spacing.medium
-                ),
             markdownElement = innerContent,
             onClick = onClick,
             onLineChanged = onLineChanged,
