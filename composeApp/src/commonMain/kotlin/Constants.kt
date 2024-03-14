@@ -18,6 +18,15 @@ object Constants {
         val medium: Dp = 8.dp
         val large: Dp = 16.dp
         val veryLarge: Dp = 24.dp
+
+        val body: Dp = 3.dp
+
+        /**
+         * Retrieve padding values for a text.
+         */
+        fun textPadding(
+            headerLevel: Int
+        ): Dp = if (headerLevel == 0) body else (20-headerLevel).dp
     }
 
     /**

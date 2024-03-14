@@ -7,39 +7,15 @@ import model.markdownelement.*
  */
 class LineAnalyzer {
     /**
-     * Check if a line is a header.
-     */
-    fun isHeader(line: String): Boolean {
-        val regex = Regex("^#+ .+")
-        return regex.matches(line)
-    }
-
-    /**
-     * Check if a line is a blockquote.
-     */
-    private fun isBlockquote(line: String): Boolean {
-        val regex = Regex("^>+.*")
-        return regex.matches(line)
-    }
-
-    /**
-     * Check if a line is a unordered list.
-     */
-    private fun isUnorderedList(line: String): Boolean {
-        val regex = Regex("^(-|\\*|\\+).*")
-        return regex.matches(line)
-    }
-
-    /**
      * Build a MarkdownElement from a given line.
      */
     private fun buildMarkdownElementFromLine(line: String): MarkdownElement {
-        return if (isHeader(line)) Header(rowData = line)
-        else if (isUnorderedList(line)) UnorderedList(
+        return if (line.isHeader()) Header(rowData = line)
+        else if (line.isUnorderedList()) UnorderedList(
             rowData = line,
             innerData = buildMarkdownElementFromLine(line.unorderedListContent())
         )
-        else if (isBlockquote(line)) Blockquote(
+        else if (line.isBlockquote()) Blockquote(
             rowData = line,
             innerData = buildMarkdownElementFromLine(line.blockquoteContent())
         )
@@ -64,6 +40,30 @@ class LineAnalyzer {
 
         return markdownFile
     }
+}
+
+/**
+ * Check if a line is a header.
+ */
+fun String.isHeader(): Boolean {
+    val regex = Regex("^#+ .+")
+    return regex.matches(this)
+}
+
+/**
+ * Check if a line is a blockquote.
+ */
+private fun String.isBlockquote(): Boolean {
+    val regex = Regex("^>+.*")
+    return regex.matches(this)
+}
+
+/**
+ * Check if a line is a unordered list.
+ */
+private fun String.isUnorderedList(): Boolean {
+    val regex = Regex("^(-|\\*|\\+).*")
+    return regex.matches(this)
 }
 
 /**

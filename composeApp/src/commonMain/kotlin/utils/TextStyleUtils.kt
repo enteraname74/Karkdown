@@ -2,8 +2,11 @@ package utils
 
 import Constants
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import model.LineAnalyzer
 import model.headerLevel
+import model.isHeader
 
 /**
  * Build a corresponding text style from a given line.
@@ -11,9 +14,7 @@ import model.headerLevel
 fun buildCorrespondingTextStyle(
     line: String
 ): TextStyle {
-    val lineAnalyzer = LineAnalyzer()
-
-    return if (lineAnalyzer.isHeader(line))
+    return if (line.isHeader())
         buildCorrespondingHeaderTextStyle(line.headerLevel())
     else
         Constants.FontStyle.body

@@ -1,9 +1,11 @@
 package composable.filecontent
 
+import Constants
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -13,6 +15,8 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import model.headerLevel
+import model.isHeader
 import theme.KarkdownColorTheme
 import utils.buildCorrespondingTextStyle
 
@@ -74,10 +78,13 @@ fun TextView(
         },
         modifier = Modifier
             .fillMaxWidth()
+            .padding(
+                bottom = if (text.isHeader()) Constants.Spacing.textPadding(text.headerLevel()) else Constants.Spacing.body
+            )
             .focusRequester(focusRequester)
             .onKeyEvent { event ->
                 if (event.type != KeyEventType.KeyUp) return@onKeyEvent false
-                when(event.key) {
+                when (event.key) {
                     Key.DirectionUp -> onKeyUp()
                     Key.DirectionDown -> onKeyDown()
                     Key.Backspace -> {
