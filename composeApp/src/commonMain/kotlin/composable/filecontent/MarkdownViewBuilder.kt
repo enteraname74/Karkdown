@@ -55,19 +55,15 @@ fun MarkdownViewBuilder(
                 innerContent = markdownElement.viewData,
                 onClick = onClick,
                 onLineChanged = {
-                    println("-------------------")
-                    println("In blockquote with data: ${markdownElement.viewData}")
-                    println("Original line to save: $it")
-                    println("Blockquotes: ${markdownElement.rowData.quotes()}")
                     val lineToSave = it.toBlockQuote()
-                    println("New line: $lineToSave")
-                    println("-------------------")
                     onLineChanged(lineToSave)
                 },
                 onDone = onDone,
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
-                onDeleteLine = onDeleteLine,
+                onDeleteLine = {
+                    onLineChanged("")
+                },
                 userPosition = userPosition,
                 markdownElementPosition = markdownElementPosition,
                 currentText = currentText.blockquoteInnerText()
