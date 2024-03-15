@@ -129,6 +129,14 @@ fun String.toUnorderedList(listIndicator: String): String {
 }
 
 /**
+ * Build a blockquote line from a given start quotes line.
+ */
+fun String.toOrderedList(listIndicator: Int): String {
+    if (this.isEmpty()) return "$listIndicator. "
+    return "$listIndicator. $this"
+}
+
+/**
  * Retrieve the content of an unordered list to show to a user.
  */
 fun String.unorderedListContent(): String {
@@ -139,7 +147,7 @@ fun String.unorderedListContent(): String {
  * Retrieve the content of an ordered list to show to a user.
  */
 fun String.orderedListContent(): String {
-    return this.replaceFirst("[\\d*.]".toRegex(), "").trimStart()
+    return this.replaceFirst("\\d*.".toRegex(), "").trimStart()
 }
 
 /**

@@ -96,12 +96,14 @@ fun MarkdownViewBuilder(
                 innerContent = markdownElement.viewData,
                 onClick = onClick,
                 onLineChanged = {
-                    onLineChanged(it)
+                    val lineToSave = it.toOrderedList(
+                        listIndicator = markdownElement.currentIndicator
+                    )
+                    onLineChanged(lineToSave)
                 },
                 onDone = { nextPos, initialText ->
                     if (nextPos == 0) onDone(nextPos, initialText)
-
-                    onDone(nextPos, "${markdownElement.rowData.orderedListIndicator() + 1} $initialText")
+                    onDone(nextPos, "${markdownElement.rowData.orderedListIndicator() + 1}. $initialText")
                 },
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
@@ -110,7 +112,8 @@ fun MarkdownViewBuilder(
                 },
                 userPosition = userPosition,
                 markdownElementPosition = markdownElementPosition,
-                currentText = currentText
+                currentText = currentText.orderedListContent(),
+                currentIndicator = markdownElement.currentIndicator
             )
         }
     }

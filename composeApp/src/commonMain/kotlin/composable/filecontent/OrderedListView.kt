@@ -1,8 +1,10 @@
 package composable.filecontent
 
+import Constants
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +25,7 @@ fun OrderedListView(
     userPosition: Int,
     markdownElementPosition: Int,
     currentText: String,
+    currentIndicator: Int,
 ) {
     Row(
         modifier = Modifier
@@ -31,9 +34,9 @@ fun OrderedListView(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Constants.Spacing.medium)
     ) {
-        Spacer(
-            modifier = Modifier
-                .size(6.dp)
+        Text(
+            text = "$currentIndicator. ",
+            style = Constants.FontStyle.body
         )
 
         MarkdownViewBuilder(
