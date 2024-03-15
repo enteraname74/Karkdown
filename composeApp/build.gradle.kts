@@ -36,7 +36,7 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.core)
 
-            runtimeOnly("androidx.collection:collection:1.4.0")
+            runtimeOnly(libs.androidx.collection)
 
             implementation(project(":domain"))
         }

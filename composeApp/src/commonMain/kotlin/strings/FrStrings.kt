@@ -4,9 +4,13 @@ package strings
  * Implementation of the AppStrings for the French translation.
  */
 data object FrStrings: AppStrings {
+    override val file: String = "Fichier"
+
     override val openFile: String = "Ouvrir un fichier"
-    override val saveFile: String = "Enregistrer le fichier"
+    override val saveFile: String = "Enregistrer"
     override val saveAs: String = "Enregistrer sous..."
+    override val exportAsPdf: String = "Exporter en PDF"
+
     override val fileName: String = "Nom du fichier"
     override val validate: String = "Valider"
     override val cancel: String = "Annuler"

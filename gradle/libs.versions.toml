@@ -7,6 +7,7 @@ koin = "3.5.3"
 koin-compose = "1.1.2"
 file-picker = "3.1.0"
 kmd2pdf = "0.2.2"
+collection = "1.4.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -19,6 +20,8 @@ kmd2pdf = {  module = "com.github.woojiahao:kMD2PDF", version.ref = "kmd2pdf" }
 
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
+
+androidx-collection = { module = "androidx.collection:collection", version.ref = "collection" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

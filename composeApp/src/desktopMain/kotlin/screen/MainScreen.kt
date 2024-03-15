@@ -84,13 +84,62 @@ fun MainScreen(
                 false
             },
         topBar = {
-            MainHeaderBar {
-                mainScreenViewModel.onEvent(
-                    MainScreenEvent.ShouldSelectFile(
-                        shouldSelectFile = true
+            MainHeaderBar(
+                shouldShowDropdown = state.shouldShowFileDropdownMenu,
+                setDropdownVisibility = {
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.SetFileDropdownMenuVisibility(
+                            show = it
+                        )
                     )
-                )
-            }
+                },
+                onOpenFile = {
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.SetFileDropdownMenuVisibility(
+                            show = false
+                        )
+                    )
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.ShouldSelectFile(
+                            shouldSelectFile = true
+                        )
+                    )
+                },
+                onQuickSave = {
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.SetFileDropdownMenuVisibility(
+                            show = false
+                        )
+                    )
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.QuickSaveCurrentFile
+                    )
+                },
+                onSaveAs = {
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.SetFileDropdownMenuVisibility(
+                            show = false
+                        )
+                    )
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.ShouldEnterFileName(
+                            shouldSetFileName = true
+                        )
+                    )
+                },
+                onExportAsPdf = {
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.SetFileDropdownMenuVisibility(
+                            show = false
+                        )
+                    )
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.ShouldEnterFileNameForPdf(
+                            shouldSetFileName = true
+                        )
+                    )
+                }
+            )
         }
     ) { paddingValues ->
         Column(

@@ -4,9 +4,13 @@ package strings
  * Implementation of the AppStrings for the English (default) translation.
  */
 data object EnStrings: AppStrings {
+    override val file: String = "File"
+
     override val openFile: String = "Open file"
-    override val saveFile: String = "Save file"
+    override val saveFile: String = "Save"
     override val saveAs: String = "Save as..."
+    override val exportAsPdf: String = "Export as PDF"
+
     override val fileName: String = "File's name"
     override val validate: String = "Validate"
     override val cancel: String = "Cancel"

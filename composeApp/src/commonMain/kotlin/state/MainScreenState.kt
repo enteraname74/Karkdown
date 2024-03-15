@@ -15,6 +15,8 @@ data class MainScreenState(
     var pdfName: String = filepath?.name?.replace(".md", ".pdf") ?: appStrings.newFilename,
     val userPosition: Int = 0,
 
+    val shouldShowFileDropdownMenu: Boolean = false,
+
     val isSelectingFile: Boolean = false,
     val isSelectingFolder: Boolean = false,
     val isSettingFileName: Boolean = false,

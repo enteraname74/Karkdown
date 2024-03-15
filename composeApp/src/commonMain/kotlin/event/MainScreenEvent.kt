@@ -100,5 +100,10 @@ sealed interface MainScreenEvent {
      * Indicate if the indication that the saving of a file succeed should be shown.
      */
     data class ShouldShowCorrectFileSaving(val show: Boolean): MainScreenEvent
+
+    /**
+     * Define the visibility of the file dropdown menu
+     */
+    data class SetFileDropdownMenuVisibility(val show: Boolean): MainScreenEvent
 }
 

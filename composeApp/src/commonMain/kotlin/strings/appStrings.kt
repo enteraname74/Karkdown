@@ -10,9 +10,13 @@ val appStrings = when(Locale.current.language) {
 interface AppStrings {
     val appName: String get() =  "Karkdown"
 
+    val file: String
+
     val openFile: String
     val saveFile: String
     val saveAs: String
+    val exportAsPdf: String
+
     val fileName: String
     val validate: String
     val cancel: String
