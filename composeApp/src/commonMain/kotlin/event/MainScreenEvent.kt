@@ -67,9 +67,29 @@ sealed interface MainScreenEvent {
     data class SaveAsCurrentFile(val path: String, val filename: String): MainScreenEvent
 
     /**
+     * Indicate whether to indicate or not the name for the saved pdf.
+     */
+    data class ShouldEnterFileNameForPdf(val shouldSetFileName: Boolean): MainScreenEvent
+
+    /**
+     * Indicate whether to select or not a folder for a pdf save.
+     */
+    data class ShouldSelectFolderForPdf(val shouldSelectFolder: Boolean): MainScreenEvent
+
+    /**
+     * Export the current file as a pdf.
+     */
+    data class ExportAsPdf(val path: String): MainScreenEvent
+
+    /**
      * Define the current filename.
      */
     data class SetCurrentFileName(val name: String): MainScreenEvent
+
+    /**
+     * Define the pdf name of the file.
+     */
+    data class SetPdfName(val name: String): MainScreenEvent
 
     /**
      * Indicate if the indication that the saving of a file has failed should be shown

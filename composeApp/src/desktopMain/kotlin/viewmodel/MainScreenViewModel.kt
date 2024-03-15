@@ -3,6 +3,8 @@ package viewmodel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.github.woojiahao.MarkdownDocument
+import com.github.woojiahao.markdownConverter
 import event.MainScreenEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,6 +14,7 @@ import state.MainScreenState
 import strings.appStrings
 import kotlin.io.path.Path
 import kotlin.io.path.name
+import kotlin.io.path.pathString
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -48,10 +51,71 @@ class MainScreenViewModel {
             is MainScreenEvent.ShouldEnterFileName -> shouldSetFileName(shouldSetFileName = event.shouldSetFileName)
             is MainScreenEvent.ShouldSelectFile -> setFileSelectionState(shouldSelectFile = event.shouldSelectFile)
             is MainScreenEvent.SetCurrentFileName -> setCurrentFileName(name = event.name)
+            is MainScreenEvent.SetPdfName -> setPdfName(name = event.name)
+
+            is MainScreenEvent.ExportAsPdf -> exportAsPdf(filepath = event.path, filename = _state.value.pdfName)
+            is MainScreenEvent.ShouldEnterFileNameForPdf -> shouldSetFileNameForPdf(shouldSetFileName = event.shouldSetFileName)
+            is MainScreenEvent.ShouldSelectFolderForPdf -> shouldSelectFolderForPdf(shouldSelectFolder = event.shouldSelectFolder)
 
             MainScreenEvent.GoDown -> setFocusedLine(pos = abs(min(fileManager.userPosition + 1, fileManager.size - 1)))
             MainScreenEvent.GoUp -> setFocusedLine(pos = max(fileManager.userPosition - 1, 0))
 
+        }
+    }
+
+    /**
+     * Define the pdf name to use when exporting the file as pdf.
+     */
+    private fun setPdfName(name: String) {
+        _state.update {
+            it.copy(
+                pdfName = name
+            )
+        }
+    }
+
+    /**
+     * Define if we should select a folder for the pdf
+     */
+    private fun shouldSelectFolderForPdf(shouldSelectFolder: Boolean) {
+        _state.update {
+            it.copy(
+                isSelectingFolderForPdf = shouldSelectFolder
+            )
+        }
+    }
+
+    /**
+     * Define if we should set a filename for the pdf.
+     */
+    private fun shouldSetFileNameForPdf(shouldSetFileName: Boolean) {
+        _state.update {
+            it.copy(
+                isSettingFileNameForPdf = shouldSetFileName
+            )
+        }
+    }
+
+    /**
+     * Save the current state of the file to a pdf with the given information.
+     * If nothing was saved before, a md file will be saved.
+     */
+    private fun exportAsPdf(filepath: String, filename: String) {
+        saveAs(filepath, filename.replace(".pdf", ""))
+
+        fileManager.filepath?.let { path ->
+            val converter = markdownConverter {
+                document(MarkdownDocument(path.pathString))
+
+                val finalFilename = if (filename.split(".").lastOrNull() != "pdf") "$filename.pdf" else filename
+                val finalPath = Path(
+                    base = path.parent.pathString,
+                    finalFilename
+                ).pathString
+
+                targetLocation(finalPath)
+            }
+            converter.convert()
         }
     }
 
@@ -70,7 +134,6 @@ class MainScreenViewModel {
      * Define if we should show if a saving was correct.
      */
     private fun showCorrectSaving(show: Boolean) {
-        println("Should show ? $show")
         _state.update {
             it.copy(
                 shouldShowCorrectFileSavedResult = show
@@ -94,7 +157,7 @@ class MainScreenViewModel {
      */
     private fun saveAs(filepath: String, filename: String) {
         // We need to check if the filename has the correct format:
-        val finalFilename = if (filename.split(".").last() != "md") "$filename.md" else filename
+        val finalFilename = if (filename.split(".").lastOrNull() != "md") "$filename.md" else filename
 
         fileManager.filepath = Path(
             base = filepath,
@@ -149,7 +212,7 @@ class MainScreenViewModel {
     }
 
     /**
-     * Manage the selection of a file.
+     * Define if we should enter a filename for the markdown file.
      */
     private fun shouldSetFileName(shouldSetFileName: Boolean) {
         _state.update {

@@ -2,6 +2,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import theme.KarkdownColorTheme
 
@@ -26,7 +27,7 @@ object Constants {
          */
         fun textPadding(
             headerLevel: Int
-        ): Dp = if (headerLevel == 0) body else (20-headerLevel).dp
+        ): Dp = if (headerLevel == 0) body else max((20-headerLevel).dp, body)
     }
 
     /**

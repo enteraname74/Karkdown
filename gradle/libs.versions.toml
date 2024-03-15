@@ -6,6 +6,7 @@ kotlin = "1.9.22"
 koin = "3.5.3"
 koin-compose = "1.1.2"
 file-picker = "3.1.0"
+kmd2pdf = "0.2.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -14,6 +15,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 file-picker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "file-picker" }
+kmd2pdf = {  module = "com.github.woojiahao:kMD2PDF", version.ref = "kmd2pdf" }
 
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }

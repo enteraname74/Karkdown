@@ -74,6 +74,13 @@ fun MainScreen(
                         )
                     )
                 }
+                if (event.isCtrlPressed && event.isShiftPressed && event.key == Key.P) {
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.ShouldEnterFileNameForPdf(
+                            shouldSetFileName = true
+                        )
+                    )
+                }
                 false
             },
         topBar = {
@@ -143,6 +150,22 @@ fun MainScreen(
         )
     }
 
+    DirectoryPicker(
+        show = state.isSelectingFolderForPdf,
+        title = appStrings.saveFileNameIn(filename = state.pdfName)
+    ) { parent ->
+        if (parent != null) {
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.ExportAsPdf(path = parent)
+            )
+        }
+        mainScreenViewModel.onEvent(
+            MainScreenEvent.ShouldSelectFolderForPdf(
+                shouldSelectFolder = false
+            )
+        )
+    }
+
     if (state.isSettingFileName) {
         FileNameDialog(
             currentFileName = state.filename,
@@ -166,6 +189,36 @@ fun MainScreen(
                 )
                 mainScreenViewModel.onEvent(
                     MainScreenEvent.ShouldSelectFolder(
+                        shouldSelectFolder = true
+                    )
+                )
+            }
+        )
+    }
+
+    if (state.isSettingFileNameForPdf) {
+        FileNameDialog(
+            currentFileName = state.filename.replace(".md", ""),
+            onDismiss = {
+                mainScreenViewModel.onEvent(
+                    MainScreenEvent.ShouldEnterFileNameForPdf(
+                        shouldSetFileName = false
+                    )
+                )
+            },
+            onConfirm = { filename ->
+                mainScreenViewModel.onEvent(
+                    MainScreenEvent.ShouldEnterFileNameForPdf(
+                        shouldSetFileName = false
+                    )
+                )
+                mainScreenViewModel.onEvent(
+                    MainScreenEvent.SetPdfName(
+                        name = filename
+                    )
+                )
+                mainScreenViewModel.onEvent(
+                    MainScreenEvent.ShouldSelectFolderForPdf(
                         shouldSelectFolder = true
                     )
                 )

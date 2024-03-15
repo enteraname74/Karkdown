@@ -6,6 +6,14 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
 }
 
+repositories {
+    jcenter()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    google()
+    gradlePluginPortal()
+    mavenCentral()
+}
+
 kotlin {
     jvm("desktop")
     
@@ -23,8 +31,12 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
 
             implementation(libs.file.picker)
+            implementation(libs.kmd2pdf)
+
             implementation(libs.koin.compose)
             implementation(libs.koin.core)
+
+            runtimeOnly("androidx.collection:collection:1.4.0")
 
             implementation(project(":domain"))
         }

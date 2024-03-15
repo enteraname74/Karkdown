@@ -14,7 +14,7 @@ import model.textutils.isItalic
 
 /**
  * Implementation of the VisualTransformation interface for building personalized text field content based on markdown
- * properties.
+ * properties when editing the text field content.
  */
 class TextFieldMarkdownTransformation : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText = TransformedText(
@@ -50,7 +50,7 @@ class TextFieldMarkdownTransformation : VisualTransformation {
                     append(word)
                 }
             } else append(word)
-            // We need to append the whitespaces between each words :
+            // We need to append the whitespaces between each word :
             append(whitespaces.getOrElse(index + 1) { "" })
         }
     }
