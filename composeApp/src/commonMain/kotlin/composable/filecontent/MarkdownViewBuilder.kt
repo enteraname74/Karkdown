@@ -79,8 +79,8 @@ fun MarkdownViewBuilder(
                     )
                     onLineChanged(lineToSave)
                 },
-                onDone = { nextPost, initialText ->
-                    onDone(nextPost, "${markdownElement.listIndicator} $initialText")
+                onDone = { nextPos, initialText ->
+                    onDone(nextPos, "${markdownElement.listIndicator} $initialText")
                 },
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
@@ -91,6 +91,28 @@ fun MarkdownViewBuilder(
                 markdownElementPosition = markdownElementPosition,
                 currentText = currentText.unorderedListContent()
             )
+
+            is OrderedList -> OrderedListView(
+                innerContent = markdownElement.viewData,
+                onClick = onClick,
+                onLineChanged = {
+                    onLineChanged(it)
+                },
+                onDone = { nextPos, initialText ->
+                    if (nextPos == 0) onDone(nextPos, initialText)
+
+                    onDone(nextPos, "${markdownElement.rowData.orderedListIndicator() + 1} $initialText")
+                },
+                onKeyUp = onKeyUp,
+                onKeyDown = onKeyDown,
+                onDeleteLine = {
+                    onLineChanged("")
+                },
+                userPosition = userPosition,
+                markdownElementPosition = markdownElementPosition,
+                currentText = currentText
+            )
         }
     }
 }
+

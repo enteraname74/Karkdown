@@ -15,6 +15,10 @@ class LineAnalyzer {
             rowData = line,
             innerData = buildMarkdownElementFromLine(line.unorderedListContent())
         )
+        else if (line.isOrderedList()) OrderedList(
+            rowData = line,
+            innerData = buildMarkdownElementFromLine(line.orderedListContent())
+        )
         else if (line.isBlockquote()) Blockquote(
             rowData = line,
             innerData = buildMarkdownElementFromLine(line.blockquoteContent())
@@ -53,16 +57,24 @@ fun String.isHeader(): Boolean {
 /**
  * Check if a line is a blockquote.
  */
-private fun String.isBlockquote(): Boolean {
+fun String.isBlockquote(): Boolean {
     val regex = Regex("^>+.*")
     return regex.matches(this)
 }
 
 /**
- * Check if a line is a unordered list.
+ * Check if a line is an unordered list.
  */
-private fun String.isUnorderedList(): Boolean {
+fun String.isUnorderedList(): Boolean {
     val regex = Regex("^(-|\\*|\\+).*")
+    return regex.matches(this)
+}
+
+/**
+ * Check if a line is an ordered list.
+ */
+fun String.isOrderedList(): Boolean {
+    val regex = Regex("\\d+\\. .*");
     return regex.matches(this)
 }
 
@@ -124,8 +136,25 @@ fun String.unorderedListContent(): String {
 }
 
 /**
- * Retrieve the content of an unordered list to show to a user.
+ * Retrieve the content of an ordered list to show to a user.
  */
-fun String.listIndicator(): String {
+fun String.orderedListContent(): String {
+    return this.replaceFirst("[\\d*.]".toRegex(), "").trimStart()
+}
+
+/**
+ * Retrieve the indicator used by the user for an unordered list.
+ * If nothing is found, it returns the default indicator used, "-".
+ */
+fun String.unorderedListIndicator(): String {
     return this.firstNotNullOf { "-" }
+}
+
+/**
+ * Retrieve the indicator used by the user for an ordered list.
+ * If nothing is found, it returns the first possible indicator for an ordered list, 1.
+ */
+fun String.orderedListIndicator(): Int {
+    val regex = Regex("^\\d*")
+    return regex.find(this)?.value?.toIntOrNull() ?: 1
 }
