@@ -1,6 +1,6 @@
 package model.markdownelement
 
-import model.orderedListIndicator
+import model.textutils.orderedListIndicator
 
 /**
  * Represent an unordered list.

@@ -2,11 +2,8 @@ package utils
 
 import Constants
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import model.LineAnalyzer
-import model.headerLevel
-import model.isHeader
+import model.textutils.headerLevel
+import model.textutils.isHeader
 
 /**
  * Build a corresponding text style from a given line.

@@ -13,11 +13,11 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.*
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
-import model.headerLevel
-import model.isHeader
+import model.textutils.headerLevel
+import model.textutils.isHeader
 import theme.KarkdownColorTheme
+import utils.TextFieldMarkdownTransformation
 import utils.buildCorrespondingTextStyle
 
 /**
@@ -63,6 +63,7 @@ fun TextView(
     )
 
     BasicTextField(
+        visualTransformation = TextFieldMarkdownTransformation(),
         interactionSource = interactionSource,
         cursorBrush = SolidColor(KarkdownColorTheme.colorScheme.onPrimary),
         textStyle = buildCorrespondingTextStyle(line = text),

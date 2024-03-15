@@ -1,7 +1,8 @@
 package model.markdownelement
 
-import model.headerContent
-import model.headerLevel
+import model.textutils.headerContent
+import model.textutils.headerLevel
+
 
 /**
  * Represent a header with its level

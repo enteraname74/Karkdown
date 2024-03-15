@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import model.*
 import model.markdownelement.*
+import model.textutils.*
 
 /**
  * Used to build the correct markdown view element from a line.
