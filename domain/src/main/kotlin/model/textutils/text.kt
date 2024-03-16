@@ -4,7 +4,7 @@ package model.textutils
  * Check if a string is bold.
  */
 fun String.isBold(): Boolean {
-    val regex = Regex("\\*\\*.*\\*\\*")
+    val regex = Regex("[^\\*_]*(\\*{2}[^\\*]+\\*{2}|_{2}[^_]+_{2})[^\\*_]*")
     return regex.matches(this)
 }
 
@@ -12,7 +12,23 @@ fun String.isBold(): Boolean {
  * Check if a string is italic.
  */
 fun String.isItalic(): Boolean {
-    val regex = Regex("_.*_")
+    val regex = Regex("[^\\*_]*(\\*[^\\*]+\\*|_[^_]+_)[^\\*_]*")
+    return regex.matches(this)
+}
+
+/**
+ * Check if the bold text is with * characters.
+ */
+fun String.isStarBold(): Boolean {
+    val regex = Regex(".*(\\*{2}.+\\*{2}).*")
+    return regex.matches(this)
+}
+
+/**
+ * Check if the bold text is with * characters.
+ */
+fun String.isStarItalic(): Boolean {
+    val regex = Regex(".*(\\*.+\\*).*")
     return regex.matches(this)
 }
 

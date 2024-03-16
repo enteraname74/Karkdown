@@ -11,6 +11,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
 import model.textutils.isBold
 import model.textutils.isItalic
+import model.textutils.isStarBold
+import model.textutils.isStarItalic
 
 /**
  * Implementation of the VisualTransformation interface for building personalized text field content based on markdown
@@ -34,20 +36,37 @@ class TextFieldMarkdownTransformation : VisualTransformation {
 
         words.forEachIndexed { index, word ->
             if (word.isBold()) {
-                withStyle(
-                    style = SpanStyle(
-                        fontWeight = FontWeight.Bold
-                    )
-                ) {
-                    append(word)
+                val subParts = word.split("\\*{2}|_{2}".toRegex())
+                subParts.forEachIndexed { i, subPart ->
+                    if (i % 2 == 0) {
+                        append(subPart)
+                    } else {
+                        withStyle(
+                            style = SpanStyle(
+                                fontWeight = FontWeight.Bold
+                            )
+                        ) {
+                            val boldCharacters = if (word.isStarBold()) "**" else "__"
+                            append("$boldCharacters$subPart$boldCharacters")
+                        }
+                    }
                 }
+
             } else if (word.isItalic()) {
-                withStyle(
-                    style = SpanStyle(
-                        fontStyle = FontStyle.Italic
-                    )
-                ) {
-                    append(word)
+                val subParts = word.split("[*_]".toRegex())
+                subParts.forEachIndexed { i, subPart ->
+                    if (i % 2 == 0) {
+                        append(subPart)
+                    } else {
+                        withStyle(
+                            style = SpanStyle(
+                                fontStyle = FontStyle.Italic
+                            )
+                        ) {
+                            val boldCharacters = if (word.isStarItalic()) "*" else "_"
+                            append("$boldCharacters$subPart$boldCharacters")
+                        }
+                    }
                 }
             } else append(word)
             // We need to append the whitespaces between each word :
