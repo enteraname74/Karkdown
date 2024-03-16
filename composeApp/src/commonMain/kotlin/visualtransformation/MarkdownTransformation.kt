@@ -1,19 +1,12 @@
 package visualtransformation
 
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 
 /**
  * Handles the style transformation of markdown elements.
  */
-abstract class MarkdownTransformation: VisualTransformation {
-    override fun filter(text: AnnotatedString): TransformedText = TransformedText(
-        text = buildFinalString(text.toString()),
-        offsetMapping = OffsetMapping.Identity
-    )
-
+abstract class MarkdownTransformation : VisualTransformation {
     /**
      * Handle the rendering of a bold word.
      */
@@ -28,6 +21,11 @@ abstract class MarkdownTransformation: VisualTransformation {
      * Handle the rendering of a bold and italic word.
      */
     protected abstract fun AnnotatedString.Builder.handleBoldAndItalicWord(word: String)
+
+    /**
+     * Handle the rendering of a strikethrough word.
+     */
+    protected abstract fun AnnotatedString.Builder.handleStrikethroughWord(word: String)
 
     /**
      * Build the final string used by a text field.

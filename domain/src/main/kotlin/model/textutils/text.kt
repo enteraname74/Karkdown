@@ -4,7 +4,7 @@ package model.textutils
  * Check if a string is bold.
  */
 fun String.isBold(): Boolean {
-    val regex = Regex("[^\\*_]*(\\*{2}[^\\*]+\\*{2}|_{2}[^_]+_{2})[^\\*_]*")
+    val regex = Regex("[^*_]*(\\*{2}[^*]+\\*{2}|_{2}[^_]+_{2})[^*_]*")
     return regex.matches(this)
 }
 
@@ -12,7 +12,7 @@ fun String.isBold(): Boolean {
  * Check if a string is italic.
  */
 fun String.isItalic(): Boolean {
-    val regex = Regex("[^\\*_]*(\\*[^\\*]+\\*|_[^_]+_)[^\\*_]*")
+    val regex = Regex("[^*_]*(\\*[^*]+\\*|_[^_]+_)[^*_]*")
     return regex.matches(this)
 }
 
@@ -20,7 +20,15 @@ fun String.isItalic(): Boolean {
  * Check if a string is bold.
  */
 fun String.isBoldAndItalic(): Boolean {
-    val regex = Regex("[^\\*_]*(\\*{3}[^\\*]+\\*{3}|_{3}[^_]+_{3})[^\\*_]*")
+    val regex = Regex("[^*_]*(\\*{3}[^*]+\\*{3}|_{3}[^_]+_{3})[^*_]*")
+    return regex.matches(this)
+}
+
+/**
+ * Check if a string is strikethrough
+ */
+fun String.isStrikethrough(): Boolean {
+    val regex = Regex("[^~]*(~{2}[^~]+~{2})[^~]*")
     return regex.matches(this)
 }
 
@@ -34,7 +42,7 @@ fun String.isStarBold(): Boolean {
 }
 
 /**
- * Check if the bold text is with * characters.
+ * Check if the italic text is with * characters.
  */
 fun String.isStarItalic(): Boolean {
     val regex = Regex(".*(\\*.+\\*).*")
@@ -64,6 +72,7 @@ fun String.withoutMarkdown(): String {
         markdownLessString += if (word.isBold()) word.boldContent()
         else if (word.isItalic()) word.italicContent()
         else if (word.isBoldAndItalic()) word.boldAndItalicContent()
+        else if (word.isStrikethrough()) word.strikethroughContent()
         else word
 
         // We need to append the whitespaces between each word :
@@ -92,4 +101,11 @@ private fun String.italicContent(): String {
  */
 private fun String.boldAndItalicContent(): String {
     return this.replace("\\*{3}|_{3}".toRegex(), "")
+}
+
+/**
+ * Retrieve the content of an italic section to show to a user.
+ */
+private fun String.strikethroughContent(): String {
+    return this.replace("~{2}".toRegex(), "")
 }

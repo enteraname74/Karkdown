@@ -7,6 +7,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import model.textutils.*
 
@@ -84,6 +85,23 @@ class TextFieldMarkdownTransformation : MarkdownTransformation() {
         }
     }
 
+    override fun AnnotatedString.Builder.handleStrikethroughWord(word: String) {
+        val subParts = word.split("~{2}".toRegex())
+        subParts.forEachIndexed { i, subPart ->
+            if (i % 2 == 0) {
+                append(subPart)
+            } else {
+                withStyle(
+                    style = SpanStyle(
+                        textDecoration = TextDecoration.LineThrough
+                    )
+                ) {
+                    append("~~$subPart~~")
+                }
+            }
+        }
+    }
+
     /**
      * Build the final string used by a text field.
      * @param text the initial text to transform
@@ -98,6 +116,7 @@ class TextFieldMarkdownTransformation : MarkdownTransformation() {
             if (word.isBold()) handleBoldWord(word = word)
             else if (word.isItalic()) handleItalicWord(word = word)
             else if (word.isBoldAndItalic()) handleBoldAndItalicWord(word = word)
+            else if (word.isStrikethrough()) handleStrikethroughWord(word = word)
             else append(word)
             // We need to append the whitespaces between each word :
             append(whitespaces.getOrElse(index + 1) { "" })

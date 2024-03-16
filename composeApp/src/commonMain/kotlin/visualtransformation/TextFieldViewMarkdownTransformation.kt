@@ -5,6 +5,8 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import model.textutils.*
 
@@ -14,7 +16,15 @@ import model.textutils.*
  */
 class TextFieldViewMarkdownTransformation(
     private val rowData: String
-): MarkdownTransformation() {
+) : MarkdownTransformation() {
+    override fun filter(text: AnnotatedString): TransformedText {
+        val transformedText = buildFinalString(text.toString())
+        return TransformedText(
+            text = transformedText,
+            offsetMapping = MarkdownOffsetMapping(maxTextOffset = transformedText.length)
+        )
+    }
+
     override fun AnnotatedString.Builder.handleBoldWord(word: String) {
         val subParts = word.split("\\*{2}|_{2}".toRegex())
         subParts.forEachIndexed { i, subPart ->
@@ -67,6 +77,23 @@ class TextFieldViewMarkdownTransformation(
         }
     }
 
+    override fun AnnotatedString.Builder.handleStrikethroughWord(word: String) {
+        val subParts = word.split("~{2}".toRegex())
+        subParts.forEachIndexed { i, subPart ->
+            if (i % 2 == 0) {
+                append(subPart)
+            } else {
+                withStyle(
+                    style = SpanStyle(
+                        textDecoration = TextDecoration.LineThrough
+                    )
+                ) {
+                    append(subPart)
+                }
+            }
+        }
+    }
+
     override fun buildFinalString(text: String): AnnotatedString = buildAnnotatedString {
         val whitespaces = text.split("\\S+".toRegex())
         val words = text.split("\\s+".toRegex())
@@ -80,6 +107,7 @@ class TextFieldViewMarkdownTransformation(
             if (rowWords[realIndex].isBold()) handleBoldWord(word = rowWords[realIndex])
             else if (rowWords[realIndex].isItalic()) handleItalicWord(word = rowWords[realIndex])
             else if (rowWords[realIndex].isBoldAndItalic()) handleBoldAndItalicWord(word = rowWords[realIndex])
+            else if (rowWords[realIndex].isStrikethrough()) handleStrikethroughWord(word = rowWords[realIndex])
             else append(word)
             // We need to append the whitespaces between each word :
             append(whitespaces.getOrElse(index + 1) { "" })

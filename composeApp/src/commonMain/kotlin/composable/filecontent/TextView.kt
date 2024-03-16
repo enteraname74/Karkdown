@@ -13,6 +13,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.*
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import model.textutils.headerLevel
 import model.textutils.isHeader
@@ -53,15 +54,30 @@ fun TextView(
         onClick()
     }
 
+    var cursorPosSet by remember {
+        mutableStateOf(false)
+    }
+
+    if (shouldFocus && !cursorPosSet) {
+        println("SETTING CURSOR IN: ${text.length}, currentTextRange: ${textValue.text.length}")
+        textValue = textValue.copy(
+            text = text,
+            selection = TextRange(text.length, text.length)
+        )
+        cursorPosSet = true
+    } else if (!shouldFocus) {
+        cursorPosSet = false
+    }
+
     if (shouldFocus) {
         SideEffect {
             focusRequester.requestFocus()
         }
     }
 
-    textValue = textValue.copy(
-        text = if (isFocused) text else viewText
-    )
+//    textValue = textValue.copy(
+//        text = if (isFocused) text else viewText
+//    )
 
     BasicTextField(
         visualTransformation = if (isFocused) TextFieldMarkdownTransformation() else TextFieldViewMarkdownTransformation(rowData = text),
