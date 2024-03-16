@@ -9,10 +9,7 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
-import model.textutils.isBold
-import model.textutils.isItalic
-import model.textutils.isStarBold
-import model.textutils.isStarItalic
+import model.textutils.*
 
 /**
  * Implementation of the VisualTransformation interface for building personalized text field content based on markdown
@@ -63,12 +60,31 @@ class TextFieldMarkdownTransformation : VisualTransformation {
                                 fontStyle = FontStyle.Italic
                             )
                         ) {
-                            val boldCharacters = if (word.isStarItalic()) "*" else "_"
-                            append("$boldCharacters$subPart$boldCharacters")
+                            val italicCharacters = if (word.isStarItalic()) "*" else "_"
+                            append("$italicCharacters$subPart$italicCharacters")
                         }
                     }
                 }
-            } else append(word)
+            }
+            else if (word.isBoldAndItalic()) {
+                val subParts = word.split("\\*{3}|_{3}".toRegex())
+                subParts.forEachIndexed { i, subPart ->
+                    if (i % 2 == 0) {
+                        append(subPart)
+                    } else {
+                        withStyle(
+                            style = SpanStyle(
+                                fontStyle = FontStyle.Italic,
+                                fontWeight = FontWeight.Bold
+                            )
+                        ) {
+                            val boldAndItalicCharacters = if (word.isStarBoldAndItalic()) "***" else "___"
+                            append("$boldAndItalicCharacters$subPart$boldAndItalicCharacters")
+                        }
+                    }
+                }
+            }
+            else append(word)
             // We need to append the whitespaces between each word :
             append(whitespaces.getOrElse(index + 1) { "" })
         }

@@ -17,6 +17,15 @@ fun String.isItalic(): Boolean {
 }
 
 /**
+ * Check if a string is bold.
+ */
+fun String.isBoldAndItalic(): Boolean {
+    val regex = Regex("[^\\*_]*(\\*{3}[^\\*]+\\*{3}|_{3}[^_]+_{3})[^\\*_]*")
+    return regex.matches(this)
+}
+
+
+/**
  * Check if the bold text is with * characters.
  */
 fun String.isStarBold(): Boolean {
@@ -29,6 +38,14 @@ fun String.isStarBold(): Boolean {
  */
 fun String.isStarItalic(): Boolean {
     val regex = Regex(".*(\\*.+\\*).*")
+    return regex.matches(this)
+}
+
+/**
+ * Check if the bold text is with * characters.
+ */
+fun String.isStarBoldAndItalic(): Boolean {
+    val regex = Regex(".*(\\*{3}.+\\*{3}).*")
     return regex.matches(this)
 }
 
