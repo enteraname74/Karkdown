@@ -17,8 +17,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import model.textutils.headerLevel
 import model.textutils.isHeader
 import theme.KarkdownColorTheme
-import utils.TextFieldMarkdownTransformation
+import visualtransformation.TextFieldMarkdownTransformation
 import utils.buildCorrespondingTextStyle
+import visualtransformation.TextFieldViewMarkdownTransformation
 
 /**
  * Text input for modifying file content
@@ -63,7 +64,7 @@ fun TextView(
     )
 
     BasicTextField(
-        visualTransformation = TextFieldMarkdownTransformation(),
+        visualTransformation = if (isFocused) TextFieldMarkdownTransformation() else TextFieldViewMarkdownTransformation(rowData = text),
         interactionSource = interactionSource,
         cursorBrush = SolidColor(KarkdownColorTheme.colorScheme.onPrimary),
         textStyle = buildCorrespondingTextStyle(line = text),
