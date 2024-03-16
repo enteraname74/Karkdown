@@ -4,7 +4,7 @@ package model.textutils
  * Check if a line is an unordered list.
  */
 fun String.isUnorderedList(): Boolean {
-    val regex = Regex("^(-|\\*|\\+).*")
+    val regex = Regex("^(-|\\*|\\+) .*")
     return regex.matches(this)
 }
 
@@ -12,8 +12,8 @@ fun String.isUnorderedList(): Boolean {
  * Build a blockquote line from a given start quotes line.
  */
 fun String.toUnorderedList(listIndicator: String): String {
-    if (this.isEmpty()) return listIndicator
-    return "$listIndicator $this"
+    return if (this.isEmpty()) "$listIndicator "
+    else "$listIndicator $this"
 }
 
 /**

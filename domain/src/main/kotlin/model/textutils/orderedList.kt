@@ -12,8 +12,8 @@ fun String.isOrderedList(): Boolean {
  * Build a blockquote line from a given start quotes line.
  */
 fun String.toOrderedList(listIndicator: Int): String {
-    if (this.isEmpty()) return "$listIndicator. "
-    return "$listIndicator. $this"
+    return if (this.isEmpty()) "$listIndicator. "
+    else "$listIndicator. $this"
 }
 
 /**

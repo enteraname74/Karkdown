@@ -108,7 +108,7 @@ fun MarkdownViewBuilder(
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
                 onDeleteLine = {
-                    onLineChanged("")
+                    onLineChanged("${markdownElement.rowData.orderedListIndicator()}.")
                 },
                 userPosition = userPosition,
                 markdownElementPosition = markdownElementPosition,
