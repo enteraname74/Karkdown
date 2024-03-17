@@ -32,7 +32,6 @@ fun String.isStrikethrough(): Boolean {
     return regex.matches(this)
 }
 
-
 /**
  * Check if the bold text is with * characters.
  */
@@ -58,6 +57,14 @@ fun String.isStarBoldAndItalic(): Boolean {
 }
 
 /**
+ * Check if the text is a link.
+ */
+fun String.isLink(): Boolean {
+    val regex = Regex(".*\\[(.*)\\]\\((.*?)\\).*")
+    return regex.matches(this)
+}
+
+/**
  * Remove all markdown elements on a String.
  */
 fun String.withoutMarkdown(): String {
@@ -73,6 +80,7 @@ fun String.withoutMarkdown(): String {
         else if (word.isItalic()) word.italicContent()
         else if (word.isBoldAndItalic()) word.boldAndItalicContent()
         else if (word.isStrikethrough()) word.strikethroughContent()
+        else if (word.isLink()) word.linkName()
         else word
 
         // We need to append the whitespaces between each word :
@@ -108,4 +116,20 @@ private fun String.boldAndItalicContent(): String {
  */
 private fun String.strikethroughContent(): String {
     return this.replace("~{2}".toRegex(), "")
+}
+
+/**
+ * Retrieve the name of a link
+ */
+fun String.linkName(): String {
+    val regex = Regex(".*\\[(.*)\\]\\((.*?)\\).*")
+    return regex.find(this)?.destructured?.toList()?.get(0) ?: this
+}
+
+/**
+ * Retrieve the url of a link.
+ */
+fun String.linkUrl(): String {
+    val regex = Regex(".*\\[(.*)\\]\\((.*?)\\).*")
+    return regex.find(this)?.destructured?.toList()?.get(1) ?: this
 }

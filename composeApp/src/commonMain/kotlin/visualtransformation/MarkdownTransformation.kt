@@ -28,6 +28,11 @@ abstract class MarkdownTransformation : VisualTransformation {
     protected abstract fun AnnotatedString.Builder.handleStrikethroughWord(word: String)
 
     /**
+     * Handle the rendering of a link word.
+     */
+    protected abstract fun AnnotatedString.Builder.handleLinkWord(word: String)
+
+    /**
      * Build the final string used by a text field.
      * @param text the initial text to transform
      *

@@ -1,14 +1,12 @@
 package visualtransformation
 
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
 import model.textutils.*
+import theme.KarkdownColorTheme
 
 /**
  * Implementation of the VisualTransformation interface for building personalized text field content based on markdown
@@ -94,6 +92,32 @@ class TextFieldViewMarkdownTransformation(
         }
     }
 
+    @OptIn(ExperimentalTextApi::class)
+    override fun AnnotatedString.Builder.handleLinkWord(word: String) {
+        val regex = Regex("(.*)(\\[.*\\]\\(.*?\\))(.*)")
+        val subParts = regex.find(word)!!.destructured.toList()
+
+        val startUrlIndex = subParts[0].length
+        val endUrlIndex = startUrlIndex + subParts[1].linkName().length
+
+        append(subParts[0])
+        withStyle(
+            style = SpanStyle(
+                color = KarkdownColorTheme.colorScheme.accent,
+                textDecoration = TextDecoration.Underline
+            )
+        ) {
+            append(subParts[1].linkName())
+        }
+        append(subParts[2])
+
+        addUrlAnnotation(
+            UrlAnnotation(url = subParts[1].linkUrl()),
+            start = startUrlIndex,
+            end = endUrlIndex
+        )
+    }
+
     override fun buildFinalString(text: String): AnnotatedString = buildAnnotatedString {
         val whitespaces = text.split("\\S+".toRegex())
         val words = text.split("\\s+".toRegex())
@@ -108,6 +132,7 @@ class TextFieldViewMarkdownTransformation(
             else if (rowWords[realIndex].isItalic()) handleItalicWord(word = rowWords[realIndex])
             else if (rowWords[realIndex].isBoldAndItalic()) handleBoldAndItalicWord(word = rowWords[realIndex])
             else if (rowWords[realIndex].isStrikethrough()) handleStrikethroughWord(word = rowWords[realIndex])
+            else if (rowWords[realIndex].isLink()) handleLinkWord(word = rowWords[realIndex])
             else append(word)
             // We need to append the whitespaces between each word :
             append(whitespaces.getOrElse(index + 1) { "" })
