@@ -4,7 +4,7 @@ package model.textutils
  * Check if a line is a blockquote.
  */
 fun String.isBlockquote(): Boolean {
-    val regex = Regex("^>+.*")
+    val regex = Regex("^>+ .*")
     return regex.matches(this)
 }
 
