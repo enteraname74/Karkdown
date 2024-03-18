@@ -123,19 +123,19 @@ class TextFieldViewMarkdownTransformation(
         val words = text.split("\\s+".toRegex())
         val rowWords = rowData.split("\\s+".toRegex())
 
+        println("EXTRACTED : "+extractMarkdownAndWordsWithPosition(sentence = text))
+
         val step = if (rowData.isHeader()) 1 else 0
 
-        words.forEachIndexed { index, word ->
-            val realIndex = index + step
-
-            if (rowWords[realIndex].isBold()) handleBoldWord(word = rowWords[realIndex])
-            else if (rowWords[realIndex].isItalic()) handleItalicWord(word = rowWords[realIndex])
-            else if (rowWords[realIndex].isBoldAndItalic()) handleBoldAndItalicWord(word = rowWords[realIndex])
-            else if (rowWords[realIndex].isStrikethrough()) handleStrikethroughWord(word = rowWords[realIndex])
-            else if (rowWords[realIndex].isLink()) handleLinkWord(word = rowWords[realIndex])
+        extractMarkdownAndWordsWithPosition(sentence = text).forEach { word ->
+            if (word.isBold()) handleBoldWord(word = word)
+            else if (word.isItalic()) handleItalicWord(word = word)
+            else if (word.isBoldAndItalic()) handleBoldAndItalicWord(word = word)
+            else if (word.isStrikethrough()) handleStrikethroughWord(word = word)
+            else if (word.isLink()) handleLinkWord(word = word)
             else append(word)
             // We need to append the whitespaces between each word :
-            append(whitespaces.getOrElse(index + 1) { "" })
+            append(" ")
         }
     }
 }

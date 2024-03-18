@@ -129,18 +129,6 @@ class TextFieldMarkdownTransformation : MarkdownTransformation() {
         )
     }
 
-    fun extractMarkdownAndWordsWithPosition(sentence: String): Pair<List<Pair<String, IntRange>>, List<Pair<String, IntRange>>> {
-        val markdownPattern = Regex("""\*{1,2}.*?\*{1,2}|\[.*?]\(.*?\)""")
-        val markdownMatches = markdownPattern.findAll(sentence).map { it.value to it.range }.toList()
-
-        val wordsPattern = Regex("""(?:\*{1,2}.*?\*{1,2}|\[.*?]\(.*?\))|\b(\w+)\b""")
-        val wordMatches = wordsPattern.findAll(sentence).mapNotNull {
-            if (it.groups[1] != null) it.groups[1]!!.value to it.groups[1]!!.range else null
-        }.toList()
-
-        return Pair(markdownMatches, wordMatches)
-    }
-
     /**
      * Build the final string used by a text field.
      * @param text the initial text to transform
