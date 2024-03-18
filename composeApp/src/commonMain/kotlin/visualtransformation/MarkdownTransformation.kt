@@ -1,12 +1,24 @@
 package visualtransformation
 
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
+import model.textutils.*
 
 /**
  * Handles the style transformation of markdown elements.
  */
 abstract class MarkdownTransformation : VisualTransformation {
+
+    override fun filter(text: AnnotatedString): TransformedText {
+        val transformedText = buildFinalString(text.toString())
+        return TransformedText(
+            text = transformedText,
+            offsetMapping = MarkdownOffsetMapping(maxTextOffset = transformedText.length)
+        )
+    }
+
     /**
      * Handle the rendering of a bold word.
      */
@@ -35,24 +47,28 @@ abstract class MarkdownTransformation : VisualTransformation {
     /**
      * Extract a list of each markdown elements in a sentence.
      */
-    fun extractMarkdownAndWordsWithPosition(sentence: String): List<String> {
-        val markdownPattern = Regex("""\*{1,2}.*?\*{1,2}|\[.*?]\(.*?\)""")
-        val matches = ArrayList(markdownPattern.findAll(sentence).map { it.value to it.range }.toList())
+    private fun extractMarkdownAndWordsWithPosition(sentence: String): List<String> {
+        val star = """\*{1,3}.*?\*{1,3}""".toRegex()
+        val link = """\[.*?]\(.*?\)""".toRegex()
+        val strike = """~~.*?~~""".toRegex()
 
-        val wordsPattern = Regex("""(?:\*{1,2}.*?\*{1,2}|\[.*?]\(.*?\))|\b(\w+)\b""")
-        val wordMatches = ArrayList(
-            wordsPattern.findAll(sentence).mapNotNull {
-                if (it.groups[1] != null) it.groups[1]!!.value to it.groups[1]!!.range else null
-            }.toList()
-        )
+        val markdownPattern = Regex("""$star|$link|$strike""")
+        val markdownMatches = markdownPattern.findAll(sentence).map { it.value to it.range }.toList().map { it.first }.toTypedArray()
 
-        matches.addAll(wordMatches)
+        val sentenceWithoutMarkdown = sentence.split(*markdownMatches)
 
-        return matches.sortedBy { match ->
-            match.second.first
-        }.map {
-            it.first
+        val finalList = ArrayList<String>()
+
+        println(sentenceWithoutMarkdown.size)
+        println(markdownMatches.size)
+
+        markdownMatches.forEachIndexed { i, s ->
+            finalList.add(sentenceWithoutMarkdown[i])
+            finalList.add(s)
         }
+        finalList.add(sentenceWithoutMarkdown.last())
+
+        return finalList
     }
 
 
@@ -62,5 +78,17 @@ abstract class MarkdownTransformation : VisualTransformation {
      *
      * @return the transformed text as an AnnotatedString.
      */
-    protected abstract fun buildFinalString(text: String): AnnotatedString
+    private fun buildFinalString(text: String): AnnotatedString = buildAnnotatedString {
+
+        println(extractMarkdownAndWordsWithPosition(text))
+
+        extractMarkdownAndWordsWithPosition(sentence = text).forEach { word ->
+            if (word.isBold()) handleBoldWord(word = word)
+            else if (word.isItalic()) handleItalicWord(word = word)
+            else if (word.isBoldAndItalic()) handleBoldAndItalicWord(word = word)
+            else if (word.isStrikethrough()) handleStrikethroughWord(word = word)
+            else if (word.isLink()) handleLinkWord(word = word)
+            else append(word)
+        }
+    }
 }

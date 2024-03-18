@@ -4,7 +4,7 @@ package model.textutils
  * Check if a string is strikethrough
  */
 fun String.isStrikethrough(): Boolean {
-    val regex = Regex("[^~]*(~{2}[^~]+~{2})[^~]*")
+    val regex = Regex("~{2}[^~]+~{2}")
     return regex.matches(this)
 }
 
