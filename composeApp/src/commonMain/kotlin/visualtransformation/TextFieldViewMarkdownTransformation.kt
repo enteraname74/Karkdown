@@ -120,7 +120,7 @@ class TextFieldViewMarkdownTransformation(
 
     override fun buildFinalString(text: String): AnnotatedString = buildAnnotatedString {
         val whitespaces = text.split("\\S+".toRegex())
-        val words = text.split("\\s+".toRegex())
+        val words = text.headerContent().split("\\s+".toRegex())
         val rowWords = rowData.split("\\s+".toRegex())
 
         val step = if (rowData.isHeader()) 1 else 0

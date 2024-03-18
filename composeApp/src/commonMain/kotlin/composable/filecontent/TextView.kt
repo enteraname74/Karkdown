@@ -59,7 +59,6 @@ fun TextView(
     }
 
     if (shouldFocus && !cursorPosSet) {
-        println("SETTING CURSOR IN: ${text.length}, currentTextRange: ${textValue.text.length}")
         textValue = textValue.copy(
             text = text,
             selection = TextRange(text.length, text.length)
@@ -71,7 +70,9 @@ fun TextView(
 
     if (shouldFocus) {
         SideEffect {
-            focusRequester.requestFocus()
+            try {
+                focusRequester.requestFocus()
+            } catch (_: Exception) {}
         }
     }
 

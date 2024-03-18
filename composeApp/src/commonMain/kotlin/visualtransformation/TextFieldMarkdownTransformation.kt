@@ -14,10 +14,13 @@ import theme.KarkdownColorTheme
  * properties when editing the text field content.
  */
 class TextFieldMarkdownTransformation : MarkdownTransformation() {
-    override fun filter(text: AnnotatedString): TransformedText = TransformedText(
-        text = buildFinalString(text.toString()),
-        offsetMapping = OffsetMapping.Identity
-    )
+    override fun filter(text: AnnotatedString): TransformedText {
+        val transformedText = buildFinalString(text.toString())
+        return TransformedText(
+            text = transformedText,
+            offsetMapping = MarkdownOffsetMapping(maxTextOffset = transformedText.length)
+        )
+    }
 
     /**
      * Handle the rendering of a bold word.

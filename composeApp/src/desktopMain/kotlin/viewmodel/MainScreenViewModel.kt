@@ -273,6 +273,7 @@ class MainScreenViewModel {
 
     private fun openFile(filepath: String) {
         fileManager.openFile(filepath)
+        fileManager.userPosition = 0
         updateCurrentFileInformation()
     }
 
