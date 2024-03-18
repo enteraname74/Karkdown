@@ -4,7 +4,7 @@ package model.textutils
  * Check if the text is a link.
  */
 fun String.isLink(): Boolean {
-    val regex = Regex(".*\\[(.*)\\]\\((.*?)\\).*")
+    val regex = Regex("""\[.*?]\(.*?\)""")
     return regex.matches(this)
 }
 

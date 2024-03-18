@@ -27,8 +27,8 @@ class FileManager {
     init {
         // We initialize the initial file content with a text input:
         rowData.add("")
-        lastSavedRowData = ArrayList(rowData)
         updateMarkdownContent()
+        lastSavedRowData = ArrayList(rowData)
     }
 
     val filename: String
@@ -83,8 +83,20 @@ class FileManager {
         } catch (_: Exception) {
             ArrayList()
         }
+        content = fileFormatter.formatMarkdownElements(
+            elements = lineAnalyzer.buildMarkdownFile(rowData)
+        )
+
+        // If the content is empty, we add a simple text for starting the editing of the file.
+        if (content.isEmpty()) {
+            createNewLine(
+                pos = 0,
+                initialText = ""
+            )
+        }
+
+        rowData = content.toRowData()
         lastSavedRowData = ArrayList(rowData)
-        updateMarkdownContent()
     }
 
     /**
@@ -104,12 +116,12 @@ class FileManager {
 
     /**
      * Create a new line and place the user to it.
-     * @param nextPos the position where to put the text.
+     * @param pos the position where to put the text.
      * @param initialText the initial text to add in the new line.
      */
-    fun createNewLine(nextPos: Int, initialText: String) {
-        if (nextPos >= size) rowData.add(initialText) else rowData.add(nextPos, initialText)
-        userPosition = nextPos
+    fun createNewLine(pos: Int, initialText: String) {
+        if (pos >= size) rowData.add(initialText) else rowData.add(pos, initialText)
+        userPosition = pos
         updateMarkdownContent()
     }
 
@@ -160,4 +172,11 @@ class FileManager {
      * Returns the line or an empty string if the pos is incorrect.
      */
     fun getLineAt(pos: Int): String = if (pos < 0 || pos >= rowData.size) "" else rowData[pos]
+
+    /**
+     * Retrieve the row data of a file from its markdown elements.
+     */
+    private fun List<MarkdownElement>.toRowData(): ArrayList<String> {
+        return ArrayList(this.map { it.rowData })
+    }
 }

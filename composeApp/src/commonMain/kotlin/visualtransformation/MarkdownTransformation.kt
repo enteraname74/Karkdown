@@ -59,9 +59,6 @@ abstract class MarkdownTransformation : VisualTransformation {
 
         val finalList = ArrayList<String>()
 
-        println(sentenceWithoutMarkdown.size)
-        println(markdownMatches.size)
-
         markdownMatches.forEachIndexed { i, s ->
             finalList.add(sentenceWithoutMarkdown[i])
             finalList.add(s)
@@ -79,9 +76,6 @@ abstract class MarkdownTransformation : VisualTransformation {
      * @return the transformed text as an AnnotatedString.
      */
     private fun buildFinalString(text: String): AnnotatedString = buildAnnotatedString {
-
-        println(extractMarkdownAndWordsWithPosition(text))
-
         extractMarkdownAndWordsWithPosition(sentence = text).forEach { word ->
             if (word.isBold()) handleBoldWord(word = word)
             else if (word.isItalic()) handleItalicWord(word = word)
