@@ -42,7 +42,7 @@ fun MainScreen(
             )
         }
     }
-    if (state.shouldShowCorrectFileSavedResult){
+    if (state.shouldShowCorrectFileSavedResult) {
         scope.launch {
             snackbarHostState.showSnackbar(
                 message = appStrings.fileSaved
@@ -61,7 +61,13 @@ fun MainScreen(
         },
         modifier = Modifier
             .onKeyEvent { event ->
-                if (event.type != KeyEventType.KeyUp) return@onKeyEvent false
+                if (event.isCtrlPressed && event.key == Key.O) {
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.ShouldSelectFile(
+                            shouldSelectFile = true
+                        )
+                    )
+                }
                 if (event.isCtrlPressed && event.key == Key.S) {
                     mainScreenViewModel.onEvent(
                         MainScreenEvent.QuickSaveCurrentFile

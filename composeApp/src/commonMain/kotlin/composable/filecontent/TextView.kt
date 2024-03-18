@@ -102,7 +102,6 @@ fun TextView(
             )
             .focusRequester(focusRequester)
             .onKeyEvent { event ->
-                if (event.type != KeyEventType.KeyUp) return@onKeyEvent false
                 when (event.key) {
                     Key.DirectionUp -> onKeyUp()
                     Key.DirectionDown -> onKeyDown()
