@@ -114,12 +114,11 @@ class FileFormatter {
      * Check if an element at a given position is a dummy blockquote.
      */
     private fun isDummyBlockquote(pos: Int, elements: List<MarkdownElement>): Boolean {
-        if (!isBlockquote(pos, elements)) return false
 
         if (isBlockquote(pos - 1, elements) && isBlockquote(pos + 1, elements)) {
-            val b0 = elements[pos] as Blockquote
-
-            return b0.rowData.blockquoteInnerText().isBlank()
+            if (isBlockquote(pos, elements) || isSimpleText(pos, elements)) {
+                return elements[pos].rowData.blockquoteInnerText().isBlank()
+            }
         }
         return false
     }
