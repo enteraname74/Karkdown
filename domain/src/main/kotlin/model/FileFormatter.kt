@@ -107,10 +107,6 @@ class FileFormatter {
         val isTextBlank = elements[pos].rowData.isBlank()
         val isNextElementInNeedOfSeparation = isSimpleText(pos + 1, elements) && elements.getOrNull(pos+1)?.rowData?.isNotBlank() == true
 
-        println("text blank ? $isTextBlank")
-        println("Prev ? $isPreviousElementInNeedOfSeparation")
-        println("Next ? $isNextElementInNeedOfSeparation")
-
         return isPreviousElementInNeedOfSeparation && isNextElementInNeedOfSeparation && isTextBlank
     }
 
@@ -122,10 +118,6 @@ class FileFormatter {
 
         if (isBlockquote(pos - 1, elements) && isBlockquote(pos + 1, elements)) {
             val b0 = elements[pos] as Blockquote
-
-            println("Content of blockquote: ${b0.rowData.blockquoteInnerText()}")
-            println("Is blank?: ${b0.rowData.blockquoteInnerText().isBlank()}")
-            println("Is empty?: ${b0.rowData.blockquoteInnerText().isEmpty()}")
 
             return b0.rowData.blockquoteInnerText().isBlank()
         }
@@ -139,11 +131,6 @@ class FileFormatter {
         val formattedElements = ArrayList<MarkdownElement>()
 
         elements.forEachIndexed { index, markdownElement ->
-            println("----")
-            println("Analyze for : $markdownElement")
-            println(!isDummySpace(index, elements))
-            println(!isDummyBlockquote(index, elements))
-            println("----")
             if (!isDummySpace(index, elements) && !isDummyBlockquote(index, elements)) {
                 formattedElements.add(markdownElement)
             }

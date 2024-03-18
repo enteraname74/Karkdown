@@ -45,14 +45,20 @@ abstract class MarkdownTransformation : VisualTransformation {
     protected abstract fun AnnotatedString.Builder.handleLinkWord(word: String)
 
     /**
+     * Handle the rendering of a code word.
+     */
+    protected abstract fun AnnotatedString.Builder.handleCode(word: String)
+
+    /**
      * Extract a list of each markdown elements in a sentence.
      */
     private fun extractMarkdownAndWordsWithPosition(sentence: String): List<String> {
         val star = """\*{1,3}.*?\*{1,3}""".toRegex()
         val link = """\[.*?]\(.*?\)""".toRegex()
         val strike = """~~.*?~~""".toRegex()
+        val code = """(`{1,3})[^`]+\1""".toRegex()
 
-        val markdownPattern = Regex("""$star|$link|$strike""")
+        val markdownPattern = Regex("""$star|$link|$strike|$code""")
         val markdownMatches = markdownPattern.findAll(sentence).map { it.value to it.range }.toList().map { it.first }.toTypedArray()
 
         val sentenceWithoutMarkdown = sentence.split(*markdownMatches)
@@ -82,6 +88,7 @@ abstract class MarkdownTransformation : VisualTransformation {
             else if (word.isBoldAndItalic()) handleBoldAndItalicWord(word = word)
             else if (word.isStrikethrough()) handleStrikethroughWord(word = word)
             else if (word.isLink()) handleLinkWord(word = word)
+            else if (word.isCode()) handleCode(word = word)
             else append(word)
         }
     }

@@ -12,5 +12,6 @@ fun String.isStrikethrough(): Boolean {
  * Retrieve the content of an italic section to show to a user.
  */
 fun String.strikethroughContent(): String {
-    return this.replace("~{2}".toRegex(), "")
+    val regex = Regex("""~{2}([^~]+)~{2}""")
+    return regex.find(this)?.destructured?.toList()?.getOrNull(0) ?: this
 }

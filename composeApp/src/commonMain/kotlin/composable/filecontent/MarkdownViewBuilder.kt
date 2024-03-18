@@ -63,17 +63,7 @@ fun MarkdownViewBuilder(
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
                 onDeleteLine = {
-                    println("Current data: ${markdownElement.rowData.blockquoteInnerText()}")
-                    if (markdownElement.rowData.blockquoteLevel() > 1) {
-                        var previousQuotes = ""
-                        repeat(markdownElement.rowData.blockquoteLevel()) {
-                            previousQuotes += ">"
-                        }
-                        previousQuotes += " "
-                        onLineChanged(previousQuotes)
-                    } else {
-                        onLineChanged(markdownElement.rowData.blockquoteQuotes())
-                    }
+                    onLineChanged(markdownElement.rowData.blockquoteQuotes())
                 },
                 userPosition = userPosition,
                 markdownElementPosition = markdownElementPosition,

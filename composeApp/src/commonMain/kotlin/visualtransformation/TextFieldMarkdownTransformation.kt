@@ -55,19 +55,22 @@ class TextFieldMarkdownTransformation : MarkdownTransformation() {
     }
 
     override fun AnnotatedString.Builder.handleStrikethroughWord(word: String) {
-        val subParts = word.split("~{2}".toRegex())
-        subParts.forEachIndexed { i, subPart ->
-            if (i % 2 == 0) {
-                append(subPart)
-            } else {
-                withStyle(
-                    style = SpanStyle(
-                        textDecoration = TextDecoration.LineThrough
-                    )
-                ) {
-                    append("~~$subPart~~")
-                }
-            }
+        withStyle(
+            style = SpanStyle(
+                textDecoration = TextDecoration.LineThrough
+            )
+        ) {
+            append(word)
+        }
+    }
+
+    override fun AnnotatedString.Builder.handleCode(word: String) {
+        withStyle(
+            style = SpanStyle(
+                background = KarkdownColorTheme.colorScheme.secondaryContainer
+            )
+        ) {
+            append(word)
         }
     }
 
