@@ -7,6 +7,9 @@ import kotlin.io.path.Path
 import kotlin.io.path.name
 
 class FileManager {
+
+    private val fileFormatter = FileFormatter()
+
     /**
      * The full filepath (path + filename) of a file.
      */
@@ -59,7 +62,8 @@ class FileManager {
                 val file = File(filepath.toString())
 
                 file.printWriter().use { writer ->
-                    rowData.forEach { line ->
+                    val finalData = fileFormatter.buildFinalRowData(content)
+                    finalData.forEach { line ->
                         writer.println(line)
                     }
                 }

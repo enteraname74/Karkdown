@@ -9,6 +9,24 @@ fun String.isBlockquote(): Boolean {
 }
 
 /**
+ * Retrieve the level of a blockquote.
+ */
+fun String.blockquoteLevel(): Int {
+    val regex = Regex("^>+")
+    val matchedElements = regex.find(this)
+    return matchedElements?.value?.length ?: 0
+}
+
+/**
+ * Retrieve the quotes of a blockquote.
+ */
+fun String.blockquoteQuotes(): String {
+    val regex = Regex("^>+")
+    val matchedElements = regex.find(this)
+    return matchedElements?.value ?: ""
+}
+
+/**
  * Retrieve the content of a blockquote to show to a user.
  */
 fun String.blockquoteContent(): String {

@@ -76,9 +76,9 @@ fun TextView(
         }
     }
 
-//    textValue = textValue.copy(
-//        text = if (isFocused) text else viewText
-//    )
+    textValue = textValue.copy(
+        text = if (isFocused) text else viewText
+    )
 
     BasicTextField(
         visualTransformation = if (isFocused) TextFieldMarkdownTransformation() else TextFieldViewMarkdownTransformation(rowData = text),
