@@ -128,6 +128,21 @@ fun MarkdownViewBuilder(
                 userPosition = userPosition,
                 markdownElementPosition = markdownElementPosition
             )
+            is Image -> ImageView(
+                imageName = markdownElement.imageName,
+                imagePath = markdownElement.imagePath,
+                currentText = markdownElement.rowData,
+                onClick = onClick,
+                onLineChanged = onLineChanged,
+                onDone = {
+                    onDone(userPosition+1, "")
+                },
+                onKeyDown = onKeyDown,
+                onKeyUp = onKeyUp,
+                onDeleteLine = onDeleteLine,
+                userPosition = userPosition,
+                markdownElementPosition = markdownElementPosition
+            )
         }
     }
 }

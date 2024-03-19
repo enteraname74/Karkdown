@@ -20,4 +20,6 @@ data object FrStrings: AppStrings {
     override val fileCouldNotBeSaved: String = "Le fichier n'a pas pu être sauvegardé"
 
     override fun saveFileNameIn(filename: String): String = "Enregistrer $filename dans..."
+
+    override fun couldNotLoadImageAtPath(imagePath: String): String = "Impossible de charger l'image provenant du chemin suivant : $imagePath"
 }

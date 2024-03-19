@@ -50,11 +50,16 @@ abstract class MarkdownTransformation : VisualTransformation {
     protected abstract fun AnnotatedString.Builder.handleCode(word: String)
 
     /**
+     * Handle an image link.
+     */
+    protected abstract fun AnnotatedString.Builder.handleImageLink(word: String)
+
+    /**
      * Extract a list of each markdown elements in a sentence.
      */
     private fun extractMarkdownAndWordsWithPosition(sentence: String): List<String> {
         val star = """\*{1,3}.*?\*{1,3}""".toRegex()
-        val link = """\[.*?]\(.*?\)""".toRegex()
+        val link = """[^!]\[.*?]\(.*?\)""".toRegex()
         val strike = """~~.*?~~""".toRegex()
         val code = """(`{1,3})[^`]+\1""".toRegex()
 
@@ -87,6 +92,7 @@ abstract class MarkdownTransformation : VisualTransformation {
             else if (word.isBold()) handleBoldWord(word = word)
             else if (word.isItalic()) handleItalicWord(word = word)
             else if (word.isStrikethrough()) handleStrikethroughWord(word = word)
+            else if (word.isImage()) handleImageLink(word = word)
             else if (word.isLink()) handleLinkWord(word = word)
             else if (word.isCode()) handleCode(word = word)
             else append(word)

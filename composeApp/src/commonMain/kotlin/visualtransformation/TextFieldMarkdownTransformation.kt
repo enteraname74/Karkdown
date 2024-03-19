@@ -74,6 +74,17 @@ class TextFieldMarkdownTransformation : MarkdownTransformation() {
         }
     }
 
+    override fun AnnotatedString.Builder.handleImageLink(word: String) {
+        withStyle(
+            style = SpanStyle(
+                color = KarkdownColorTheme.colorScheme.accent,
+                textDecoration = TextDecoration.Underline
+            )
+        ) {
+            append(word)
+        }
+    }
+
     @OptIn(ExperimentalTextApi::class)
     override fun AnnotatedString.Builder.handleLinkWord(word: String) {
         val regex = Regex("(.*)(\\[.*\\]\\(.*?\\))(.*)")

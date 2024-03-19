@@ -25,5 +25,13 @@ interface AppStrings {
     val fileSaved: String
     val fileCouldNotBeSaved: String
 
+    /**
+     * Indication to save a named file.
+     */
     fun saveFileNameIn(filename: String): String
+
+    /**
+     * Indication that an image could not be loaded from a given path.
+     */
+    fun couldNotLoadImageAtPath(imagePath: String): String
 }

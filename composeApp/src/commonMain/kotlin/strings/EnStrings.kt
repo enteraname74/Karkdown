@@ -20,4 +20,6 @@ data object EnStrings: AppStrings {
     override val fileCouldNotBeSaved: String = "File couldn't be saved"
 
     override fun saveFileNameIn(filename: String): String = "Save $filename in..."
+
+    override fun couldNotLoadImageAtPath(imagePath: String): String = "Could not load image from path: $imagePath"
 }

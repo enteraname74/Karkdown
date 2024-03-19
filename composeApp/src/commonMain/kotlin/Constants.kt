@@ -38,7 +38,7 @@ object Constants {
         val medium: Dp = 32.dp
         val large: Dp = 64.dp
         val veryLarge: Dp = 128.dp
-        val huge: Dp = 160.dp
+        val huge: Dp = 212.dp
     }
 
     /**

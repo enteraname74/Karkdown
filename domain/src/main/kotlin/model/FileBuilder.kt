@@ -27,6 +27,9 @@ class FileBuilder {
         else if (line.isHorizontalRule()) HorizontalRule(
             rowData = line
         )
+        else if(line.isImage()) Image(
+            rowData = line
+        )
         else SimpleText(rowData = line)
     }
 

@@ -9,7 +9,7 @@ fun String.isLink(): Boolean {
 }
 
 /**
- * Retrieve the name of a link
+ * Retrieve the name of a link.
  */
 fun String.linkName(): String {
     val regex = Regex(".*\\[(.*)\\]\\((.*?)\\).*")
