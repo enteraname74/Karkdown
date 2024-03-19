@@ -83,9 +83,9 @@ abstract class MarkdownTransformation : VisualTransformation {
      */
     private fun buildFinalString(text: String): AnnotatedString = buildAnnotatedString {
         extractMarkdownAndWordsWithPosition(sentence = text).forEach { word ->
-            if (word.isBold()) handleBoldWord(word = word)
+            if (word.isBoldAndItalic()) handleBoldAndItalicWord(word = word)
+            else if (word.isBold()) handleBoldWord(word = word)
             else if (word.isItalic()) handleItalicWord(word = word)
-            else if (word.isBoldAndItalic()) handleBoldAndItalicWord(word = word)
             else if (word.isStrikethrough()) handleStrikethroughWord(word = word)
             else if (word.isLink()) handleLinkWord(word = word)
             else if (word.isCode()) handleCode(word = word)
