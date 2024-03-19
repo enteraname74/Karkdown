@@ -17,6 +17,14 @@ fun String.imageName(): String {
 }
 
 /**
+ * Check if a given string is an URL.
+ */
+fun String.isURL(): Boolean {
+    val regex = Regex("""(http|https)://.+""")
+    return regex.matches(this)
+}
+
+/**
  * Retrieve the path of an image.
  */
 fun String.imagePath(): String {

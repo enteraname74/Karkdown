@@ -21,5 +21,7 @@ data object EnStrings: AppStrings {
 
     override fun saveFileNameIn(filename: String): String = "Save $filename in..."
 
+    override fun loadingImageAtPath(imagePath: String): String = "Loading image from path: $imagePath"
+
     override fun couldNotLoadImageAtPath(imagePath: String): String = "Could not load image from path: $imagePath"
 }

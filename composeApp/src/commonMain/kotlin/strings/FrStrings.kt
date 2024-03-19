@@ -21,5 +21,6 @@ data object FrStrings: AppStrings {
 
     override fun saveFileNameIn(filename: String): String = "Enregistrer $filename dans..."
 
+    override fun loadingImageAtPath(imagePath: String): String = "Chargement d'une image provenant du chemin suivant : $imagePath"
     override fun couldNotLoadImageAtPath(imagePath: String): String = "Impossible de charger l'image provenant du chemin suivant : $imagePath"
 }
