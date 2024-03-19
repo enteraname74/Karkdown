@@ -105,5 +105,15 @@ sealed interface MainScreenEvent {
      * Define the visibility of the file dropdown menu
      */
     data class SetFileDropdownMenuVisibility(val show: Boolean): MainScreenEvent
+
+    /**
+     * Switch shown file.
+     */
+    data class SwitchCurrentFile(val filePos: Int): MainScreenEvent
+
+    /**
+     * Create a new file to edit.
+     */
+    data object CreateNewFile: MainScreenEvent
 }
 

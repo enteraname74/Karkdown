@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.update
 import model.FileManager
 import state.MainScreenState
 import strings.appStrings
+import utils.FileHeader
 import kotlin.io.path.Path
 import kotlin.io.path.name
 import kotlin.io.path.pathString
@@ -20,18 +21,28 @@ import kotlin.math.max
 import kotlin.math.min
 
 class MainScreenViewModel {
-    private val fileManager: FileManager = FileManager()
+    private val allFilesManager: ArrayList<FileManager> = arrayListOf(FileManager())
+    private var filePos: Int = 0
+
     private val _state = MutableStateFlow(
-        MainScreenState(
-            fileContent = fileManager.content,
-        )
+        MainScreenState()
     )
+
+    private val currentFileManager: FileManager
+        get() = allFilesManager[filePos]
 
     var currentText by mutableStateOf("")
     val state = _state.asStateFlow()
 
+    init {
+        setFocusedLine(pos = 0)
+    }
+
     fun onEvent(event: MainScreenEvent) {
         when (event) {
+            MainScreenEvent.CreateNewFile -> createNewFile()
+            is MainScreenEvent.SwitchCurrentFile -> switchShownFile(newFilePos = event.filePos)
+
             is MainScreenEvent.OpenFile -> openFile(filepath = event.filepath)
             is MainScreenEvent.SetCurrentText -> updateEditedText(text = event.text, pos = event.pos)
             is MainScreenEvent.CreateNewLine -> createNewLine(nextPos = event.nextPos, initialText = event.initialText)
@@ -59,9 +70,35 @@ class MainScreenViewModel {
             is MainScreenEvent.ShouldEnterFileNameForPdf -> shouldSetFileNameForPdf(shouldSetFileName = event.shouldSetFileName)
             is MainScreenEvent.ShouldSelectFolderForPdf -> shouldSelectFolderForPdf(shouldSelectFolder = event.shouldSelectFolder)
 
-            MainScreenEvent.GoDown -> setFocusedLine(pos = abs(min(fileManager.userPosition + 1, fileManager.size - 1)))
-            MainScreenEvent.GoUp -> setFocusedLine(pos = max(fileManager.userPosition - 1, 0))
+            MainScreenEvent.GoDown -> setFocusedLine(
+                pos = abs(
+                    min(
+                        currentFileManager.userPosition + 1,
+                        currentFileManager.size - 1
+                    )
+                )
+            )
+
+            MainScreenEvent.GoUp -> setFocusedLine(pos = max(currentFileManager.userPosition - 1, 0))
         }
+    }
+
+    /**
+     * Create a new file and switch view to it.
+     */
+    private fun createNewFile() {
+        allFilesManager.add(FileManager())
+        switchShownFile(allFilesManager.lastIndex)
+    }
+
+    /**
+     * Change the visible file to show to the user.
+     */
+    private fun switchShownFile(newFilePos: Int) {
+        if (newFilePos < 0 || newFilePos > allFilesManager.lastIndex) return
+
+        filePos = newFilePos
+        updateCurrentFileInformation()
     }
 
     /**
@@ -115,7 +152,7 @@ class MainScreenViewModel {
     private fun exportAsPdf(filepath: String, filename: String) {
         saveAs(filepath, filename.replace(".pdf", ""))
 
-        fileManager.filepath?.let { path ->
+        currentFileManager.filepath?.let { path ->
             val converter = markdownConverter {
                 document(MarkdownDocument(path.pathString))
 
@@ -171,7 +208,7 @@ class MainScreenViewModel {
         // We need to check if the filename has the correct format:
         val finalFilename = if (filename.split(".").lastOrNull() != "md") "$filename.md" else filename
 
-        fileManager.filepath = Path(
+        currentFileManager.filepath = Path(
             base = filepath,
             finalFilename
         )
@@ -186,16 +223,16 @@ class MainScreenViewModel {
     private fun quickSave() {
 
         // In this case, we need to do the steps of a save as operation (filename -> destination folder -> save as)
-        if (fileManager.filepath == null) {
+        if (currentFileManager.filepath == null) {
             shouldSetFileName(shouldSetFileName = true)
         } else {
-            val hasBeenSaved = fileManager.saveFile()
+            val hasBeenSaved = currentFileManager.saveFile()
             if (hasBeenSaved) showCorrectSaving(show = true) else showSavingError(show = false)
             _state.update {
                 it.copy(
-                    filename = fileManager.filename,
-                    filepath = fileManager.filepath,
-                    isDataUpdated = fileManager.isDataUpdated
+                    filename = currentFileManager.filename,
+                    filepath = currentFileManager.filepath,
+                    isDataUpdated = currentFileManager.isDataUpdated
                 )
             }
         }
@@ -240,7 +277,7 @@ class MainScreenViewModel {
      * If the given position is the beginning of the file, does nothing.
      */
     private fun deleteLine(pos: Int) {
-        fileManager.deleteLine(pos = pos)
+        currentFileManager.deleteLine(pos = pos)
         updateCurrentFileInformation()
     }
 
@@ -248,8 +285,8 @@ class MainScreenViewModel {
      * Define which line should be focused.
      */
     private fun setFocusedLine(pos: Int) {
-        fileManager.setFocusedLine(pos)
-        updateCurrentFileInformation(currentTextToShow = fileManager.getLineAt(pos))
+        currentFileManager.setFocusedLine(pos)
+        updateCurrentFileInformation(currentTextToShow = currentFileManager.getLineAt(pos))
     }
 
     /**
@@ -258,7 +295,7 @@ class MainScreenViewModel {
      * @param initialText the initial text to add in the new line.
      */
     private fun createNewLine(nextPos: Int, initialText: String) {
-        fileManager.createNewLine(nextPos, initialText)
+        currentFileManager.createNewLine(nextPos, initialText)
         updateCurrentFileInformation(currentTextToShow = "")
     }
 
@@ -266,30 +303,45 @@ class MainScreenViewModel {
      * Update the current edited text.
      */
     private fun updateEditedText(text: String, pos: Int) {
-        fileManager.updateLineAt(text, pos)
+        currentFileManager.updateLineAt(text, pos)
         currentText = text
         updateCurrentFileInformation()
     }
 
     private fun openFile(filepath: String) {
-        fileManager.openFile(filepath)
-        fileManager.userPosition = 0
+        currentFileManager.openFile(filepath)
+        currentFileManager.userPosition = 0
         updateCurrentFileInformation()
     }
 
     /**
      * Update information about the current file and the user position on it.
      */
-    private fun updateCurrentFileInformation(currentTextToShow: String = fileManager.getLineAt(fileManager.userPosition)) {
+    private fun updateCurrentFileInformation(currentTextToShow: String = currentFileManager.getLineAt(currentFileManager.userPosition)) {
         _state.update {
             it.copy(
-                fileContent = fileManager.content,
-                userPosition = fileManager.userPosition,
-                filepath = fileManager.filepath,
-                filename = fileManager.filepath?.name ?: appStrings.newFilename,
-                isDataUpdated = fileManager.isDataUpdated
+                filesHeaders = allFilesManager.mapIndexed { pos, manager ->
+                    manager.toFileHeader(
+                        fileManagerPos = pos
+                    )
+                },
+                fileContent = currentFileManager.content,
+                filePos = filePos,
+                userPosition = currentFileManager.userPosition,
+                filepath = currentFileManager.filepath,
+                filename = currentFileManager.filepath?.name ?: appStrings.newFilename,
+                isDataUpdated = currentFileManager.isDataUpdated
             )
         }
         currentText = currentTextToShow
     }
+
+    /**
+     * Retrieve useful information from a file manager to be shown in a header.
+     */
+    private fun FileManager.toFileHeader(fileManagerPos: Int): FileHeader = FileHeader(
+        isDataUpdated = this.isDataUpdated,
+        isSelected = fileManagerPos == filePos,
+        fileName = this.filename
+    )
 }

@@ -11,10 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.*
 import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
-import composable.FileNameDialog
-import composable.FileTabHeader
-import composable.FileView
-import composable.MainHeaderBar
+import composable.*
 import event.MainScreenEvent
 import kotlinx.coroutines.launch
 import state.MainScreenState
@@ -151,12 +148,19 @@ fun MainScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            FileTabHeader(
-                filename = state.filename,
-                isDataUpdated = state.isDataUpdated,
-                isFileSelected = true,
-                onClick = {
-
+            FileHeaders(
+                headers = state.filesHeaders,
+                onHeaderClicked = {
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.SwitchCurrentFile(
+                            filePos = it
+                        )
+                    )
+                },
+                onCreateFile = {
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.CreateNewFile
+                    )
                 }
             )
             FileEditor(
