@@ -63,7 +63,7 @@ fun MarkdownViewBuilder(
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
                 onDeleteLine = {
-                    onLineChanged(markdownElement.rowData.blockquoteQuotes())
+                    onLineChanged("${markdownElement.rowData.blockquoteQuotes()}${markdownElement.rowData.substring(startIndex = 2)}")
                 },
                 userPosition = userPosition,
                 markdownElementPosition = markdownElementPosition,
@@ -85,7 +85,7 @@ fun MarkdownViewBuilder(
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
                 onDeleteLine = {
-                    onLineChanged(markdownElement.rowData.unorderedListIndicator())
+                    onLineChanged("${markdownElement.rowData.unorderedListIndicator()}${markdownElement.rowData.substring(startIndex = 2)}")
                 },
                 userPosition = userPosition,
                 markdownElementPosition = markdownElementPosition,
@@ -108,7 +108,7 @@ fun MarkdownViewBuilder(
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
                 onDeleteLine = {
-                    onLineChanged("${markdownElement.rowData.orderedListIndicator()}.")
+                    onLineChanged("${markdownElement.rowData.orderedListIndicator()}.${markdownElement.rowData.substring(startIndex = 3)}")
                 },
                 userPosition = userPosition,
                 markdownElementPosition = markdownElementPosition,

@@ -3,10 +3,12 @@ package composable
 import Constants
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import composable.filecontent.MarkdownViewBuilder
 import model.markdownelement.MarkdownElement
 
@@ -60,6 +62,14 @@ fun FileView(
                         }
                 )
             }
+        }
+
+        item {
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+            )
         }
     }
 }
