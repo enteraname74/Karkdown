@@ -20,7 +20,8 @@ import utils.FileHeader
 fun FileHeaders(
     headers: List<FileHeader>,
     onHeaderClicked: (headerPos: Int) -> Unit,
-    onCreateFile: () -> Unit
+    onCreateFile: () -> Unit,
+    onCloseFile: (headerPos: Int) -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -40,6 +41,9 @@ fun FileHeaders(
                             header = fileHeader,
                             onClick = {
                                 onHeaderClicked(index)
+                            },
+                            onClose = {
+                                onCloseFile(index)
                             }
                         )
                     }

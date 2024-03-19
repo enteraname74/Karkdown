@@ -7,6 +7,9 @@ data object FrStrings: AppStrings {
     override val file: String = "Fichier"
 
     override val openFile: String = "Ouvrir un fichier"
+    override val noFileOpen: String = "Aucun ficher ouvert"
+    override val createFile: String = "Créer un fichier"
+
     override val saveFile: String = "Enregistrer"
     override val saveAs: String = "Enregistrer sous..."
     override val exportAsPdf: String = "Exporter en PDF"

@@ -3,10 +3,14 @@ package screen
 import Constants
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.Button
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.*
 import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
@@ -87,87 +91,76 @@ fun MainScreen(
                 false
             },
         topBar = {
-            MainHeaderBar(
-                shouldShowDropdown = state.shouldShowFileDropdownMenu,
-                setDropdownVisibility = {
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.SetFileDropdownMenuVisibility(
-                            show = it
-                        )
-                    )
-                },
-                onOpenFile = {
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.SetFileDropdownMenuVisibility(
-                            show = false
-                        )
-                    )
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.ShouldSelectFile(
-                            shouldSelectFile = true
-                        )
-                    )
-                },
-                onQuickSave = {
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.SetFileDropdownMenuVisibility(
-                            show = false
-                        )
-                    )
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.QuickSaveCurrentFile
-                    )
-                },
-                onSaveAs = {
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.SetFileDropdownMenuVisibility(
-                            show = false
-                        )
-                    )
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.ShouldEnterFileName(
-                            shouldSetFileName = true
-                        )
-                    )
-                },
-                onExportAsPdf = {
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.SetFileDropdownMenuVisibility(
-                            show = false
-                        )
-                    )
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.ShouldEnterFileNameForPdf(
-                            shouldSetFileName = true
-                        )
-                    )
-                }
+            MainScreenHeaderBar(
+                mainScreenViewModel = mainScreenViewModel,
+                state = state
             )
         }
     ) { paddingValues ->
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            FileHeaders(
-                headers = state.filesHeaders,
-                onHeaderClicked = {
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.SwitchCurrentFile(
-                            filePos = it
+            if (state.filesHeaders.isEmpty()) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(Constants.Spacing.medium)
+                    ) {
+                        Text(
+                            text = appStrings.noFileOpen,
+                            style = Constants.FontStyle.h1
                         )
-                    )
-                },
-                onCreateFile = {
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.CreateNewFile
-                    )
+                        Button(
+                            onClick = {
+                                mainScreenViewModel.onEvent(
+                                    MainScreenEvent.CreateNewFile
+                                )
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = KarkdownColorTheme.colorScheme.secondary,
+                                contentColor = KarkdownColorTheme.colorScheme.onSecondary
+                            )
+                        ) {
+                            Text(
+                                text = appStrings.createFile,
+                                style = Constants.FontStyle.body
+                            )
+                        }
+                    }
                 }
-            )
-            FileEditor(
-                mainScreenViewModel = mainScreenViewModel,
-                state = state,
-                paddingValues = paddingValues
-            )
+            } else {
+                FileHeaders(
+                    headers = state.filesHeaders,
+                    onHeaderClicked = {
+                        mainScreenViewModel.onEvent(
+                            MainScreenEvent.SwitchCurrentFile(
+                                filePos = it
+                            )
+                        )
+                    },
+                    onCreateFile = {
+                        mainScreenViewModel.onEvent(
+                            MainScreenEvent.CreateNewFile
+                        )
+                    },
+                    onCloseFile = {
+                        mainScreenViewModel.onEvent(
+                            MainScreenEvent.CloseFile(
+                                filePos = it
+                            )
+                        )
+                    }
+                )
+                FileEditor(
+                    mainScreenViewModel = mainScreenViewModel,
+                    state = state,
+                    paddingValues = paddingValues
+                )
+            }
         }
     }
 
@@ -287,12 +280,74 @@ fun MainScreen(
 }
 
 @Composable
+fun MainScreenHeaderBar(
+    mainScreenViewModel: MainScreenViewModel,
+    state: MainScreenState,
+) {
+    MainHeaderBar(
+        shouldShowDropdown = state.shouldShowFileDropdownMenu,
+        setDropdownVisibility = {
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.SetFileDropdownMenuVisibility(
+                    show = it
+                )
+            )
+        },
+        onOpenFile = {
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.SetFileDropdownMenuVisibility(
+                    show = false
+                )
+            )
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.ShouldSelectFile(
+                    shouldSelectFile = true
+                )
+            )
+        },
+        onQuickSave = {
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.SetFileDropdownMenuVisibility(
+                    show = false
+                )
+            )
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.QuickSaveCurrentFile
+            )
+        },
+        onSaveAs = {
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.SetFileDropdownMenuVisibility(
+                    show = false
+                )
+            )
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.ShouldEnterFileName(
+                    shouldSetFileName = true
+                )
+            )
+        },
+        onExportAsPdf = {
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.SetFileDropdownMenuVisibility(
+                    show = false
+                )
+            )
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.ShouldEnterFileNameForPdf(
+                    shouldSetFileName = true
+                )
+            )
+        }
+    )
+}
+
+@Composable
 fun FileEditor(
     mainScreenViewModel: MainScreenViewModel,
     state: MainScreenState,
     paddingValues: PaddingValues
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxSize()

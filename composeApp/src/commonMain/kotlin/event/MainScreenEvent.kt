@@ -115,5 +115,10 @@ sealed interface MainScreenEvent {
      * Create a new file to edit.
      */
     data object CreateNewFile: MainScreenEvent
+
+    /**
+     * Close a file at a given index.
+     */
+    data class CloseFile(val filePos: Int): MainScreenEvent
 }
 

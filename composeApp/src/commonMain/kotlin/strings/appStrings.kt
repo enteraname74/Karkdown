@@ -11,6 +11,8 @@ interface AppStrings {
     val appName: String get() =  "Karkdown"
 
     val file: String
+    val noFileOpen: String
+    val createFile: String
 
     val openFile: String
     val saveFile: String

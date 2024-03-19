@@ -29,7 +29,7 @@ class MainScreenViewModel {
     )
 
     private val currentFileManager: FileManager
-        get() = allFilesManager[filePos]
+        get() = allFilesManager.getOrElse(filePos) { FileManager() }
 
     var currentText by mutableStateOf("")
     val state = _state.asStateFlow()
@@ -42,6 +42,7 @@ class MainScreenViewModel {
         when (event) {
             MainScreenEvent.CreateNewFile -> createNewFile()
             is MainScreenEvent.SwitchCurrentFile -> switchShownFile(newFilePos = event.filePos)
+            is MainScreenEvent.CloseFile -> closeFile(pos = event.filePos)
 
             is MainScreenEvent.OpenFile -> openFile(filepath = event.filepath)
             is MainScreenEvent.SetCurrentText -> updateEditedText(text = event.text, pos = event.pos)
@@ -81,6 +82,20 @@ class MainScreenViewModel {
 
             MainScreenEvent.GoUp -> setFocusedLine(pos = max(currentFileManager.userPosition - 1, 0))
         }
+    }
+
+    /**
+     * Close a file at a given index.
+     * If the closed file is the one where the user is on,
+     * it will bring the user to the front
+     */
+    private fun closeFile(pos: Int) {
+        if (pos < 0 || pos > allFilesManager.lastIndex) return
+        allFilesManager.removeAt(pos)
+
+        if (pos == filePos) filePos = 0
+        else if (pos < filePos) filePos -= 1
+        updateCurrentFileInformation()
     }
 
     /**
@@ -308,7 +323,15 @@ class MainScreenViewModel {
         updateCurrentFileInformation()
     }
 
+
+    /**
+     * Open a file.
+     * It will add a new FileManager and place the user on it.
+     */
     private fun openFile(filepath: String) {
+        allFilesManager.add(FileManager())
+        filePos = allFilesManager.lastIndex
+
         currentFileManager.openFile(filepath)
         currentFileManager.userPosition = 0
         updateCurrentFileInformation()
