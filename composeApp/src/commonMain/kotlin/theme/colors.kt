@@ -8,6 +8,7 @@ val textColorLight = Color(0xFF767677)
 val subTextColorLight = Color(0xFF969697)
 
 val primaryColorDark = Color(0xff1B1E30)
+val primaryContainerColor = Color(0xff31344a)
 val secondaryColorDark = Color(0xff2D3250)
 val secondaryContainerColor = Color(0xff424769)
 val textColorDark = Color(0xff848aad)
