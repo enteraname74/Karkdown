@@ -18,7 +18,7 @@ class FileManager {
     private var lastSavedRowData: ArrayList<String> = ArrayList()
     private var rowData: ArrayList<String> = ArrayList()
 
-    private var lineAnalyzer = LineAnalyzer()
+    private var fileBuilder = FileBuilder()
     var content: ArrayList<MarkdownElement> = ArrayList()
     var userPosition: Int = 0
     val isDataUpdated: Boolean
@@ -84,7 +84,7 @@ class FileManager {
             ArrayList()
         }
         content = fileFormatter.formatMarkdownElements(
-            elements = lineAnalyzer.buildMarkdownFile(rowData)
+            elements = fileBuilder.buildMarkdownFile(rowData)
         )
 
         // If the content is empty, we add a simple text for starting the editing of the file.
@@ -103,7 +103,7 @@ class FileManager {
      * Update the markdown content of a file.
      */
     private fun updateMarkdownContent() {
-        content = lineAnalyzer.buildMarkdownFile(rowData)
+        content = fileBuilder.buildMarkdownFile(rowData)
     }
 
     /**

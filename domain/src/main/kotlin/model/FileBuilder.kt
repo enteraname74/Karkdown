@@ -4,9 +4,9 @@ import model.markdownelement.*
 import model.textutils.*
 
 /**
- * Methods for analyzing a line.
+ * Utils building a list of markdown elements from a row data.
  */
-class LineAnalyzer {
+class FileBuilder {
     /**
      * Build a MarkdownElement from a given line.
      */
@@ -23,6 +23,9 @@ class LineAnalyzer {
         else if (line.isBlockquote()) Blockquote(
             rowData = line,
             innerData = buildMarkdownElementFromLine(line.blockquoteContent())
+        )
+        else if (line.isHorizontalRule()) HorizontalRule(
+            rowData = line
         )
         else SimpleText(rowData = line)
     }

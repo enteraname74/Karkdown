@@ -115,6 +115,19 @@ fun MarkdownViewBuilder(
                 currentText = currentText.orderedListContent(),
                 currentIndicator = markdownElement.currentIndicator
             )
+            is HorizontalRule -> HorizontalRuleView(
+                currentText = markdownElement.rowData,
+                onClick = onClick,
+                onLineChanged = onLineChanged,
+                onDone = {
+                    onDone(userPosition+1, "")
+                },
+                onKeyDown = onKeyDown,
+                onKeyUp = onKeyUp,
+                onDeleteLine = onDeleteLine,
+                userPosition = userPosition,
+                markdownElementPosition = markdownElementPosition
+            )
         }
     }
 }
