@@ -52,8 +52,14 @@ compose.desktop {
         mainClass = "MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.github.enteraname74.karkdown"
+            targetFormats(
+                TargetFormat.Dmg,
+                TargetFormat.Msi,
+                TargetFormat.Rpm,
+                TargetFormat.Exe,
+                TargetFormat.AppImage
+            )
+            packageName = "Karkdown"
             packageVersion = "1.0.0"
         }
     }
