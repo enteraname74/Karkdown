@@ -51,6 +51,7 @@ class MainScreenViewModel {
             is MainScreenEvent.DeleteLine -> deleteLine(pos = event.pos)
 
             is MainScreenEvent.SetFileDropdownMenuVisibility -> setFileDropdownMenuVisibility(show = event.show)
+            is MainScreenEvent.SetAboutDialogVisibility -> setAboutDialogVisibility(show = event.show)
 
             MainScreenEvent.QuickSaveCurrentFile -> quickSave()
             is MainScreenEvent.SaveAsCurrentFile -> saveAs(
@@ -81,6 +82,17 @@ class MainScreenViewModel {
             )
 
             MainScreenEvent.GoUp -> setFocusedLine(pos = max(currentFileManager.userPosition - 1, 0))
+        }
+    }
+
+    /**
+     * Set the visibility of the About Dialog.
+     */
+    private fun setAboutDialogVisibility(show: Boolean) {
+        _state.update {
+            it.copy(
+                shouldShowAboutDialog = show
+            )
         }
     }
 

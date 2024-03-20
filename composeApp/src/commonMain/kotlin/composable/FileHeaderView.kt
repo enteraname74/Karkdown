@@ -5,23 +5,21 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.FiberManualRecord
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.PointerButton
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import strings.appStrings
 import theme.KarkdownColorTheme
 import utils.FileHeader
 
@@ -34,9 +32,21 @@ fun FileHeaderView(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
+    var isDeletingDialogOpened by remember {
+        mutableStateOf(false)
+    }
+
     var isHovered by remember {
         mutableStateOf(false)
     }
+
+    ConfirmDialog(
+        show = isDeletingDialogOpened,
+        onCloseFile = onClose,
+        setVisibility = {
+            isDeletingDialogOpened = it
+        }
+    )
 
     Column(
         modifier = Modifier
@@ -44,7 +54,13 @@ fun FileHeaderView(
             .hoverable(interactionSource = interactionSource)
             .onClick(
                 matcher = PointerMatcher.mouse(PointerButton.Tertiary),
-                onClick = onClose
+                onClick = {
+                    if (header.isDataUpdated) {
+                        onClose()
+                    } else {
+                        isDeletingDialogOpened = true
+                    }
+                }
             )
             .onPointerEvent(eventType = PointerEventType.Enter) {
                 isHovered = true
@@ -96,7 +112,11 @@ fun FileHeaderView(
                     modifier = Modifier
                         .size(Constants.ImageSize.small)
                         .clickable {
-                            onClose()
+                            if (header.isDataUpdated) {
+                                onClose()
+                            } else {
+                                isDeletingDialogOpened = true
+                            }
                         },
                     contentDescription = null,
                     tint = KarkdownColorTheme.colorScheme.onPrimary
@@ -104,12 +124,70 @@ fun FileHeaderView(
             }
         }
         if (header.isSelected) {
-            Divider(
+            HorizontalDivider(
+                thickness = 2.dp,
                 modifier = Modifier
-                    .height(Constants.Spacing.small)
                     .fillMaxWidth(),
                 color = KarkdownColorTheme.colorScheme.accent
             )
         }
+    }
+}
+
+@Composable
+private fun ConfirmDialog(
+    show: Boolean,
+    setVisibility: (Boolean) -> Unit,
+    onCloseFile: () -> Unit
+) {
+    if (show) {
+        AlertDialog(
+            onDismissRequest = {
+                setVisibility(false)
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        setVisibility(false)
+                        onCloseFile()
+                    }
+                ) {
+                    Text(
+                        text = appStrings.validate,
+                        style = Constants.FontStyle.small
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        setVisibility(false)
+                    }
+                ) {
+                    Text(
+                        text = appStrings.cancel,
+                        style = Constants.FontStyle.small
+                    )
+                }
+            },
+            containerColor = KarkdownColorTheme.colorScheme.primary,
+            textContentColor = KarkdownColorTheme.colorScheme.onPrimary,
+            titleContentColor = KarkdownColorTheme.colorScheme.onPrimary,
+            title = {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    text = appStrings.unsavedChangesDialogTitle,
+                    style = Constants.FontStyle.h3
+                )
+            },
+            text = {
+                Text(
+                    textAlign = TextAlign.Center,
+                    text = appStrings.unsavedChangesDialogText,
+                    style = Constants.FontStyle.body
+                )
+            }
+        )
     }
 }

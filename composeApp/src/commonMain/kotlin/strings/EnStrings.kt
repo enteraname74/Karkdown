@@ -8,6 +8,9 @@ data object EnStrings: AppStrings {
     override val newFile: String = "New file"
     override val noFileOpen: String = "No file open"
 
+    override val unsavedChangesDialogTitle: String = "Unsaved changes"
+    override val unsavedChangesDialogText: String = "Do you want to close the file without saving it?"
+
     override val openFile: String = "Open file"
     override val saveFile: String = "Save"
     override val saveAs: String = "Save as..."

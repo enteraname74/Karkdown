@@ -9,6 +9,10 @@ val appStrings = when(Locale.current.language) {
 
 interface AppStrings {
     val appName: String get() =  "Karkdown"
+    val appVersion: String get() = "1.0.0"
+
+    val unsavedChangesDialogTitle: String
+    val unsavedChangesDialogText: String
 
     val file: String
     val newFile: String

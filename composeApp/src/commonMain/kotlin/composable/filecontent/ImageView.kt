@@ -180,7 +180,6 @@ fun ErrorView(
  * Returns null if the data couldn't be retrieved.
  */
 private fun getImageDataFromGenericPath(imagePath: String, density: Density): Painter? {
-    println("Is url ? $imagePath, ${imagePath.isURL()}")
     return if (imagePath.isURL()) imageFromUrl(url = imagePath, density = density)
     else imageFromFile(filePath = imagePath, density = density)
 }
@@ -204,7 +203,6 @@ private fun imageFromUrl(url: String, density: Density): Painter? {
     return try {
         URL(url).openStream().buffered().use { loadSvgPainter(it, density) }
     } catch (e: Exception) {
-        println(e)
         null
     }
 }

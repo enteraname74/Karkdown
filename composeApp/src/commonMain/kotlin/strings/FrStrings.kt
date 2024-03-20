@@ -9,6 +9,9 @@ data object FrStrings: AppStrings {
     override val openFile: String = "Ouvrir un fichier"
     override val noFileOpen: String = "Aucun ficher ouvert"
 
+    override val unsavedChangesDialogTitle: String = "Changements non sauvegardés"
+    override val unsavedChangesDialogText: String = "Voulez-vous fermer ce fichier sans l'avoir sauvegardé ?"
+
     override val saveFile: String = "Enregistrer"
     override val saveAs: String = "Enregistrer sous..."
     override val exportAsPdf: String = "Exporter en PDF"

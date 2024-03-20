@@ -107,6 +107,11 @@ sealed interface MainScreenEvent {
     data class SetFileDropdownMenuVisibility(val show: Boolean): MainScreenEvent
 
     /**
+     * Define the visibility of the about dialog.
+     */
+    data class SetAboutDialogVisibility(val show: Boolean): MainScreenEvent
+
+    /**
      * Switch shown file.
      */
     data class SwitchCurrentFile(val filePos: Int): MainScreenEvent

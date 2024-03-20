@@ -19,6 +19,7 @@ data class MainScreenState(
     val userPosition: Int = 0,
 
     val shouldShowFileDropdownMenu: Boolean = false,
+    val shouldShowAboutDialog: Boolean = false,
 
     val isSelectingFile: Boolean = false,
     val isSelectingFolder: Boolean = false,

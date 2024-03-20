@@ -16,9 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.ComposeDialog
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.*
+import androidx.compose.ui.window.DialogWindow
 import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import composable.*
@@ -68,7 +70,6 @@ fun MainScreen(
         },
         modifier = Modifier
             .onKeyEvent { event ->
-                println(event)
                 if (event.isCtrlPressed) {
                     if (event.key == Key.N && event.type == KeyEventType.KeyUp) {
                         mainScreenViewModel.onEvent(
@@ -121,7 +122,8 @@ fun MainScreen(
                 SideEffect {
                     try {
                         focusRequester.requestFocus()
-                    } catch (_: Exception) {}
+                    } catch (_: Exception) {
+                    }
                 }
 
                 Column(
@@ -148,7 +150,7 @@ fun MainScreen(
                                 )
                             },
                             imageVector = Icons.Rounded.Add,
-                            name = appStrings.openFile
+                            name = appStrings.newFile
                         )
                         ImageButton(
                             onClick = {
@@ -308,6 +310,17 @@ fun MainScreen(
             }
         )
     }
+
+    AboutDialog(
+        show = state.shouldShowAboutDialog,
+        onDismiss = {
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.SetAboutDialogVisibility(
+                    show = false
+                )
+            )
+        }
+    )
 }
 
 @Composable
@@ -378,6 +391,13 @@ fun MainScreenHeaderBar(
             )
             mainScreenViewModel.onEvent(
                 MainScreenEvent.CreateNewFile
+            )
+        },
+        onMore = {
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.SetAboutDialogVisibility(
+                    show = true
+                )
             )
         }
     )
