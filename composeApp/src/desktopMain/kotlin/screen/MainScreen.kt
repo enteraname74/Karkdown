@@ -5,6 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.FolderOff
+import androidx.compose.material.icons.rounded.FolderOpen
 import androidx.compose.material3.Button
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -12,6 +16,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.*
 import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
@@ -62,33 +68,41 @@ fun MainScreen(
         },
         modifier = Modifier
             .onKeyEvent { event ->
-                if (event.isCtrlPressed && event.key == Key.O) {
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.ShouldSelectFile(
-                            shouldSelectFile = true
+                println(event)
+                if (event.isCtrlPressed) {
+                    if (event.key == Key.N && event.type == KeyEventType.KeyUp) {
+                        mainScreenViewModel.onEvent(
+                            MainScreenEvent.CreateNewFile
                         )
-                    )
-                }
-                if (event.isCtrlPressed && event.key == Key.S) {
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.QuickSaveCurrentFile
-                    )
-                }
-                if (event.isCtrlPressed && event.isShiftPressed && event.key == Key.S) {
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.ShouldEnterFileName(
-                            shouldSetFileName = true
+                    }
+                    if (event.key == Key.O) {
+                        mainScreenViewModel.onEvent(
+                            MainScreenEvent.ShouldSelectFile(
+                                shouldSelectFile = true
+                            )
                         )
-                    )
-                }
-                if (event.isCtrlPressed && event.isShiftPressed && event.key == Key.P) {
-                    mainScreenViewModel.onEvent(
-                        MainScreenEvent.ShouldEnterFileNameForPdf(
-                            shouldSetFileName = true
+                    }
+                    if (event.key == Key.S) {
+                        mainScreenViewModel.onEvent(
+                            MainScreenEvent.QuickSaveCurrentFile
                         )
-                    )
+                    }
+                    if (event.isShiftPressed && event.key == Key.S) {
+                        mainScreenViewModel.onEvent(
+                            MainScreenEvent.ShouldEnterFileName(
+                                shouldSetFileName = true
+                            )
+                        )
+                    }
+                    if (event.isShiftPressed && event.key == Key.P) {
+                        mainScreenViewModel.onEvent(
+                            MainScreenEvent.ShouldEnterFileNameForPdf(
+                                shouldSetFileName = true
+                            )
+                        )
+                    }
                 }
-                false
+                true
             },
         topBar = {
             MainScreenHeaderBar(
@@ -101,35 +115,52 @@ fun MainScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             if (state.filesHeaders.isEmpty()) {
+
+                val focusRequester = remember { FocusRequester() }
+
+                SideEffect {
+                    try {
+                        focusRequester.requestFocus()
+                    } catch (_: Exception) {}
+                }
+
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .focusRequester(focusRequester),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(Constants.Spacing.medium)
+                    Text(
+                        modifier = Modifier
+                            .padding(bottom = Constants.Spacing.medium),
+                        text = appStrings.noFileOpen,
+                        style = Constants.FontStyle.h1
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(Constants.Spacing.medium)
                     ) {
-                        Text(
-                            text = appStrings.noFileOpen,
-                            style = Constants.FontStyle.h1
-                        )
-                        Button(
+                        ImageButton(
                             onClick = {
                                 mainScreenViewModel.onEvent(
                                     MainScreenEvent.CreateNewFile
                                 )
                             },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = KarkdownColorTheme.colorScheme.secondary,
-                                contentColor = KarkdownColorTheme.colorScheme.onSecondary
-                            )
-                        ) {
-                            Text(
-                                text = appStrings.createFile,
-                                style = Constants.FontStyle.body
-                            )
-                        }
+                            imageVector = Icons.Rounded.Add,
+                            name = appStrings.openFile
+                        )
+                        ImageButton(
+                            onClick = {
+                                mainScreenViewModel.onEvent(
+                                    MainScreenEvent.ShouldSelectFile(
+                                        shouldSelectFile = true
+                                    )
+                                )
+                            },
+                            imageVector = Icons.Rounded.FolderOpen,
+                            name = appStrings.openFile
+                        )
                     }
                 }
             } else {
@@ -337,6 +368,16 @@ fun MainScreenHeaderBar(
                 MainScreenEvent.ShouldEnterFileNameForPdf(
                     shouldSetFileName = true
                 )
+            )
+        },
+        onNewFile = {
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.SetFileDropdownMenuVisibility(
+                    show = false
+                )
+            )
+            mainScreenViewModel.onEvent(
+                MainScreenEvent.CreateNewFile
             )
         }
     )

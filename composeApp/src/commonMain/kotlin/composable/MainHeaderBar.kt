@@ -11,6 +11,7 @@ import theme.KarkdownColorTheme
 fun MainHeaderBar(
     shouldShowDropdown: Boolean,
     setDropdownVisibility: (Boolean) -> Unit,
+    onNewFile: () -> Unit,
     onOpenFile: () -> Unit,
     onQuickSave: () -> Unit,
     onSaveAs: () -> Unit,
@@ -29,7 +30,8 @@ fun MainHeaderBar(
             onOpenFile = onOpenFile,
             onQuickSave = onQuickSave,
             onSaveAs = onSaveAs,
-            onExportAsPdf = onExportAsPdf
+            onExportAsPdf = onExportAsPdf,
+            onNewFile = onNewFile
         )
     }
 }

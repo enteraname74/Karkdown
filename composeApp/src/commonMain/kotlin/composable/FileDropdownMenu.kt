@@ -1,9 +1,7 @@
 package composable
 
-import Constants
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
@@ -18,6 +16,7 @@ import theme.KarkdownColorTheme
 fun FileDropdownMenu(
     shouldShowDropdown: Boolean,
     setDropdownVisibility: (Boolean) -> Unit,
+    onNewFile: () -> Unit,
     onOpenFile: () -> Unit,
     onQuickSave: () -> Unit,
     onSaveAs: () -> Unit,
@@ -47,6 +46,24 @@ fun FileDropdownMenu(
                 setDropdownVisibility(false)
             }
         ) {
+            DropdownMenuItem(
+                text = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = appStrings.newFile,
+                            color = KarkdownColorTheme.colorScheme.onPrimary
+                        )
+                        Text(
+                            text = "Ctrl+N",
+                            color = KarkdownColorTheme.colorScheme.subText
+                        )
+                    }
+                },
+                onClick = onNewFile
+            )
             DropdownMenuItem(
                 text = {
                     Row(

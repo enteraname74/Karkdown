@@ -5,8 +5,8 @@ package strings
  */
 data object EnStrings: AppStrings {
     override val file: String = "File"
+    override val newFile: String = "New file"
     override val noFileOpen: String = "No file open"
-    override val createFile: String = "Create file"
 
     override val openFile: String = "Open file"
     override val saveFile: String = "Save"
