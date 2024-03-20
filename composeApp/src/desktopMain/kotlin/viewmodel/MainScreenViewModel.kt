@@ -87,14 +87,13 @@ class MainScreenViewModel {
     /**
      * Close a file at a given index.
      * If the closed file is the one where the user is on,
-     * it will bring the user to the front
+     * it will bring the user to the previous page if possible
      */
     private fun closeFile(pos: Int) {
         if (pos < 0 || pos > allFilesManager.lastIndex) return
         allFilesManager.removeAt(pos)
 
-        if (pos == filePos) filePos = 0
-        else if (pos < filePos) filePos -= 1
+        if (pos < filePos || pos == filePos) filePos -= 1
         updateCurrentFileInformation()
     }
 
