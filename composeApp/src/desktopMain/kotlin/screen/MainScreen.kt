@@ -17,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeDialog
+import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.*
@@ -26,17 +27,21 @@ import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import composable.*
 import event.MainScreenEvent
 import kotlinx.coroutines.launch
+import li.flor.nativejfilechooser.NativeJFileChooser
 import state.MainScreenState
 import strings.appStrings
 import theme.KarkdownColorTheme
 import viewmodel.MainScreenViewModel
+import java.awt.FileDialog
 import java.io.File
 import javax.swing.JFileChooser
+import javax.swing.UIManager
 import javax.swing.filechooser.FileSystemView
 
 @Composable
 fun MainScreen(
-    mainScreenViewModel: MainScreenViewModel
+    mainScreenViewModel: MainScreenViewModel,
+    window: ComposeWindow
 ) {
     val state by mainScreenViewModel.state.collectAsState()
     val scope = rememberCoroutineScope()
@@ -86,11 +91,14 @@ fun MainScreen(
 //                            )
 //                        )
                         val filePath = fileChooserDialog("AMOGUS BAKA")
-                        mainScreenViewModel.onEvent(
-                            MainScreenEvent.OpenFile(
-                                filepath = filePath
-                            )
-                        )
+                       filePath?.let { path ->
+                           mainScreenViewModel.onEvent(
+                               MainScreenEvent.OpenFile(
+                                   filepath = path
+                               )
+                           )
+                       }
+//                        java.awt.FileDialog(window).isVisible = true
                     }
                     else if (event.isShiftPressed && event.key == Key.S) {
                         mainScreenViewModel.onEvent(
@@ -336,25 +344,24 @@ fun MainScreen(
 }
 
 fun fileChooserDialog(
-    title: String?
-): String {
-    val fileChooser = JFileChooser(FileSystemView.getFileSystemView())
-    fileChooser.currentDirectory = File(System.getProperty("user.dir"))
-    fileChooser.dialogTitle = title
-    fileChooser.fileSelectionMode = JFileChooser.FILES_AND_DIRECTORIES
-    fileChooser.isAcceptAllFileFilterUsed = true
-    fileChooser.selectedFile = null
-    fileChooser.currentDirectory = null
-    val file = if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+    title: String?,
+    mode: Int = JFileChooser.DIRECTORIES_ONLY
+): String? {
+    UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+    val fileChooser = JFileChooser(FileSystemView.getFileSystemView().homeDirectory).apply {
+        dialogTitle = title
+        fileSelectionMode = mode
+        isAcceptAllFileFilterUsed = true
+        selectedFile = null
+        currentDirectory = null
+    }
+
+    return if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
         fileChooser.selectedFile.toString()
     } else {
-
-        ""
-
+        println("NOT CHOOSE")
+        null
     }
-    println(file)
-    return file
-
 }
 
 @Composable

@@ -42,6 +42,7 @@ kotlin {
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.native.file.chooser)
         }
     }
 }

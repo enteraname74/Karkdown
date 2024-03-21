@@ -1,5 +1,6 @@
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.awt.ComposeWindow
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
@@ -10,7 +11,9 @@ import viewmodel.MainScreenViewModel
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 @Preview
-fun App() {
+fun App(
+    window: ComposeWindow
+) {
     MaterialTheme {
 //        var showContent by remember { mutableStateOf(false) }
 //        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -34,7 +37,8 @@ fun App() {
             val mainScreenViewModel = koinInject<MainScreenViewModel>()
 
             MainScreen(
-                mainScreenViewModel = mainScreenViewModel
+                mainScreenViewModel = mainScreenViewModel,
+                window = window
             )
         }
     }

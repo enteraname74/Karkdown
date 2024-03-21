@@ -1,6 +1,7 @@
 package composable
 
 import Constants
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,9 +14,15 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import karkdown.composeapp.generated.resources.Res
+import karkdown.composeapp.generated.resources.icon
+import karkdown.composeapp.generated.resources.svgIcon
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 import strings.appStrings
 import theme.KarkdownColorTheme
 
@@ -62,6 +69,7 @@ fun AboutDialog(
    }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun InnerContent() {
     Column(
@@ -75,6 +83,11 @@ private fun InnerContent() {
             textAlign = TextAlign.Center,
             text = appStrings.appName,
             style = Constants.FontStyle.h1
+        )
+        Image(
+            modifier = Modifier.size(Constants.ImageSize.veryLarge),
+            painter = painterResource(Res.drawable.icon),
+            contentDescription = "",
         )
         Text(
             textAlign = TextAlign.Center,
