@@ -30,6 +30,9 @@ import state.MainScreenState
 import strings.appStrings
 import theme.KarkdownColorTheme
 import viewmodel.MainScreenViewModel
+import java.io.File
+import javax.swing.JFileChooser
+import javax.swing.filechooser.FileSystemView
 
 @Composable
 fun MainScreen(
@@ -76,26 +79,32 @@ fun MainScreen(
                             MainScreenEvent.CreateNewFile
                         )
                     }
-                    if (event.key == Key.O) {
+                    else if (event.key == Key.O) {
+//                        mainScreenViewModel.onEvent(
+//                            MainScreenEvent.ShouldSelectFile(
+//                                shouldSelectFile = true
+//                            )
+//                        )
+                        val filePath = fileChooserDialog("AMOGUS BAKA")
                         mainScreenViewModel.onEvent(
-                            MainScreenEvent.ShouldSelectFile(
-                                shouldSelectFile = true
+                            MainScreenEvent.OpenFile(
+                                filepath = filePath
                             )
                         )
                     }
-                    if (event.key == Key.S) {
-                        mainScreenViewModel.onEvent(
-                            MainScreenEvent.QuickSaveCurrentFile
-                        )
-                    }
-                    if (event.isShiftPressed && event.key == Key.S) {
+                    else if (event.isShiftPressed && event.key == Key.S) {
                         mainScreenViewModel.onEvent(
                             MainScreenEvent.ShouldEnterFileName(
                                 shouldSetFileName = true
                             )
                         )
                     }
-                    if (event.isShiftPressed && event.key == Key.P) {
+                    else if (event.key == Key.S) {
+                        mainScreenViewModel.onEvent(
+                            MainScreenEvent.QuickSaveCurrentFile
+                        )
+                    }
+                    else if (event.isShiftPressed && event.key == Key.P) {
                         mainScreenViewModel.onEvent(
                             MainScreenEvent.ShouldEnterFileNameForPdf(
                                 shouldSetFileName = true
@@ -198,6 +207,7 @@ fun MainScreen(
     }
 
     FilePicker(
+        initialDirectory = System.getProperty("user.home"),
         show = state.isSelectingFile,
         fileExtensions = listOf("md"),
         title = appStrings.openFile
@@ -217,6 +227,7 @@ fun MainScreen(
     }
 
     DirectoryPicker(
+        initialDirectory = state.filepath?.toString() ?: System.getProperty("user.home"),
         show = state.isSelectingFolder,
         title = appStrings.saveFileNameIn(filename = state.filename)
     ) { parent ->
@@ -236,6 +247,7 @@ fun MainScreen(
     }
 
     DirectoryPicker(
+        initialDirectory = state.filepath?.toString() ?: System.getProperty("user.home"),
         show = state.isSelectingFolderForPdf,
         title = appStrings.saveFileNameIn(filename = state.pdfName)
     ) { parent ->
@@ -321,6 +333,28 @@ fun MainScreen(
             )
         }
     )
+}
+
+fun fileChooserDialog(
+    title: String?
+): String {
+    val fileChooser = JFileChooser(FileSystemView.getFileSystemView())
+    fileChooser.currentDirectory = File(System.getProperty("user.dir"))
+    fileChooser.dialogTitle = title
+    fileChooser.fileSelectionMode = JFileChooser.FILES_AND_DIRECTORIES
+    fileChooser.isAcceptAllFileFilterUsed = true
+    fileChooser.selectedFile = null
+    fileChooser.currentDirectory = null
+    val file = if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        fileChooser.selectedFile.toString()
+    } else {
+
+        ""
+
+    }
+    println(file)
+    return file
+
 }
 
 @Composable

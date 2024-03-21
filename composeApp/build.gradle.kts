@@ -52,15 +52,20 @@ compose.desktop {
         mainClass = "MainKt"
 
         nativeDistributions {
-            targetFormats(
-                TargetFormat.Dmg,
-                TargetFormat.Msi,
-                TargetFormat.Rpm,
-                TargetFormat.Exe,
-                TargetFormat.AppImage
-            )
+            targetFormats(TargetFormat.Rpm)
+
             packageName = "Karkdown"
-            packageVersion = "1.0.0"
+            packageVersion = "0.1.0"
+            description = "Markdown file editor software."
+
+            linux {
+                packageName = "Karkdown"
+                packageVersion = "0.1.0"
+                appRelease = "1"
+                appCategory = "Development;Markdown"
+                rpmLicenseType = "GPL-3.0-or-later"
+                iconFile.set(project.file("src/commonMain/composeResources/drawable/icon.png"))
+            }
         }
     }
 }
