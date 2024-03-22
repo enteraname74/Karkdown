@@ -132,7 +132,7 @@ private fun InnerContent(
             )
             Text(
                 textAlign = TextAlign.Center,
-                text = "Version: ${appStrings.appVersion}",
+                text = appStrings.appVersion,
                 style = Constants.FontStyle.body,
                 color = KarkdownColorTheme.colorScheme.subText
             )
@@ -208,7 +208,7 @@ private fun Contributors() {
         Text(
             modifier = Modifier
                 .padding(
-                    bottom = Constants.Spacing.medium
+                    Constants.Spacing.large
                 ),
             text = appStrings.contributors,
             style = Constants.FontStyle.h2
