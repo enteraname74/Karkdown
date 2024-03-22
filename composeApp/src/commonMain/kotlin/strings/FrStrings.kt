@@ -5,9 +5,9 @@ package strings
  */
 data object FrStrings: AppStrings {
     override val file: String = "Fichier"
-    override val newFile: String = "Nouveau fichier"
     override val openFile: String = "Ouvrir un fichier"
     override val noFileOpen: String = "Aucun ficher ouvert"
+    override val newFilename: String = "Nouveau fichier"
 
     override val unsavedChangesDialogTitle: String = "Changements non sauvegardés"
     override val unsavedChangesDialogText: String = "Voulez-vous fermer ce fichier sans l'avoir sauvegardé ?"
@@ -20,7 +20,6 @@ data object FrStrings: AppStrings {
     override val validate: String = "Valider"
     override val cancel: String = "Annuler"
 
-    override val newFilename: String = "Nouveau fichier"
     override val fileSaved: String = "Fichier sauvegardé"
     override val fileCouldNotBeSaved: String = "Le fichier n'a pas pu être sauvegardé"
 

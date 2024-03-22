@@ -31,8 +31,8 @@ class FileManager {
         lastSavedRowData = ArrayList(rowData)
     }
 
-    val filename: String
-        get() = filepath?.name ?: "New file"
+    val filename: String?
+        get() = filepath?.name
 
     /**
      * Size of the file content.

@@ -254,9 +254,15 @@ class MainScreenViewModel {
         } else {
             val hasBeenSaved = currentFileManager.saveFile()
             if (hasBeenSaved) showCorrectSaving(show = true) else showSavingError(show = false)
+            println(currentFileManager.filename)
             _state.update {
                 it.copy(
-                    filename = currentFileManager.filename,
+                    filesHeaders = allFilesManager.mapIndexed { pos, manager ->
+                        manager.toFileHeader(
+                            fileManagerPos = pos
+                        )
+                    },
+                    filename = currentFileManager.filename ?: appStrings.newFilename,
                     filepath = currentFileManager.filepath,
                     isDataUpdated = currentFileManager.isDataUpdated
                 )
@@ -340,6 +346,7 @@ class MainScreenViewModel {
      * It will add a new FileManager and place the user on it.
      */
     private fun openFile(filepath: String) {
+        println("path: $filepath")
         allFilesManager.add(FileManager())
         filePos = allFilesManager.lastIndex
 
@@ -376,6 +383,6 @@ class MainScreenViewModel {
     private fun FileManager.toFileHeader(fileManagerPos: Int): FileHeader = FileHeader(
         isDataUpdated = this.isDataUpdated,
         isSelected = fileManagerPos == filePos,
-        fileName = this.filename
+        fileName = this.filename ?: appStrings.newFilename
     )
 }

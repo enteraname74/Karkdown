@@ -3,40 +3,36 @@ package screen
 import Constants
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.FolderOff
 import androidx.compose.material.icons.rounded.FolderOpen
-import androidx.compose.material3.Button
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.awt.ComposeDialog
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.*
-import androidx.compose.ui.window.DialogWindow
 import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import composable.*
 import event.MainScreenEvent
 import kotlinx.coroutines.launch
-import li.flor.nativejfilechooser.NativeJFileChooser
 import state.MainScreenState
 import strings.appStrings
 import theme.KarkdownColorTheme
 import viewmodel.MainScreenViewModel
 import java.awt.FileDialog
 import java.io.File
+import java.io.FilenameFilter
 import javax.swing.JFileChooser
 import javax.swing.UIManager
 import javax.swing.filechooser.FileSystemView
+import kotlin.io.path.Path
 
 @Composable
 fun MainScreen(
@@ -83,36 +79,27 @@ fun MainScreen(
                         mainScreenViewModel.onEvent(
                             MainScreenEvent.CreateNewFile
                         )
-                    }
-                    else if (event.key == Key.O) {
-//                        mainScreenViewModel.onEvent(
-//                            MainScreenEvent.ShouldSelectFile(
-//                                shouldSelectFile = true
-//                            )
-//                        )
-                        val filePath = fileChooserDialog("AMOGUS BAKA")
-                       filePath?.let { path ->
-                           mainScreenViewModel.onEvent(
-                               MainScreenEvent.OpenFile(
-                                   filepath = path
-                               )
-                           )
-                       }
-//                        java.awt.FileDialog(window).isVisible = true
-                    }
-                    else if (event.isShiftPressed && event.key == Key.S) {
+                    } else if (event.key == Key.O) {
+                        val filePath = fileChooser(window = window)
+                        filePath?.let { path ->
+                            mainScreenViewModel.onEvent(
+                                MainScreenEvent.OpenFile(
+                                    filepath = path
+                                )
+                            )
+                        }
+                    } else if (event.isShiftPressed && event.key == Key.S) {
                         mainScreenViewModel.onEvent(
                             MainScreenEvent.ShouldEnterFileName(
                                 shouldSetFileName = true
                             )
                         )
-                    }
-                    else if (event.key == Key.S) {
+
+                    } else if (event.key == Key.S) {
                         mainScreenViewModel.onEvent(
                             MainScreenEvent.QuickSaveCurrentFile
                         )
-                    }
-                    else if (event.isShiftPressed && event.key == Key.P) {
+                    } else if (event.isShiftPressed && event.key == Key.P) {
                         mainScreenViewModel.onEvent(
                             MainScreenEvent.ShouldEnterFileNameForPdf(
                                 shouldSetFileName = true
@@ -125,7 +112,8 @@ fun MainScreen(
         topBar = {
             MainScreenHeaderBar(
                 mainScreenViewModel = mainScreenViewModel,
-                state = state
+                state = state,
+                window = window
             )
         }
     ) { paddingValues ->
@@ -167,7 +155,7 @@ fun MainScreen(
                                 )
                             },
                             imageVector = Icons.Rounded.Add,
-                            name = appStrings.newFile
+                            name = appStrings.newFilename
                         )
                         ImageButton(
                             onClick = {
@@ -234,43 +222,6 @@ fun MainScreen(
         )
     }
 
-    DirectoryPicker(
-        initialDirectory = state.filepath?.toString() ?: System.getProperty("user.home"),
-        show = state.isSelectingFolder,
-        title = appStrings.saveFileNameIn(filename = state.filename)
-    ) { parent ->
-        if (parent != null) {
-            mainScreenViewModel.onEvent(
-                MainScreenEvent.SaveAsCurrentFile(
-                    path = parent,
-                    filename = state.filename
-                )
-            )
-        }
-        mainScreenViewModel.onEvent(
-            MainScreenEvent.ShouldSelectFolder(
-                shouldSelectFolder = false
-            )
-        )
-    }
-
-    DirectoryPicker(
-        initialDirectory = state.filepath?.toString() ?: System.getProperty("user.home"),
-        show = state.isSelectingFolderForPdf,
-        title = appStrings.saveFileNameIn(filename = state.pdfName)
-    ) { parent ->
-        if (parent != null) {
-            mainScreenViewModel.onEvent(
-                MainScreenEvent.ExportAsPdf(path = parent)
-            )
-        }
-        mainScreenViewModel.onEvent(
-            MainScreenEvent.ShouldSelectFolderForPdf(
-                shouldSelectFolder = false
-            )
-        )
-    }
-
     if (state.isSettingFileName) {
         FileNameDialog(
             currentFileName = state.filename,
@@ -292,11 +243,18 @@ fun MainScreen(
                         name = filename
                     )
                 )
-                mainScreenViewModel.onEvent(
-                    MainScreenEvent.ShouldSelectFolder(
-                        shouldSelectFolder = true
-                    )
+                val folder = directoryChooser(
+                    title = appStrings.saveFileNameIn(filename = state.filename),
+                    initialDirectory = state.filepath?.toString() ?: System.getProperty("user.home")
                 )
+                folder?.let {
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.SaveAsCurrentFile(
+                            path = folder,
+                            filename = filename
+                        )
+                    )
+                }
             }
         )
     }
@@ -322,11 +280,15 @@ fun MainScreen(
                         name = filename
                     )
                 )
-                mainScreenViewModel.onEvent(
-                    MainScreenEvent.ShouldSelectFolderForPdf(
-                        shouldSelectFolder = true
-                    )
+                val folder = directoryChooser(
+                    title = appStrings.saveFileNameIn(filename = state.filename),
+                    initialDirectory = state.filepath?.toString() ?: System.getProperty("user.home")
                 )
+                folder?.let {
+                    mainScreenViewModel.onEvent(
+                        MainScreenEvent.ExportAsPdf(path = it)
+                    )
+                }
             }
         )
     }
@@ -343,14 +305,34 @@ fun MainScreen(
     )
 }
 
-fun fileChooserDialog(
-    title: String?,
-    mode: Int = JFileChooser.DIRECTORIES_ONLY
+/**
+ * Open a file.
+ */
+fun fileChooser(
+    window: ComposeWindow
 ): String? {
-    UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+    val fileDialog = FileDialog(window, appStrings.openFile, FileDialog.LOAD).apply {
+        directory = System.getProperty("user.home")
+        setFilenameFilter { _, name -> name.endsWith(".md") }
+        isVisible = true
+    }
+
+    val file: String? = fileDialog.file
+    return if (file != null) Path(base = fileDialog.directory, file).toString() else null
+}
+
+/**
+ * Open a folder.
+ */
+fun directoryChooser(
+    title: String?,
+    initialDirectory: String
+): String? {
+    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
     val fileChooser = JFileChooser(FileSystemView.getFileSystemView().homeDirectory).apply {
         dialogTitle = title
-        fileSelectionMode = mode
+        currentDirectory = File(initialDirectory)
+        fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
         isAcceptAllFileFilterUsed = true
         selectedFile = null
         currentDirectory = null
@@ -359,7 +341,6 @@ fun fileChooserDialog(
     return if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
         fileChooser.selectedFile.toString()
     } else {
-        println("NOT CHOOSE")
         null
     }
 }
@@ -368,6 +349,7 @@ fun fileChooserDialog(
 fun MainScreenHeaderBar(
     mainScreenViewModel: MainScreenViewModel,
     state: MainScreenState,
+    window: ComposeWindow
 ) {
     MainHeaderBar(
         shouldShowDropdown = state.shouldShowFileDropdownMenu,
@@ -384,11 +366,14 @@ fun MainScreenHeaderBar(
                     show = false
                 )
             )
-            mainScreenViewModel.onEvent(
-                MainScreenEvent.ShouldSelectFile(
-                    shouldSelectFile = true
+            val filePath = fileChooser(window = window)
+            filePath?.let { path ->
+                mainScreenViewModel.onEvent(
+                    MainScreenEvent.OpenFile(
+                        filepath = path
+                    )
                 )
-            )
+            }
         },
         onQuickSave = {
             mainScreenViewModel.onEvent(

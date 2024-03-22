@@ -6,6 +6,10 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 repositories {
     jcenter()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
@@ -53,7 +57,7 @@ compose.desktop {
         mainClass = "MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Rpm)
+            targetFormats(TargetFormat.Rpm, TargetFormat.AppImage)
 
             packageName = "Karkdown"
             packageVersion = "0.1.0"

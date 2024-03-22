@@ -5,8 +5,8 @@ package strings
  */
 data object EnStrings: AppStrings {
     override val file: String = "File"
-    override val newFile: String = "New file"
     override val noFileOpen: String = "No file open"
+    override val newFilename: String = "New file"
 
     override val unsavedChangesDialogTitle: String = "Unsaved changes"
     override val unsavedChangesDialogText: String = "Do you want to close the file without saving it?"
@@ -20,7 +20,6 @@ data object EnStrings: AppStrings {
     override val validate: String = "Validate"
     override val cancel: String = "Cancel"
 
-    override val newFilename: String = "New file"
     override val fileSaved: String = "File saved"
     override val fileCouldNotBeSaved: String = "File couldn't be saved"
 

@@ -53,7 +53,7 @@ fun FileDropdownMenu(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = appStrings.newFile,
+                            text = appStrings.newFilename,
                             color = KarkdownColorTheme.colorScheme.onPrimary
                         )
                         Text(

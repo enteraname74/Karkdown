@@ -15,8 +15,8 @@ interface AppStrings {
     val unsavedChangesDialogText: String
 
     val file: String
-    val newFile: String
     val noFileOpen: String
+    val newFilename: String
 
     val openFile: String
     val saveFile: String
@@ -27,7 +27,6 @@ interface AppStrings {
     val validate: String
     val cancel: String
 
-    val newFilename: String
     val fileSaved: String
     val fileCouldNotBeSaved: String
 

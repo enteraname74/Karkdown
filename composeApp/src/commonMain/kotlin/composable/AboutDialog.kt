@@ -79,15 +79,15 @@ private fun InnerContent() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(Constants.Spacing.medium)
     ) {
-        Text(
-            textAlign = TextAlign.Center,
-            text = appStrings.appName,
-            style = Constants.FontStyle.h1
-        )
         Image(
             modifier = Modifier.size(Constants.ImageSize.veryLarge),
             painter = painterResource(Res.drawable.icon),
             contentDescription = "",
+        )
+        Text(
+            textAlign = TextAlign.Center,
+            text = appStrings.appName,
+            style = Constants.FontStyle.h1
         )
         Text(
             textAlign = TextAlign.Center,
