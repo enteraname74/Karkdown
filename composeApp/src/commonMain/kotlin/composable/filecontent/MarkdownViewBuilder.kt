@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import model.markdownelement.*
 import model.textutils.*
+import java.nio.file.Path
 
 /**
  * Used to build the correct markdown view element from a line.
@@ -23,6 +24,7 @@ fun MarkdownViewBuilder(
     userPosition: Int,
     markdownElementPosition: Int,
     currentText: String,
+    filePath: Path?
 ) {
     Row(
         modifier = Modifier
@@ -67,7 +69,8 @@ fun MarkdownViewBuilder(
                 },
                 userPosition = userPosition,
                 markdownElementPosition = markdownElementPosition,
-                currentText = currentText.blockquoteInnerText()
+                currentText = currentText.blockquoteInnerText(),
+                filePath = filePath
             )
 
             is UnorderedList -> UnorderedListView(
@@ -89,7 +92,8 @@ fun MarkdownViewBuilder(
                 },
                 userPosition = userPosition,
                 markdownElementPosition = markdownElementPosition,
-                currentText = currentText.unorderedListContent()
+                currentText = currentText.unorderedListContent(),
+                filePath = filePath
             )
 
             is OrderedList -> OrderedListView(
@@ -113,7 +117,8 @@ fun MarkdownViewBuilder(
                 userPosition = userPosition,
                 markdownElementPosition = markdownElementPosition,
                 currentText = currentText.orderedListContent(),
-                currentIndicator = markdownElement.currentIndicator
+                currentIndicator = markdownElement.currentIndicator,
+                filePath = filePath
             )
             is HorizontalRule -> HorizontalRuleView(
                 currentText = markdownElement.rowData,
@@ -141,7 +146,8 @@ fun MarkdownViewBuilder(
                 onKeyUp = onKeyUp,
                 onDeleteLine = onDeleteLine,
                 userPosition = userPosition,
-                markdownElementPosition = markdownElementPosition
+                markdownElementPosition = markdownElementPosition,
+                filePath = filePath
             )
         }
     }

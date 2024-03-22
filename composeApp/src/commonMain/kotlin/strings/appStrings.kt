@@ -25,6 +25,7 @@ interface AppStrings {
 
     val fileName: String
     val validate: String
+    val close: String
     val cancel: String
 
     val fileSaved: String

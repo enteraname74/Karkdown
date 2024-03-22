@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="120" height="120">
+
+    <g transform="translate(10, 10)">
+        <rect width="40" height="100" fill="#2D3250"/>
+        <rect width="6" height="100" fill="#F6B17A"/>
+
+        <polygon fill="#424769" points="100,0 60,0 30,50 60,100 100,100 70,50"/>
+    </g>
+
+</svg>
+
+<!--
+ Karkdown icon © 2024 by MaxBuster is licensed under Attribution 4.0 International
+-->

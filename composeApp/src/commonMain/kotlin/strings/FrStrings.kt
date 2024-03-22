@@ -18,6 +18,7 @@ data object FrStrings: AppStrings {
 
     override val fileName: String = "Nom du fichier"
     override val validate: String = "Valider"
+    override val close: String = "Fermer"
     override val cancel: String = "Annuler"
 
     override val fileSaved: String = "Fichier sauvegardé"

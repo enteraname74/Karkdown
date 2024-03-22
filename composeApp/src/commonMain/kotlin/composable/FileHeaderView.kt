@@ -153,7 +153,7 @@ private fun ConfirmDialog(
                     }
                 ) {
                     Text(
-                        text = appStrings.validate,
+                        text = appStrings.close,
                         style = Constants.FontStyle.small
                     )
                 }

@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import model.markdownelement.MarkdownElement
 import model.markdownelement.OrderedList
 import theme.KarkdownColorTheme
+import java.nio.file.Path
 
 @Composable
 fun OrderedListView(
@@ -26,6 +27,7 @@ fun OrderedListView(
     markdownElementPosition: Int,
     currentText: String,
     currentIndicator: Int,
+    filePath: Path?
 ) {
     Row(
         modifier = Modifier
@@ -49,7 +51,8 @@ fun OrderedListView(
             onDeleteLine = onDeleteLine,
             userPosition = userPosition,
             markdownElementPosition = markdownElementPosition,
-            currentText = currentText
+            currentText = currentText,
+            filePath = filePath
         )
     }
 }

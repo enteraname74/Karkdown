@@ -159,11 +159,14 @@ fun MainScreen(
                         )
                         ImageButton(
                             onClick = {
-                                mainScreenViewModel.onEvent(
-                                    MainScreenEvent.ShouldSelectFile(
-                                        shouldSelectFile = true
+                                val filePath = fileChooser(window = window)
+                                filePath?.let { path ->
+                                    mainScreenViewModel.onEvent(
+                                        MainScreenEvent.OpenFile(
+                                            filepath = path
+                                        )
                                     )
-                                )
+                                }
                             },
                             imageVector = Icons.Rounded.FolderOpen,
                             name = appStrings.openFile
@@ -200,26 +203,6 @@ fun MainScreen(
                 )
             }
         }
-    }
-
-    FilePicker(
-        initialDirectory = System.getProperty("user.home"),
-        show = state.isSelectingFile,
-        fileExtensions = listOf("md"),
-        title = appStrings.openFile
-    ) { file ->
-        if (file != null) {
-            mainScreenViewModel.onEvent(
-                MainScreenEvent.OpenFile(
-                    filepath = file.path
-                )
-            )
-        }
-        mainScreenViewModel.onEvent(
-            MainScreenEvent.ShouldSelectFile(
-                shouldSelectFile = false
-            )
-        )
     }
 
     if (state.isSettingFileName) {
@@ -488,7 +471,8 @@ fun FileEditor(
                 mainScreenViewModel.onEvent(
                     MainScreenEvent.DeleteLine(it)
                 )
-            }
+            },
+            filePath = state.filepath
         )
     }
 }

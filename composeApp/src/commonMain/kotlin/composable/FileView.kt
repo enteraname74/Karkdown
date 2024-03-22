@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import composable.filecontent.MarkdownViewBuilder
 import model.markdownelement.MarkdownElement
+import java.nio.file.Path
 
 /**
  * View for the content of a file.
@@ -19,6 +20,7 @@ import model.markdownelement.MarkdownElement
 fun FileView(
     modifier: Modifier = Modifier,
     fileContent: List<MarkdownElement>,
+    filePath: Path?,
     userLine: Int,
     onLineChanged: (String, Int) -> Unit,
     onDone: (nextPos: Int, initialText: String) -> Unit,
@@ -48,7 +50,8 @@ fun FileView(
                 currentText = if (userLine == pos) currentText else fileContent[pos].rowData,
                 onKeyUp = onKeyUp,
                 onKeyDown = onKeyDown,
-                onDeleteLine = onDeleteLine
+                onDeleteLine = onDeleteLine,
+                filePath = filePath
             )
         }
 

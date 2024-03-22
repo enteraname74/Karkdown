@@ -1,8 +1,6 @@
 package viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import com.github.woojiahao.MarkdownDocument
 import com.github.woojiahao.markdownConverter
 import event.MainScreenEvent
@@ -24,15 +22,18 @@ class MainScreenViewModel {
     private val allFilesManager: ArrayList<FileManager> = arrayListOf(FileManager())
     private var filePos: Int = 0
 
+    private val a by mutableStateOf(false)
+
     private val _state = MutableStateFlow(
         MainScreenState()
     )
+    val state = _state.asStateFlow()
 
     private val currentFileManager: FileManager
         get() = allFilesManager.getOrElse(filePos) { FileManager() }
 
     var currentText by mutableStateOf("")
-    val state = _state.asStateFlow()
+
 
     init {
         setFocusedLine(pos = 0)

@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import model.markdownelement.MarkdownElement
 import theme.KarkdownColorTheme
+import java.nio.file.Path
 
 @Composable
 fun BlockquoteView(
@@ -22,6 +23,7 @@ fun BlockquoteView(
     userPosition: Int,
     markdownElementPosition: Int,
     currentText: String,
+    filePath: Path?
 ) {
     Row(
         modifier = Modifier
@@ -52,7 +54,8 @@ fun BlockquoteView(
             onDeleteLine = onDeleteLine,
             userPosition = userPosition,
             markdownElementPosition = markdownElementPosition,
-            currentText = currentText
+            currentText = currentText,
+            filePath = filePath
         )
     }
 }
