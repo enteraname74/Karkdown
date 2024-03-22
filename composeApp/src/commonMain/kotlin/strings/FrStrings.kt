@@ -23,6 +23,12 @@ data object FrStrings: AppStrings {
     override val fileSaved: String = "Fichier sauvegardé"
     override val fileCouldNotBeSaved: String = "Le fichier n'a pas pu être sauvegardé"
 
+    override val projectWebSite: String = "Site du projet"
+    override val contributors: String = "Contributeurs"
+
+    override val leadDev: String = "Développeur principal"
+    override val designer: String = "Designer"
+
     override fun saveFileNameIn(filename: String): String = "Enregistrer $filename dans..."
 
     override fun loadingImageAtPath(imagePath: String): String = "Chargement d'une image provenant du chemin suivant : $imagePath"

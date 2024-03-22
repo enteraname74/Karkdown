@@ -9,7 +9,7 @@ val appStrings = when(Locale.current.language) {
 
 interface AppStrings {
     val appName: String get() =  "Karkdown"
-    val appVersion: String get() = "1.0.0"
+    val appVersion: String get() = "0.1.0"
 
     val unsavedChangesDialogTitle: String
     val unsavedChangesDialogText: String
@@ -29,6 +29,12 @@ interface AppStrings {
 
     val fileSaved: String
     val fileCouldNotBeSaved: String
+
+    val projectWebSite: String
+    val contributors: String
+
+    val leadDev: String
+    val designer: String
 
     /**
      * Indication to save a named file.

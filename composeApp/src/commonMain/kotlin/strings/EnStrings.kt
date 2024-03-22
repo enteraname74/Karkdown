@@ -23,6 +23,12 @@ data object EnStrings: AppStrings {
     override val fileSaved: String = "File saved"
     override val fileCouldNotBeSaved: String = "File couldn't be saved"
 
+    override val projectWebSite: String = "Project Website"
+    override val contributors: String = "Contributors"
+
+    override val leadDev: String = "Lead Developer"
+    override val designer: String = "Designer"
+
     override fun saveFileNameIn(filename: String): String = "Save $filename in..."
 
     override fun loadingImageAtPath(imagePath: String): String = "Loading image from path: $imagePath"
