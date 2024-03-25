@@ -318,6 +318,7 @@ class MainScreenViewModel {
      * Define which line should be focused.
      */
     private fun setFocusedLine(pos: Int) {
+        println("Set current line! $pos")
         currentFileManager.setFocusedLine(pos)
         updateCurrentFileInformation(currentTextToShow = currentFileManager.getLineAt(pos))
     }

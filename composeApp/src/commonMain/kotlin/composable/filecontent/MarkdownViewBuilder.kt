@@ -35,7 +35,7 @@ fun MarkdownViewBuilder(
     ) {
         when (markdownElement) {
             is Header, is SimpleText -> TextView(
-                text = currentText,
+                text = if (markdownElementPosition == userPosition) currentText else markdownElement.rowData,
                 viewText = markdownElement.viewData.toString(),
                 shouldFocus = markdownElementPosition == userPosition,
                 onChange = {

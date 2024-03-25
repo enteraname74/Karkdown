@@ -50,9 +50,7 @@ fun TextView(
         mutableStateOf(if (text.isEmpty()) 2 else 0)
     }
 
-    if (isClicked) {
-        onClick()
-    }
+    if (isClicked) onClick()
 
     var cursorPosSet by remember {
         mutableStateOf(false)
@@ -77,11 +75,11 @@ fun TextView(
     }
 
     textValue = textValue.copy(
-        text = if (isFocused) text else viewText
+        text = if (shouldFocus) text else viewText
     )
 
     BasicTextField(
-        visualTransformation = if (isFocused) TextFieldMarkdownTransformation() else TextFieldViewMarkdownTransformation(rowData = text),
+        visualTransformation = if (shouldFocus) TextFieldMarkdownTransformation() else TextFieldViewMarkdownTransformation(rowData = text),
         interactionSource = interactionSource,
         cursorBrush = SolidColor(KarkdownColorTheme.colorScheme.onPrimary),
         textStyle = buildCorrespondingTextStyle(line = text),
