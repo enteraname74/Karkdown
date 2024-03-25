@@ -245,13 +245,11 @@ private fun getImageDataFromGenericPath(
     imagePath: String,
     filePath: Path?
 ): ImageBitmap? {
-    println("Will get from path: $imagePath")
     return if (imagePath.isURL()) imageFromUrl(url = imagePath)
     else {
         val absolutePathResult = imageFromFile(filePath = imagePath)
         if (absolutePathResult == null && filePath != null) {
             val relativePath = Path(filePath.parent.toString(), imagePath)
-            println("Will build from relative path: $relativePath")
             imageFromFile(filePath = relativePath.toString())
         } else {
             absolutePathResult
@@ -268,13 +266,11 @@ private fun getSVGDataFromGenericPath(
     filePath: Path?,
     density: Density
 ): Painter? {
-    println("Will get from path: $imagePath")
     return if (imagePath.isURL()) svgFromUrl(url = imagePath, density = density)
     else {
         val absolutePathResult = svgFromFile(filePath = imagePath, density = density)
         if (absolutePathResult == null && filePath != null) {
             val relativePath = Path(filePath.parent.toString(), imagePath)
-            println("Will build from relative path: $relativePath")
             svgFromFile(filePath = relativePath.toString(), density = density)
         } else {
             absolutePathResult

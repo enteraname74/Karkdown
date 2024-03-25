@@ -255,7 +255,6 @@ class MainScreenViewModel {
         } else {
             val hasBeenSaved = currentFileManager.saveFile()
             if (hasBeenSaved) showCorrectSaving(show = true) else showSavingError(show = false)
-            println(currentFileManager.filename)
             _state.update {
                 it.copy(
                     filesHeaders = allFilesManager.mapIndexed { pos, manager ->
@@ -318,7 +317,6 @@ class MainScreenViewModel {
      * Define which line should be focused.
      */
     private fun setFocusedLine(pos: Int) {
-        println("Set current line! $pos")
         currentFileManager.setFocusedLine(pos)
         updateCurrentFileInformation(currentTextToShow = currentFileManager.getLineAt(pos))
     }
@@ -348,7 +346,6 @@ class MainScreenViewModel {
      * It will add a new FileManager and place the user on it.
      */
     private fun openFile(filepath: String) {
-        println("path: $filepath")
         allFilesManager.add(FileManager())
         filePos = allFilesManager.lastIndex
 
