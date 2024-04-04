@@ -1,5 +1,5 @@
 # Karkdown
-***
+
 ![software icon](images/svgIcon.svg)
 
 A software for editing markdown files.
