@@ -3,9 +3,7 @@ package composable.filecontent
 import Constants
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Error
 import androidx.compose.material3.CircularProgressIndicator
@@ -143,8 +141,6 @@ private fun LoadedImageView(
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         Image(
-            modifier = Modifier
-                .size(size = Constants.ImageSize.huge),
             bitmap = bitmap,
             contentDescription = null
         )
@@ -171,8 +167,6 @@ fun LoadedImageView(
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         Image(
-            modifier = Modifier
-                .size(size = Constants.ImageSize.huge),
             painter = painter,
             contentDescription = null
         )

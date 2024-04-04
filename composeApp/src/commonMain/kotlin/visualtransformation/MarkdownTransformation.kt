@@ -67,12 +67,6 @@ abstract class MarkdownTransformation : VisualTransformation {
         val markdownPattern = Regex("""$star|$link|$strike|$code|$image""")
         val markdownMatches = markdownPattern.findAll(sentence).map { it.value to it.range }.toList().map { it.first }.toTypedArray()
 
-        print("MATCHES: ")
-        markdownMatches.forEach {
-            print("$it + ")
-        }
-        println()
-
         val sentenceWithoutMarkdown = sentence.split(*markdownMatches)
 
         val finalList = ArrayList<String>()
@@ -82,8 +76,6 @@ abstract class MarkdownTransformation : VisualTransformation {
             finalList.add(s)
         }
         finalList.add(sentenceWithoutMarkdown.last())
-
-        println(finalList)
 
         return finalList
     }
