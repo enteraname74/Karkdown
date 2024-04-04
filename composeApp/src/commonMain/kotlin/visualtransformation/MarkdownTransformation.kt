@@ -59,12 +59,19 @@ abstract class MarkdownTransformation : VisualTransformation {
      */
     private fun extractMarkdownAndWordsWithPosition(sentence: String): List<String> {
         val star = """\*{1,3}.*?\*{1,3}""".toRegex()
-        val link = """[^!]\[.*?]\(.*?\)""".toRegex()
+        val link = """\[.*?]\(.*?\)""".toRegex()
+        val image = """!\[.*?]\(.*?\)""".toRegex()
         val strike = """~~.*?~~""".toRegex()
         val code = """(`{1,3})[^`]+\1""".toRegex()
 
-        val markdownPattern = Regex("""$star|$link|$strike|$code""")
+        val markdownPattern = Regex("""$star|$link|$strike|$code|$image""")
         val markdownMatches = markdownPattern.findAll(sentence).map { it.value to it.range }.toList().map { it.first }.toTypedArray()
+
+        print("MATCHES: ")
+        markdownMatches.forEach {
+            print("$it + ")
+        }
+        println()
 
         val sentenceWithoutMarkdown = sentence.split(*markdownMatches)
 
@@ -75,6 +82,8 @@ abstract class MarkdownTransformation : VisualTransformation {
             finalList.add(s)
         }
         finalList.add(sentenceWithoutMarkdown.last())
+
+        println(finalList)
 
         return finalList
     }
