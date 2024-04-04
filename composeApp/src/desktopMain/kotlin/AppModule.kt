@@ -3,9 +3,6 @@ import viewmodel.MainScreenViewModel
 
 val appModule = module {
     single {
-        MainScreenViewModel(
-            fileManager = get(),
-            lineAnalyzer = get()
-        )
+        MainScreenViewModel()
     }
 }

@@ -1,11 +1,24 @@
-This is a Kotlin Multiplatform project targeting Desktop.
+# Karkdown
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+![software icon](images/svgIcon.svg)
+
+A software for editing markdown files.
+## Features
+- Create and edit multiple files
+- Rendering of markdown elements are done while editing the file for a better view of the final result
+- PDF export (does not work with images currently)
+## Supported markdown elements
+Karkdown actually supports the following markdown elements:
+- headers
+- ordered and unordered lists (without multiple indentations)
+- **bold**, *italic* and ***both at the same time*** text
+- ~~strikethrough~~ text
+- [links](https://github.com/enteraname74) to your favorites websites
+- images (both local and remote images can be rendered)
+- some kind of `basic code block`
+- blockquotes
+- horizontal rules
+## Examples
+![possibilites of the application](images/karkdown_possibilities.png)
 
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…

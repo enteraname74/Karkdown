@@ -1,0 +1,38 @@
+package strings
+
+/**
+ * Implementation of the AppStrings for the English (default) translation.
+ */
+data object EnStrings: AppStrings {
+    override val file: String = "File"
+    override val noFileOpen: String = "No file open"
+    override val newFilename: String = "New file"
+
+    override val unsavedChangesDialogTitle: String = "Unsaved changes"
+    override val unsavedChangesDialogText: String = "Do you want to close the file without saving it?"
+
+    override val openFile: String = "Open file"
+    override val saveFile: String = "Save"
+    override val saveAs: String = "Save as..."
+    override val exportAsPdf: String = "Export as PDF"
+
+    override val fileName: String = "File's name"
+    override val validate: String = "Validate"
+    override val close: String = "Close"
+    override val cancel: String = "Cancel"
+
+    override val fileSaved: String = "File saved"
+    override val fileCouldNotBeSaved: String = "File couldn't be saved"
+
+    override val projectWebSite: String = "Project Website"
+    override val contributors: String = "Contributors"
+
+    override val leadDev: String = "Lead Developer"
+    override val designer: String = "Designer"
+
+    override fun saveFileNameIn(filename: String): String = "Save $filename in..."
+
+    override fun loadingImageAtPath(imagePath: String): String = "Loading image from path: $imagePath"
+
+    override fun couldNotLoadImageAtPath(imagePath: String): String = "Could not load image from path: $imagePath"
+}

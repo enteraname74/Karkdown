@@ -7,6 +7,18 @@ plugins {
 }
 
 kotlin {
+    jvmToolchain(17)
+}
+
+repositories {
+    jcenter()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    google()
+    gradlePluginPortal()
+    mavenCentral()
+}
+
+kotlin {
     jvm("desktop")
     
     sourceSets {
@@ -23,13 +35,18 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
 
             implementation(libs.file.picker)
+            implementation(libs.kmd2pdf)
+
             implementation(libs.koin.compose)
             implementation(libs.koin.core)
+
+            runtimeOnly(libs.androidx.collection)
 
             implementation(project(":domain"))
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.native.file.chooser)
         }
     }
 }
@@ -40,9 +57,20 @@ compose.desktop {
         mainClass = "MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.github.enteraname74.karkdown"
-            packageVersion = "1.0.0"
+            targetFormats(TargetFormat.Rpm, TargetFormat.AppImage)
+
+            packageName = "Karkdown"
+            packageVersion = "0.1.0"
+            description = "Markdown file editor software."
+
+            linux {
+                packageName = "Karkdown"
+                packageVersion = "0.1.0"
+                appRelease = "1"
+                appCategory = "Development;Markdown"
+                rpmLicenseType = "GPL-3.0-or-later"
+                iconFile.set(project.file("src/commonMain/composeResources/drawable/icon.png"))
+            }
         }
     }
 }

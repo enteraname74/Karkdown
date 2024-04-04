@@ -2,7 +2,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
+import theme.KarkdownColorTheme
 
 /**
  * Constants used throughout the application.
@@ -17,6 +19,15 @@ object Constants {
         val medium: Dp = 8.dp
         val large: Dp = 16.dp
         val veryLarge: Dp = 24.dp
+
+        val body: Dp = 3.dp
+
+        /**
+         * Retrieve padding values for a text.
+         */
+        fun textPadding(
+            headerLevel: Int
+        ): Dp = if (headerLevel == 0) body else max((20-headerLevel).dp, body)
     }
 
     /**
@@ -27,33 +38,58 @@ object Constants {
         val medium: Dp = 32.dp
         val large: Dp = 64.dp
         val veryLarge: Dp = 128.dp
-        val huge: Dp = 160.dp
+        val huge: Dp = 212.dp
     }
 
-    object FontSize {
-        val h1: TextStyle = TextStyle(
+    /**
+     * Define the styles for texts.
+     */
+    object FontStyle {
+        val h1 = TextStyle(
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = KarkdownColorTheme.colorScheme.onPrimary
+        )
+
+        val h2 = TextStyle(
             fontSize = 24.sp,
-            fontWeight = FontWeight(1000)
+            fontWeight = FontWeight.Bold,
+            color = KarkdownColorTheme.colorScheme.onPrimary
         )
-        val h2: TextStyle = TextStyle(
-            fontSize = 22.sp,
-            fontWeight = FontWeight(900)
-        )
-        val h3: TextStyle = TextStyle(
+
+        val h3 = TextStyle(
             fontSize = 20.sp,
-            fontWeight = FontWeight(800)
+            fontWeight = FontWeight.Bold,
+            color = KarkdownColorTheme.colorScheme.onPrimary
         )
-        val h4: TextStyle = TextStyle(
+
+        val h4 = TextStyle(
             fontSize = 18.sp,
-            fontWeight = FontWeight(700)
+            fontWeight = FontWeight.Bold,
+            color = KarkdownColorTheme.colorScheme.onPrimary
         )
-        val h5: TextStyle = TextStyle(
+
+        val h5 = TextStyle(
             fontSize = 16.sp,
-            fontWeight = FontWeight(600)
+            fontWeight = FontWeight.Bold,
+            color = KarkdownColorTheme.colorScheme.onPrimary
         )
-        val h6: TextStyle = TextStyle(
+
+        val h6 = TextStyle(
             fontSize = 14.sp,
-            fontWeight = FontWeight(500)
+            fontWeight = FontWeight.Bold,
+            color = KarkdownColorTheme.colorScheme.onPrimary
+        )
+
+        val body = TextStyle(
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
+            color = KarkdownColorTheme.colorScheme.onPrimary
+        )
+        val small = TextStyle(
+            fontSize = 13.sp,
+            fontWeight = FontWeight.W300,
+            color = KarkdownColorTheme.colorScheme.onPrimary
         )
     }
 
