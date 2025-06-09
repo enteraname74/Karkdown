@@ -11,7 +11,6 @@ kotlin {
 }
 
 repositories {
-    jcenter()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     google()
     gradlePluginPortal()
@@ -35,14 +34,16 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
 
             implementation(libs.file.picker)
-            implementation(libs.kmd2pdf)
 
             implementation(libs.koin.compose)
             implementation(libs.koin.core)
 
+//            implementation(project(":domain"))
+            implementation(libs.gson)
+
             runtimeOnly(libs.androidx.collection)
 
-            implementation(project(":domain"))
+            implementation(files("karkdown-core-jvm-0.1.0.jar"))
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

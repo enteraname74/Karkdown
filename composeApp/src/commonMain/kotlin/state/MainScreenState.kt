@@ -1,6 +1,6 @@
 package state
 
-import model.markdownelement.MarkdownElement
+import com.github.enteraname74.karkdowncore.markdownelement.MarkdownElement
 import strings.appStrings
 import utils.FileHeader
 import java.nio.file.Path

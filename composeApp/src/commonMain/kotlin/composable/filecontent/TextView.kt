@@ -1,9 +1,7 @@
 package composable.filecontent
 
 import Constants
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
-import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.interaction.*
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
@@ -12,14 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.input.key.*
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
-import model.textutils.headerLevel
-import model.textutils.isHeader
+import com.github.enteraname74.karkdowncore.textutils.headerLevel
+import com.github.enteraname74.karkdowncore.textutils.isHeader
 import theme.KarkdownColorTheme
-import visualtransformation.TextFieldMarkdownTransformation
 import utils.buildCorrespondingTextStyle
+import visualtransformation.TextFieldMarkdownTransformation
 import visualtransformation.TextFieldViewMarkdownTransformation
 
 /**
@@ -38,9 +38,6 @@ fun TextView(
     onDeleteLine: () -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
-    val interactionSource = remember { MutableInteractionSource() }
-    val isFocused by interactionSource.collectIsFocusedAsState()
-    val isClicked by interactionSource.collectIsPressedAsState()
 
     var textValue by remember {
         mutableStateOf(TextFieldValue(text))
@@ -49,18 +46,23 @@ fun TextView(
     var backSpaceCountWhenEmptyString by remember {
         mutableStateOf(if (text.isEmpty()) 2 else 0)
     }
-
-    if (isClicked) onClick()
+//    println("IS CLICKED? $isClicked")
+//    LaunchedEffect(isClicked) {
+//        if (isClicked) {
+//            println("TEXT - onClick called")
+//            onClick()
+//        }
+//    }
 
     var cursorPosSet by remember {
         mutableStateOf(false)
     }
 
     if (shouldFocus && !cursorPosSet) {
-        textValue = textValue.copy(
-            text = text,
-            selection = TextRange(text.length, text.length)
-        )
+//        textValue = textValue.copy(
+//            text = text,
+//            selection = TextRange(text.length, text.length)
+//        )
         cursorPosSet = true
     } else if (!shouldFocus) {
         cursorPosSet = false
@@ -74,18 +76,45 @@ fun TextView(
         }
     }
 
-    textValue = textValue.copy(
-        text = if (shouldFocus) text else viewText
-    )
+//    textValue = textValue.copy(
+//        text = if (shouldFocus) text else viewText
+//    )
+
+    println("TEXT: $text, VIEW TEXT: $viewText, textValue: ${textValue.text}")
+
+    fun getText(): String {
+        println("TEXT FROM CALLBACK: $text")
+        return text
+    }
 
     BasicTextField(
         visualTransformation = if (shouldFocus) TextFieldMarkdownTransformation() else TextFieldViewMarkdownTransformation(rowData = text),
-        interactionSource = interactionSource,
+        interactionSource = remember { MutableInteractionSource() }
+            .also { interactionSource ->
+                LaunchedEffect(interactionSource) {
+                    interactionSource.interactions.collect {
+                        if (it is PressInteraction.Release) {
+                            println("onClick called")
+                            onClick()
+                        }
+                        if (it is FocusInteraction.Focus) {
+                            println("FOCUS, will set text: ${getText()}")
+                            textValue = textValue.copy(
+                                text = getText(),
+                            )
+                        } else if (it is FocusInteraction.Unfocus) {
+                            println("UNFOCUSED, will set text: $viewText")
+                            textValue = textValue.copy(
+                                text = viewText,
+                            )
+                        }
+                    }
+                }
+            },
         cursorBrush = SolidColor(KarkdownColorTheme.colorScheme.onPrimary),
         textStyle = buildCorrespondingTextStyle(line = text),
         value = textValue,
         onValueChange = {
-            if (!isFocused) return@BasicTextField
             val shouldNavigateToNextLine = it.text.lastOrNull() == '\n'
             if (shouldNavigateToNextLine) return@BasicTextField onDone()
 

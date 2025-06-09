@@ -7,7 +7,7 @@ import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import model.markdownelement.MarkdownElement
+import com.github.enteraname74.karkdowncore.markdownelement.MarkdownElement
 import theme.KarkdownColorTheme
 import java.nio.file.Path
 

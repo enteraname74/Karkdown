@@ -3,7 +3,9 @@ package composable.filecontent
 import Constants
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Error
 import androidx.compose.material3.CircularProgressIndicator
@@ -19,10 +21,10 @@ import androidx.compose.ui.res.loadSvgPainter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import com.github.enteraname74.karkdowncore.textutils.isURL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import model.textutils.isURL
 import strings.appStrings
 import theme.KarkdownColorTheme
 import utils.*

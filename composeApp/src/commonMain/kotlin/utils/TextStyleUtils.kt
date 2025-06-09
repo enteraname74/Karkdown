@@ -2,8 +2,8 @@ package utils
 
 import Constants
 import androidx.compose.ui.text.TextStyle
-import model.textutils.headerLevel
-import model.textutils.isHeader
+import com.github.enteraname74.karkdowncore.textutils.headerLevel
+import com.github.enteraname74.karkdowncore.textutils.isHeader
 
 /**
  * Build a corresponding text style from a given line.

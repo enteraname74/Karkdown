@@ -6,6 +6,7 @@ kotlin = "1.9.22"
 koin = "3.5.3"
 koin-compose = "1.1.2"
 file-picker = "3.1.0"
+gson = "2.11.0"
 kmd2pdf = "0.2.2"
 collection = "1.4.0"
 native-file-chooser = "1.6.4"
@@ -17,6 +18,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 file-picker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "file-picker" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 kmd2pdf = {  module = "com.github.woojiahao:kMD2PDF", version.ref = "kmd2pdf" }
 native-file-chooser = { module = "li.flor:native-j-file-chooser", version.ref = "native-file-chooser" }
 

@@ -4,7 +4,7 @@ import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import model.textutils.*
+import com.github.enteraname74.karkdowncore.textutils.*
 import theme.KarkdownColorTheme
 
 /**

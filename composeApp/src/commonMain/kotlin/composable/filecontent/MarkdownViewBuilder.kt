@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import model.markdownelement.*
-import model.textutils.*
+import com.github.enteraname74.karkdowncore.markdownelement.*
+import com.github.enteraname74.karkdowncore.textutils.*
 import java.nio.file.Path
 
 /**
@@ -149,6 +149,8 @@ fun MarkdownViewBuilder(
                 markdownElementPosition = markdownElementPosition,
                 filePath = filePath
             )
+
+            is CheckList -> TODO()
         }
     }
 }

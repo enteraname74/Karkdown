@@ -17,18 +17,17 @@ import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.*
-import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
-import com.darkrockstudios.libraries.mpfilepicker.FilePicker
+import androidx.compose.ui.unit.dp
 import composable.*
 import event.MainScreenEvent
 import kotlinx.coroutines.launch
+import rememberMarkdownManager
 import state.MainScreenState
 import strings.appStrings
 import theme.KarkdownColorTheme
 import viewmodel.MainScreenViewModel
 import java.awt.FileDialog
 import java.io.File
-import java.io.FilenameFilter
 import javax.swing.JFileChooser
 import javax.swing.UIManager
 import javax.swing.filechooser.FileSystemView
@@ -197,8 +196,6 @@ fun MainScreen(
                     }
                 )
                 FileEditor(
-                    mainScreenViewModel = mainScreenViewModel,
-                    state = state,
                     paddingValues = paddingValues
                 )
             }
@@ -414,8 +411,6 @@ fun MainScreenHeaderBar(
 
 @Composable
 fun FileEditor(
-    mainScreenViewModel: MainScreenViewModel,
-    state: MainScreenState,
     paddingValues: PaddingValues
 ) {
     Row(
@@ -427,52 +422,17 @@ fun FileEditor(
             ),
         horizontalArrangement = Arrangement.Center
     ) {
+
+        val markdownManager = rememberMarkdownManager()
+
         FileView(
             modifier = Modifier
                 .fillMaxWidth(.6f)
                 .padding(vertical = Constants.Spacing.medium),
-            fileContent = state.fileContent,
-            currentText = mainScreenViewModel.currentText,
-            onLineChanged = { line, pos ->
-                mainScreenViewModel.onEvent(
-                    MainScreenEvent.SetCurrentText(
-                        text = line,
-                        pos = pos
-                    )
-                )
-            },
-            onDone = { nextPos, initialText ->
-                mainScreenViewModel.onEvent(
-                    MainScreenEvent.CreateNewLine(
-                        nextPos = nextPos,
-                        initialText = initialText
-                    )
-                )
-            },
-            onLineClicked = { linePos ->
-                mainScreenViewModel.onEvent(
-                    MainScreenEvent.SetFocusedLine(
-                        pos = linePos
-                    )
-                )
-            },
-            userLine = state.userPosition,
-            onKeyUp = {
-                mainScreenViewModel.onEvent(
-                    MainScreenEvent.GoUp
-                )
-            },
-            onKeyDown = {
-                mainScreenViewModel.onEvent(
-                    MainScreenEvent.GoDown
-                )
-            },
-            onDeleteLine = {
-                mainScreenViewModel.onEvent(
-                    MainScreenEvent.DeleteLine(it)
-                )
-            },
-            filePath = state.filepath
+            markdownManager = markdownManager,
+            contentPadding = PaddingValues(
+                bottom = 200.dp,
+            )
         )
     }
 }

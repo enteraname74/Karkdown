@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.style.TextDecoration
-import model.textutils.*
+import com.github.enteraname74.karkdowncore.textutils.linkUrl
 import theme.KarkdownColorTheme
 
 /**

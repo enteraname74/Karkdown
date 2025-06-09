@@ -1,19 +1,18 @@
 package viewmodel
 
-import androidx.compose.runtime.*
-import com.github.woojiahao.MarkdownDocument
-import com.github.woojiahao.markdownConverter
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import com.github.enteraname74.karkdowncore.FileManager
 import event.MainScreenEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import model.FileManager
 import state.MainScreenState
 import strings.appStrings
 import utils.FileHeader
 import kotlin.io.path.Path
 import kotlin.io.path.name
-import kotlin.io.path.pathString
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -21,8 +20,6 @@ import kotlin.math.min
 class MainScreenViewModel {
     private val allFilesManager: ArrayList<FileManager> = arrayListOf(FileManager())
     private var filePos: Int = 0
-
-    private val a by mutableStateOf(false)
 
     private val _state = MutableStateFlow(
         MainScreenState()
@@ -180,18 +177,19 @@ class MainScreenViewModel {
         saveAs(filepath, filename.replace(".pdf", ""))
 
         currentFileManager.filepath?.let { path ->
-            val converter = markdownConverter {
-                document(MarkdownDocument(path.pathString))
-
-                val finalFilename = if (filename.split(".").lastOrNull() != "pdf") "$filename.pdf" else filename
-                val finalPath = Path(
-                    base = path.parent.pathString,
-                    finalFilename
-                ).pathString
-
-                targetLocation(finalPath)
-            }
-            converter.convert()
+            TODO("Implement better PDF save")
+//            val converter = markdownConverter {
+//                document(MarkdownDocument(path.pathString))
+//
+//                val finalFilename = if (filename.split(".").lastOrNull() != "pdf") "$filename.pdf" else filename
+//                val finalPath = Path(
+//                    base = path.parent.pathString,
+//                    finalFilename
+//                ).pathString
+//
+//                targetLocation(finalPath)
+//            }
+//            converter.convert()
         }
     }
 
@@ -349,7 +347,7 @@ class MainScreenViewModel {
         allFilesManager.add(FileManager())
         filePos = allFilesManager.lastIndex
 
-        currentFileManager.openFile(filepath)
+        currentFileManager.fromFile(filepath)
         currentFileManager.userPosition = 0
         updateCurrentFileInformation()
     }

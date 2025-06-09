@@ -4,7 +4,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
-import model.textutils.*
+import com.github.enteraname74.karkdowncore.textutils.*
 
 /**
  * Handles the style transformation of markdown elements.
