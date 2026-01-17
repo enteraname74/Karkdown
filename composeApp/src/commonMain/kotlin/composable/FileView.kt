@@ -2,20 +2,15 @@ package composable
 
 import Constants
 import MarkdownManager
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import composable.filecontent.MarkdownViewBuilder
 import state.MarkdownState
 
 /**
@@ -37,33 +32,33 @@ fun FileView(
 
             val currentElement = state.fileContent[pos]
 
-            MarkdownViewBuilder(
-                markdownElement = currentElement,
-                onClick = {
-                    markdownManager.setFocusedLine(pos = pos)
-                },
-                onLineChanged = { line ->
-                    markdownManager.updateLineAt(
-                        line = line,
-                        pos = pos,
-                    )
-                },
-                onDone = { newPos, initialText ->
-                    markdownManager.createNewLine(
-                        nextPos = newPos,
-                        initialText = initialText,
-                    )
-                },
-                userPosition = state.filePos,
-                markdownElementPosition = pos,
-                currentText = if (state.filePos == pos) markdownManager.currentText else currentElement.rowData,
-                onKeyUp = markdownManager::goUp,
-                onKeyDown = markdownManager::goDown,
-                onDeleteLine = {
-                    markdownManager.deleteLine(pos = pos)
-                },
-                filePath = markdownManager.getFilePath()
-            )
+//            MarkdownViewBuilder(
+//                markdownElement = currentElement,
+//                onClick = {
+//                    markdownManager.setFocusedLine(pos = pos)
+//                },
+//                onLineChanged = { line ->
+//                    markdownManager.updateLineAt(
+//                        line = line,
+//                        pos = pos,
+//                    )
+//                },
+//                onDone = { newPos, initialText ->
+//                    markdownManager.createNewLine(
+//                        nextPos = newPos,
+//                        initialText = initialText,
+//                    )
+//                },
+//                userPosition = state.filePos,
+//                markdownElementPosition = pos,
+//                currentText = if (state.filePos == pos) markdownManager.currentText else currentElement.rowData,
+//                onKeyUp = markdownManager::goUp,
+//                onKeyDown = markdownManager::goDown,
+//                onDeleteLine = {
+//                    markdownManager.deleteLine(pos = pos)
+//                },
+//                filePath = markdownManager.getFilePath()
+//            )
         }
 
         item {

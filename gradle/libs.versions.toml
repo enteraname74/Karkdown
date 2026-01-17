@@ -1,33 +1,38 @@
 [versions]
-compose = "1.6.2"
-compose-plugin = "1.6.0"
+compose = "1.8.1"
 junit = "4.13.2"
-kotlin = "1.9.22"
-koin = "3.5.3"
-koin-compose = "1.1.2"
+kotlin = "2.1.21"
+koin = "4.0.3"
 file-picker = "3.1.0"
 gson = "2.11.0"
 kmd2pdf = "0.2.2"
 collection = "1.4.0"
+coroutines = "1.10.2"
 native-file-chooser = "1.6.4"
+viewmodel-compose = "2.9.0"
 
 [libraries]
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+karkdown-core-ui = { module = "com.github.enteraname74.karkdowncoreui:karkdown-core-ui", version = "" }
+
 file-picker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "file-picker" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 kmd2pdf = {  module = "com.github.woojiahao:kMD2PDF", version.ref = "kmd2pdf" }
 native-file-chooser = { module = "li.flor:native-j-file-chooser", version.ref = "native-file-chooser" }
 
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
-koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
+
 
 androidx-collection = { module = "androidx.collection:collection", version.ref = "collection" }
 
+viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "viewmodel-compose"}
+
 [plugins]
-jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
-kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

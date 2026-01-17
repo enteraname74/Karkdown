@@ -22,4 +22,4 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
-include("domain")
+includeBuild("karkdown-core-ui")

@@ -1,0 +1,3 @@
+[submodule "karkdown-core-ui"]
+	path = karkdown-core-ui
+	url = https://github.com/enteraname74/karkdown-core-ui.git

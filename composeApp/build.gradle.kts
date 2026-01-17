@@ -1,9 +1,9 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    
-    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.jetbrains.compose)
+    alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
@@ -36,13 +36,19 @@ kotlin {
             implementation(libs.file.picker)
 
             implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.core)
 
-//            implementation(project(":domain"))
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.coroutines.swing)
+
             implementation(libs.gson)
 
             runtimeOnly(libs.androidx.collection)
 
+            implementation(libs.viewmodel.compose)
+
+            implementation(libs.karkdown.core.ui)
             implementation(files("karkdown-core-jvm-0.1.0.jar"))
         }
         desktopMain.dependencies {
